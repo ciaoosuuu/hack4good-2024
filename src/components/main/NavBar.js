@@ -59,9 +59,10 @@ export default function NavBar() {
 					}}
 				/>
 				<p
-					style={{
-						fontWeight: 600,
-					}}
+					// style={{
+					// 	fontWeight: 600,
+					// }}
+					className="tracking-wider"
 				>
 					hack4good
 				</p>
