@@ -49,7 +49,7 @@ const Activities = () => {
         {activities &&
           activities.map((activity) => (
             <div key={activity.id} className={classes["item"]}>
-              <Link href={`/`}>
+              <Link href={`/volunteer/${activity.id}`}>
                 <img src={activity.image} className={classes["image"]} />
                 <div className={classes["type-tag"]}>{activity.type}</div>
                 <p>{activity.name}</p>
