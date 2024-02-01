@@ -1,0 +1,44 @@
+.grid_list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 0;
+  gap: 15px;
+
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.item {
+  background-color: pink;
+}
+
+.image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.type-tag {
+  display: inline-block;
+  background-color: red;
+  color: white;
+  font-size: small;
+  font-weight: bold;
+}
+
+.tags {
+  list-style: none;
+  padding: 0;
+}
+
+.tags li {
+  cursor: pointer;
+  padding: 3px 8px 3px 8px;
+  margin: 2px 5px 2px 0px;
+  border-radius: 20px;
+  font-size: small;
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  display: inline-block;
+}
