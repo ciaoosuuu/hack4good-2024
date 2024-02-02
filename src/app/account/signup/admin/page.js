@@ -1,14 +1,17 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserAuth } from "../../../context/AuthContext";
-import { emailPwSignIn, emailPwSignUp, logOut,  googleSignIn } from "../../../../firebase/functions"
+import { auth } from "../../../context/AuthContext";
+import { emailPwSignIn, emailPwSignUp, logOut,  googleSignIn } from "../../../../firebase/functions";
+import withAuth from '../../../../hoc/withAuth';
 
-const AdminSignup = () => {
-  const { user } = UserAuth();
+const AdminSignup = ({user}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
+  // console.log("adminsignup");
+
+  // console.log(user?.email);
 
 	const handleEmailSignUp = async (e) => {
     e.preventDefault();
@@ -19,7 +22,6 @@ const AdminSignup = () => {
       console.log("Sign up")
     })
     .catch((error) => {
-      const errorCode = error.code;
       const errorMessage = error.message;
       console.log(`Email sign up error: ${errorMessage}`);
       setLoginError(errorMessage);
@@ -62,8 +64,10 @@ const AdminSignup = () => {
       <button onClick={handleGoogleSignUp}>Sign Up with Google</button>
       {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
       {!loginError && user && <p style={{ color: 'red' }}>{user.email}</p>}
+      {!loginError && user && <p style={{ color: 'red' }}>{user.role}</p>}
+
     </div>
   );
 };
 
-export default AdminSignup;
+export default withAuth(AdminSignup);
