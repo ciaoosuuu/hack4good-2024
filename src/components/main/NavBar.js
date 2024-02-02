@@ -11,11 +11,13 @@ import {
 	MenuList,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import theme from "../../theme.js";
 
 export default function NavBar() {
+	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
@@ -31,6 +33,10 @@ export default function NavBar() {
 			label: `Profile`,
 		},
 	];
+
+	const navigateTo = (path) => {
+		router.push(`/${path}`);
+	};
 	return (
 		<div
 			style={{
@@ -41,6 +47,8 @@ export default function NavBar() {
 				width: "100%",
 				justifyContent: "space-between",
 				alignItems: "center",
+				backgroundColor: "rgb(235,234,228)",
+				paddingTop: "0.5rem",
 			}}
 		>
 			<Flex align={"center"}>
@@ -72,7 +80,12 @@ export default function NavBar() {
 					{items &&
 						items.map((navItem) => (
 							<>
-								<Tab key={navItem.key}>{navItem.label}</Tab>
+								<Tab
+									key={navItem.key}
+									onClick={() => navigateTo(navItem.key)}
+								>
+									{navItem.label}
+								</Tab>
 								<Spacer key={navItem.key} />
 							</>
 						))}

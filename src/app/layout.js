@@ -1,14 +1,14 @@
 "use client";
-import { Providers } from './providers'
+import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from '../components/main/NavBar';
+import NavBar from "../components/main/NavBar";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 // export const metadata = {
 //   title: "Create Next App",
@@ -17,24 +17,28 @@ const inter = Inter({ subsets: ["latin"] });
 // Exclude NavBar from the login page
 
 export default function RootLayout({ children }) {
-  const router = useRouter();
-  const [excludeNavBar, setExcludeNavBar] = useState(false);
+	const router = useRouter();
+	const [showNavBar, setShowNavBar] = useState(false);
+	const pathname = usePathname();
+	const noNavBarPaths = [
+		"/account/login",
+		"/account/signup/admin",
+		"/account/signup/volunteer",
+	];
+	useEffect(() => {
+		setShowNavBar(!noNavBarPaths.includes(pathname));
+	}, [pathname]);
 
-  useEffect(() => {
-    // Check the pathname after the initial rendering
-    setExcludeNavBar(router.pathname === '/login');
-  }, [router.pathname]);
-  
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Providers>
-          <AuthContextProvider>
-            {!excludeNavBar && <NavBar />}
-            {children}
-          </AuthContextProvider>
-        </Providers>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className={inter.className}>
+				<Providers>
+					<AuthContextProvider>
+						{showNavBar && <NavBar />}
+						{children}
+					</AuthContextProvider>
+				</Providers>
+			</body>
+		</html>
+	);
 }
