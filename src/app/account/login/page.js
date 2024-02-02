@@ -1,11 +1,12 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserAuth } from "../context/AuthContext";
+import { UserAuth } from "../../context/AuthContext";
+import { emailPwSignIn, googleSignIn, logOut } from "../../../firebase/functions"
 
 const Login = () => {
   const router = useRouter();
-	const { user, emailPwSignIn, logOut} = UserAuth();
+	const { user } = UserAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
@@ -15,7 +16,24 @@ const Login = () => {
     emailPwSignIn(email, password)
     .then(() => {
       //successfully login
-      router.push('/');
+      // router.push('/');
+      console.log("Log in.")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(`Email login error: ${errorMessage}`);
+      setLoginError(errorMessage);
+    });
+	};
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    googleSignIn()
+    .then(() => {
+      //successfully login
+      // router.push('/');
+      console.log("Log in.")
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -42,8 +60,9 @@ const Login = () => {
         <button type="submit">Login with Email</button>
       </form>
       <br />
-      {/* <button onClick={handleGoogleLogin}>Login with Google</button> */}
+      <button onClick={handleGoogleLogin}>Login with Google</button>
       {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
+      {!loginError && user && <p style={{ color: 'red' }}>{user.email}</p>}
     </div>
   );
 };
