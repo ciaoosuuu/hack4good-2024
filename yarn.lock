@@ -1660,7 +1660,7 @@
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.202.tgz"
   integrity sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==
 
-"@types/node@20.11.10", "@types/node@>=12.12.47", "@types/node@>=13.7.0":
+"@types/node@20.11.10":
   version "20.11.10"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.11.10.tgz"
   integrity sha512-rZEfe/hJSGYmdfX9tvcPMYeYPW2sNl50nsw4jZmRcaG0HIAb0WYEpsB05GOb53vjqpyE9GUhlDQ4jLSoB5q9kg==
@@ -4192,6 +4192,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+sweetalert2@^11.10.4:
+  version "11.10.4"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.10.4.tgz#48fc0c21f008f4d4f7c92da6a96c0fde33148d64"
+  integrity sha512-MOVRuEW/yQsyzgkaiHqAJcYKxW3vhtE5o3Skp6vZdyJejCOWo4FOicbjRfvqHAXTyTMuwDHA+0lYbO6BiHl1Gw==
 
 tailwindcss@^3.4.1:
   version "3.4.1"
