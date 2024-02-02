@@ -26,7 +26,7 @@ firebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 // Initialize services
-const projectFirestore = firebase.firestore();
+const db = firebase.firestore();
 const projectStorage = firebase.storage();
 
-export { projectFirestore, projectStorage };
+export { db, projectStorage };

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { projectFirestore } from "../../firebase/config";
+import { db } from "../../firebase/config";
 
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
 
@@ -14,7 +14,7 @@ const Activities = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const activitiesSnapshot = await projectFirestore
+        const activitiesSnapshot = await db
           .collection("Activities")
           .get();
 

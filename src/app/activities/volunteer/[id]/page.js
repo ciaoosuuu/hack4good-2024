@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { projectFirestore } from "../../../../firebase/config";
+import { db } from "../../../../firebase/config";
 
 import classes from "./page.module.css";
 
@@ -14,7 +14,7 @@ const Volunteer = ({ params }) => {
     const fetchActivityContent = async () => {
       if (id) {
         try {
-          const activityDoc = await projectFirestore
+          const activityDoc = await db
             .collection("Activities")
             .doc(id)
             .get();
