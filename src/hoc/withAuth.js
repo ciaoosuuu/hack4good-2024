@@ -1,40 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { UserAuth } from '../app/context/AuthContext';
 
-const withAuth = (Component, role) => {
-  role = role || false;
+const withAuth = (Components) => {
+  return (props) => {
+    const { user, isLoading } = UserAuth();
+    const router = useRouter();
 
-  const getRole = async (userEmail) => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MAIN_SERVER_URL}/users/get-role?email=${userEmail}`);
-      const jsonData = await response.json();
-      return jsonData[0].role
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return props => {
-    const { user, isLoading } = useUser()
-    const [userRole , setUserRole] = useState("");
-
-    if (isLoading) {
-      return <p>Loading...</p>
-    }
-
-    if (!user) {
-      // return <redirect back to /account/login>
-      return
-    } else {
-      if (role) {
-        // console.log("role is :" + role);
-        getRole(user.email).then(role => setUserRole(role));
-      
-        return <Component user={user} isLoading={isLoading} role={userRole} {...props}/>
+    useEffect(() => {
+      if (isLoading) {
+        return () => {}
       }
-      // console.log("role is false!")
-      return <Component user={user} isLoading={isLoading} {...props}/>  
+
+      if (!user) {
+        router.push('/account/login');
+      }
+    }, [user, isLoading]);
+
+    if (isLoading || !user) {
+      return () => {}
     }
-  }
+
+    return <Components user={user} {...props} />;
+  };
 };
 
 export default withAuth;
+

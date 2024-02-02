@@ -1,54 +1,35 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
 import {
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
-  GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, db } from "../../firebase/config"
+import { auth, db } from "../../firebase/config";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            setIsLoading(true);
             if (currentUser) {
                 const ref = db.collection('Users').doc(currentUser.uid);
                 const doc = await ref.get();
                 if (!doc.exists) {
                     console.log('No such user!');
                 } else {
-                    setUser(currentUser);
+                    setUser(doc.data());
                     console.log('User data:', doc.data());
                 }
             }
+            setIsLoading(false);
         });
         return () => unsubscribe();
-    }, [user]);
-
-    // useEffect(() => {
-    //     // Check if user is not authenticated
-    //     if (!user) {
-    //       // Redirect to the login page
-    //       router.push('/account/login');
-    //     }
-    //   }, [user, router]);
-
-    // useEffect(() => {
-    //     const checkAuthentication = async () => {
-    //       await new Promise((resolve) => setTimeout(resolve, 50));
-    //       setLoading(false);
-    //     };
-    //     checkAuthentication();
-    //   }, [user]);
+    }, [auth]);
 
     return (
-        <AuthContext.Provider value={{ user }}>
+        <AuthContext.Provider value={{ user, isLoading }}>
             {children}
         </AuthContext.Provider>
     );
