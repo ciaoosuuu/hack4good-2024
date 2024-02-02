@@ -11,7 +11,7 @@ const addVolunteerToDb = async (userCredential) => {
   const data = {
     uid: userCredential.user.uid,
     email: userCredential.user.email,
-    role: "admin"
+    role: "volunteer"
   };
   try {
     await db.collection('Users').doc(userCredential.user.uid).set(data);
