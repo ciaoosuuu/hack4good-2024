@@ -85,17 +85,18 @@
 
 .two-column-container {
   display: flex;
-  margin-bottom: 6%;
+  margin: 0% 8% 6% 8%;
 }
 
 .column-left {
-  flex: 60%;
-  padding: 6% 8% 0px 8%;
+  flex: 68%;
+  margin: 6% 10% 0% 0%;
+  /* padding: 6% 8% 0px 8%; */
 }
 
 .column-right {
-  flex: 40%;
-  padding: 6% 8% 0px 4%;
+  flex: 32%;
+  padding: 6% 0% 0% 0%;
 }
 
 .two-column-container h1 {
