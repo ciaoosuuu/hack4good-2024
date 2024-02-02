@@ -58,14 +58,7 @@ export default function NavBar() {
 						margin: "0 10px",
 					}}
 				/>
-				<p
-					// style={{
-					// 	fontWeight: 600,
-					// }}
-					className="tracking-wider"
-				>
-					hack4good
-				</p>
+				<p className="tracking-wider">hack4good</p>
 			</Flex>
 			<Tabs
 				style={{
@@ -75,20 +68,20 @@ export default function NavBar() {
 				}}
 				colorScheme={"red"}
 			>
-				<Flex style={{ width: "100%" }}>
-					{items.map((navItem) => (
-						<>
-							<Tab>{navItem.label}</Tab>
-							<Spacer />
-						</>
-					))}
+				<Flex key={"tabs"} style={{ width: "100%" }}>
+					{items &&
+						items.map((navItem) => (
+							<>
+								<Tab key={navItem.key}>{navItem.label}</Tab>
+								<Spacer key={navItem.key} />
+							</>
+						))}
 				</Flex>
 			</Tabs>{" "}
 			<Menu>
 				{({ isOpen }) => (
 					<>
 						<MenuButton
-							ghost
 							isActive={isOpen}
 							as={Button}
 							style={{
@@ -100,9 +93,9 @@ export default function NavBar() {
 						>
 							username
 						</MenuButton>
-						<MenuList colorScheme={"red"}>
-							<MenuItem>Profile</MenuItem>
-							<MenuItem>Log in</MenuItem>
+						<MenuList>
+							<MenuItem key={"profile"}>Profile</MenuItem>
+							<MenuItem key={"account/login"}>Log in</MenuItem>
 						</MenuList>
 					</>
 				)}
