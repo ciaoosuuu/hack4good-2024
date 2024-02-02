@@ -83,6 +83,19 @@
   border-radius: 10px;
 }
 
+.overlay-container .signedup {
+  height: 50px;
+  width: 100%;
+  border: 1px solid maroon;
+  font-size: medium;
+  color: maroon;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .two-column-container {
   display: flex;
   margin: 0% 8% 6% 8%;
