@@ -48,8 +48,9 @@ export default function NavBar() {
 				justifyContent: "space-between",
 				alignItems: "center",
 				backgroundColor: "rgb(235,234,228)",
-				paddingTop: "0.5rem",
-				paddingBottom: "1rem",
+				padding: "0.5rem 1rem 0 1rem",
+
+				boxShadow: "1px 1px 5px #00000010",
 			}}
 		>
 			<Flex align={"center"}>

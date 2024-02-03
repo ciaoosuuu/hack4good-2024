@@ -25,7 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb)) !important;
 
-  padding: 0 1rem
+  padding: 0rem 1rem
 }
 
 @layer utilities {
