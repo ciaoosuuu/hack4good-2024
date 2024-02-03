@@ -1,15 +1,39 @@
+.page_layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 .grid_list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 0;
   gap: 15px;
-
   margin-left: 8%;
   margin-right: 8%;
 }
 
+.grid_list_horizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0;
+  gap: 10px;
+
+}
+
 .item {
   background-color: pink;
+}
+
+.item_horizontal {
+  background-color: #ffffff50;
+  cursor: pointer;
+}
+
+.item_horizontal:hover {
+  background-color: #ffffff80;
 }
 
 .image {
