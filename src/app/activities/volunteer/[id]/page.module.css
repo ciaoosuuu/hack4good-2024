@@ -255,3 +255,40 @@
   border-radius: 5px;
   margin-top: 20px;
 }
+
+.four-column-container {
+  display: flex;
+  margin: 0% 8% 6% 8%;
+  gap: 20px;
+}
+
+.column-four {
+  flex: 25%;
+  /* margin: 6% 10% 0% 0%; */
+  /* padding: 6% 8% 0px 8%; */
+}
+
+.grid-item {
+  background-color: pink;
+  border-radius: 10px;
+  color: #fff;
+  /* padding: 15px; */
+  margin-bottom: 10px;
+  padding-top: 4px;
+}
+
+.grid-item img {
+  width: 96%;
+  margin: 0 4px 2% 4px;
+  border-radius: 8px;
+}
+
+.grid-item h1 {
+  font-weight: bold;
+  padding: 0 8px 0px 8px;
+}
+
+.grid-item p {
+  font-size: small;
+  padding: 0 8px 8px 8px;
+}

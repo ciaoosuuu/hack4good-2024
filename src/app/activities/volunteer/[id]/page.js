@@ -17,6 +17,8 @@ const Volunteer = ({ params }) => {
 
   const [attended, setAttended] = useState([]);
 
+  const [reflections, setReflections] = useState();
+
   const attendees = [
     {
       id: 1,
@@ -87,6 +89,30 @@ const Volunteer = ({ params }) => {
 
     fetchActivityContent();
   }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        try {
+          const collectionRef = db.collection("Posts");
+          const querySnapshot = await collectionRef
+            .where("activity_id", "==", id)
+            .get();
+
+          const reflectionsArray = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setReflections(reflectionsArray);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSignUp = async () => {
     try {
@@ -250,6 +276,116 @@ const Volunteer = ({ params }) => {
               </ul>
               <div className={classes["submitattendance"]}>
                 <button onClick={handleSubmit}>Submit Attendance</button>
+              </div>
+            </div>
+          )}
+          {reflections && (
+            <div>
+              <div className={classes["four-column-container"]}>
+                <div className={classes["column-four"]}>
+                  {reflections
+                    .slice()
+                    .sort((reflectionA, reflectionB) => {
+                      const postTimeA = reflectionA.datetime_posted.toDate();
+                      const postTimeB = reflectionB.datetime_posted.toDate();
+                      return postTimeA - postTimeB;
+                    })
+                    .map(
+                      (reflection, index) =>
+                        index % 4 === 0 && (
+                          <div key={index} className={classes["grid-item"]}>
+                            {reflection.image && <img src={reflection.image} />}
+                            <h1>
+                              {reflection.isanonymous ? "Anonymous" : "Name"}
+                            </h1>
+                            <p>
+                              {reflection.content
+                                .split(" ")
+                                .slice(0, 60)
+                                .join(" ") + "..."}
+                            </p>
+                          </div>
+                        )
+                    )}
+                </div>
+                <div className={classes["column-four"]}>
+                  {reflections
+                    .slice()
+                    .sort((reflectionA, reflectionB) => {
+                      const postTimeA = reflectionA.datetime_posted.toDate();
+                      const postTimeB = reflectionB.datetime_posted.toDate();
+                      return postTimeA - postTimeB;
+                    })
+                    .map(
+                      (reflection, index) =>
+                        index % 4 === 1 && (
+                          <div key={index} className={classes["grid-item"]}>
+                            {reflection.image && <img src={reflection.image} />}
+                            <h1>
+                              {reflection.isanonymous ? "Anonymous" : "Name"}
+                            </h1>
+                            <p>
+                              {reflection.content
+                                .split(" ")
+                                .slice(0, 60)
+                                .join(" ") + "..."}
+                            </p>
+                          </div>
+                        )
+                    )}
+                </div>
+                <div className={classes["column-four"]}>
+                  {reflections
+                    .slice()
+                    .sort((reflectionA, reflectionB) => {
+                      const postTimeA = reflectionA.datetime_posted.toDate();
+                      const postTimeB = reflectionB.datetime_posted.toDate();
+                      return postTimeA - postTimeB;
+                    })
+                    .map(
+                      (reflection, index) =>
+                        index % 4 === 2 && (
+                          <div key={index} className={classes["grid-item"]}>
+                            {reflection.image && <img src={reflection.image} />}
+                            <h1>
+                              {reflection.isanonymous ? "Anonymous" : "Name"}
+                            </h1>
+                            <p>
+                              {reflection.content
+                                .split(" ")
+                                .slice(0, 60)
+                                .join(" ") + "..."}
+                            </p>
+                          </div>
+                        )
+                    )}
+                </div>
+                <div className={classes["column-four"]}>
+                  {reflections
+                    .slice()
+                    .sort((reflectionA, reflectionB) => {
+                      const postTimeA = reflectionA.datetime_posted.toDate();
+                      const postTimeB = reflectionB.datetime_posted.toDate();
+                      return postTimeA - postTimeB;
+                    })
+                    .map(
+                      (reflection, index) =>
+                        index % 4 === 3 && (
+                          <div key={index} className={classes["grid-item"]}>
+                            {reflection.image && <img src={reflection.image} />}
+                            <h1>
+                              {reflection.isanonymous ? "Anonymous" : "Name"}
+                            </h1>
+                            <p>
+                              {reflection.content
+                                .split(" ")
+                                .slice(0, 60)
+                                .join(" ") + "..."}
+                            </p>
+                          </div>
+                        )
+                    )}
+                </div>
               </div>
             </div>
           )}
