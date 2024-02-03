@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { db } from "../../../../firebase/config";
 
 import Posts from "../../../../components/activities/Posts.js";
+import Attendance from "../../../../components/activities/Attendance.js";
 
 import classes from "./page.module.css";
 
@@ -244,43 +245,14 @@ const Volunteer = ({ params }) => {
               </div>
             </div>
           </div>
-          {userRole == "admin" && (
-            <div className={classes["container"]}>
-              <h1>Attendance</h1>
-              <ul className={classes["grid_list"]}>
-                {attendees
-                  .slice()
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((attendee, index) => (
-                    <li key={attendee.id} className={classes["item"]}>
-                      <div className={classes["index"]}>
-                        <p>{index}</p>
-                      </div>
-                      <div className={classes["profilepic"]}>
-                        <img src={attendee.picture} />
-                      </div>
-                      <div className={classes["details"]}>
-                        <h1>{attendee.name}</h1>
-                        <p>{attendee.email}</p>
-                        <p>{attendee.contact}</p>
-                      </div>
-                      <div className={classes["markattendance"]}>
-                        {attended.includes(attendee.id) ? (
-                          <div className={classes["marked"]}>Marked</div>
-                        ) : (
-                          <button onClick={() => handleMark(attendee.id)}>
-                            Mark As Attended
-                          </button>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-              <div className={classes["submitattendance"]}>
-                <button onClick={handleSubmit}>Submit Attendance</button>
-              </div>
-            </div>
-          )}
+          <Attendance
+            userRole={userRole}
+            classes={classes}
+            attendees={attendees}
+            attended={attended}
+            handleMark={handleMark}
+            handleSubmit={handleSubmit}
+          />
           {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}
