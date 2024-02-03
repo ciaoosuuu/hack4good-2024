@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { db } from "../../../../firebase/config";
 
+import Posts from "../../../../components/activities/Posts.js";
+
 import classes from "./page.module.css";
 
 const Volunteer = ({ params }) => {
@@ -279,116 +281,7 @@ const Volunteer = ({ params }) => {
               </div>
             </div>
           )}
-          {reflections && (
-            <div>
-              <div className={classes["four-column-container"]}>
-                <div className={classes["column-four"]}>
-                  {reflections
-                    .slice()
-                    .sort((reflectionA, reflectionB) => {
-                      const postTimeA = reflectionA.datetime_posted.toDate();
-                      const postTimeB = reflectionB.datetime_posted.toDate();
-                      return postTimeA - postTimeB;
-                    })
-                    .map(
-                      (reflection, index) =>
-                        index % 4 === 0 && (
-                          <div key={index} className={classes["grid-item"]}>
-                            {reflection.image && <img src={reflection.image} />}
-                            <h1>
-                              {reflection.isanonymous ? "Anonymous" : "Name"}
-                            </h1>
-                            <p>
-                              {reflection.content
-                                .split(" ")
-                                .slice(0, 60)
-                                .join(" ") + "..."}
-                            </p>
-                          </div>
-                        )
-                    )}
-                </div>
-                <div className={classes["column-four"]}>
-                  {reflections
-                    .slice()
-                    .sort((reflectionA, reflectionB) => {
-                      const postTimeA = reflectionA.datetime_posted.toDate();
-                      const postTimeB = reflectionB.datetime_posted.toDate();
-                      return postTimeA - postTimeB;
-                    })
-                    .map(
-                      (reflection, index) =>
-                        index % 4 === 1 && (
-                          <div key={index} className={classes["grid-item"]}>
-                            {reflection.image && <img src={reflection.image} />}
-                            <h1>
-                              {reflection.isanonymous ? "Anonymous" : "Name"}
-                            </h1>
-                            <p>
-                              {reflection.content
-                                .split(" ")
-                                .slice(0, 60)
-                                .join(" ") + "..."}
-                            </p>
-                          </div>
-                        )
-                    )}
-                </div>
-                <div className={classes["column-four"]}>
-                  {reflections
-                    .slice()
-                    .sort((reflectionA, reflectionB) => {
-                      const postTimeA = reflectionA.datetime_posted.toDate();
-                      const postTimeB = reflectionB.datetime_posted.toDate();
-                      return postTimeA - postTimeB;
-                    })
-                    .map(
-                      (reflection, index) =>
-                        index % 4 === 2 && (
-                          <div key={index} className={classes["grid-item"]}>
-                            {reflection.image && <img src={reflection.image} />}
-                            <h1>
-                              {reflection.isanonymous ? "Anonymous" : "Name"}
-                            </h1>
-                            <p>
-                              {reflection.content
-                                .split(" ")
-                                .slice(0, 60)
-                                .join(" ") + "..."}
-                            </p>
-                          </div>
-                        )
-                    )}
-                </div>
-                <div className={classes["column-four"]}>
-                  {reflections
-                    .slice()
-                    .sort((reflectionA, reflectionB) => {
-                      const postTimeA = reflectionA.datetime_posted.toDate();
-                      const postTimeB = reflectionB.datetime_posted.toDate();
-                      return postTimeA - postTimeB;
-                    })
-                    .map(
-                      (reflection, index) =>
-                        index % 4 === 3 && (
-                          <div key={index} className={classes["grid-item"]}>
-                            {reflection.image && <img src={reflection.image} />}
-                            <h1>
-                              {reflection.isanonymous ? "Anonymous" : "Name"}
-                            </h1>
-                            <p>
-                              {reflection.content
-                                .split(" ")
-                                .slice(0, 60)
-                                .join(" ") + "..."}
-                            </p>
-                          </div>
-                        )
-                    )}
-                </div>
-              </div>
-            </div>
-          )}
+          {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}
     </div>
