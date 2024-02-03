@@ -42,6 +42,7 @@ const addVolunteerToDb = async (userCredential) => {
 const VolunteerSignup = () => {
 	const router = useRouter();
 	const { user } = UserAuth();
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
@@ -52,7 +53,7 @@ const VolunteerSignup = () => {
 			.then(async (userCredential) => {
 				await addVolunteerToDb(userCredential);
 				console.log("Sign up");
-				// router.push('/');
+				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -67,8 +68,8 @@ const VolunteerSignup = () => {
 		googleSignIn()
 			.then(() => {
 				//successfully login
-				// router.push('/');
 				console.log("Log in.");
+				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -109,7 +110,15 @@ const VolunteerSignup = () => {
 				<h1 style={{ textAlign: "center" }}>Volunteer Sign Up Page</h1>
 				<br />
 				<form onSubmit={handleEmailSignUp}>
-					<FormControl isRequired>
+					<FormControl isRequired style={{ marginBottom: "8px" }}>
+						<FormLabel>Name:</FormLabel>
+						<Input
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+							variant="filled"
+						/>
+					</FormControl>
+					<FormControl isRequired style={{ marginBottom: "8px" }}>
 						<FormLabel>Email:</FormLabel>
 						<Input
 							type="email"
@@ -118,7 +127,6 @@ const VolunteerSignup = () => {
 							variant="filled"
 						/>
 					</FormControl>
-					<br />
 					<FormControl isRequired>
 						<FormLabel>Password:</FormLabel>
 						<Input

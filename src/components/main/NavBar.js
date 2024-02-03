@@ -49,6 +49,7 @@ export default function NavBar() {
 				alignItems: "center",
 				backgroundColor: "rgb(235,234,228)",
 				paddingTop: "0.5rem",
+				paddingBottom: "1rem",
 			}}
 		>
 			<Flex align={"center"}>

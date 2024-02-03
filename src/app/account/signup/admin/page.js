@@ -26,6 +26,7 @@ import withAuth from "../../../../hoc/withAuth";
 
 const AdminSignup = ({ user }) => {
 	const router = useRouter();
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
@@ -38,8 +39,8 @@ const AdminSignup = ({ user }) => {
 		emailPwSignUp(email, password)
 			.then(() => {
 				//successfully login
-				// router.push('/');
 				console.log("Sign up");
+				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
@@ -53,8 +54,8 @@ const AdminSignup = ({ user }) => {
 		googleSignIn()
 			.then(() => {
 				//successfully login
-				// router.push('/');
 				console.log("Log in.");
+				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -80,7 +81,15 @@ const AdminSignup = ({ user }) => {
 				<h1 style={{ textAlign: "center" }}>Admin Sign Up Page</h1>
 				<br />
 				<form onSubmit={handleEmailSignUp}>
-					<FormControl isRequired>
+					<FormControl isRequired style={{ marginBottom: "8px" }}>
+						<FormLabel>Name:</FormLabel>
+						<Input
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+							variant="filled"
+						/>
+					</FormControl>
+					<FormControl isRequired style={{ marginBottom: "8px" }}>
 						<FormLabel>Email:</FormLabel>
 						<Input
 							type="email"
@@ -89,7 +98,6 @@ const AdminSignup = ({ user }) => {
 							variant="filled"
 						/>
 					</FormControl>
-					<br />
 					<FormControl isRequired>
 						<FormLabel>Password:</FormLabel>
 						<Input
