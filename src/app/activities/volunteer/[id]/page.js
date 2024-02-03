@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { db } from "../../../../firebase/config";
 
-import Posts from "../../../../components/activities/Posts.js";
 import Attendance from "../../../../components/activities/Attendance.js";
+import Posts from "../../../../components/activities/Posts.js";
+import CreatePost from "../../../../components/activities/CreatePost.js";
 
 import classes from "./page.module.css";
 
@@ -18,7 +19,7 @@ const Volunteer = ({ params }) => {
   const [vacancyRemaining, setVacancyRemaining] = useState(0);
   const [signups, setSignups] = useState([]);
 
-  const [attended, setAttended] = useState([]);
+  const [marked, setMarked] = useState([]);
 
   const [reflections, setReflections] = useState();
 
@@ -147,27 +148,27 @@ const Volunteer = ({ params }) => {
   };
 
   const handleMark = (attendeeId) => {
-    if (!attended.includes(attendeeId)) {
-      setAttended((prevAttended) => [...prevAttended, attendeeId]);
+    if (!marked.includes(attendeeId)) {
+      setMarked((prevMarked) => [...prevMarked, attendeeId]);
     }
-    // console.log(attended);
+    // console.log(marked);
   };
 
   useEffect(() => {
-    console.log(attended);
-  }, [attended]);
+    console.log(marked);
+  }, [marked]);
 
   const handleSubmit = async () => {
     try {
       const activityRef = db.collection("Activities").doc(id);
 
       await activityRef.update({
-        ["participants_attended"]: attended,
+        ["participants_attended"]: marked,
       });
 
       console.log("Attendance submitted successfully!");
 
-      setAttended([]);
+      setMarked([]);
     } catch (error) {
       console.error("Error updating field:", error);
     }
@@ -249,10 +250,11 @@ const Volunteer = ({ params }) => {
             userRole={userRole}
             classes={classes}
             attendees={attendees}
-            attended={attended}
+            attended={marked}
             handleMark={handleMark}
             handleSubmit={handleSubmit}
           />
+          <CreatePost activityId={id} classes={classes} />
           {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}

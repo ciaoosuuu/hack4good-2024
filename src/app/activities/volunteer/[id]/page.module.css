@@ -292,3 +292,44 @@
   font-size: small;
   padding: 0 8px 8px 8px;
 }
+
+.postform {
+  margin: 0% 8% 6% 8%;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.postform h1 {
+  font-size: large;
+  font-weight: bold;
+}
+
+.postcontent {
+  display: flex;
+  flex-direction: column;
+}
+
+.postform input[type="checkbox"] {
+  margin: 10px 15px 10px 0;
+}
+
+.postform select {
+  background-color: pink;
+  padding: 5px 15px 5px 15px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.postform textarea {
+  padding: 10px;
+  border: 1px solid maroon;
+  margin-bottom: 10px;
+}
+
+.postform button {
+  background-color: pink;
+  padding: 5px 15px 5px 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+}
