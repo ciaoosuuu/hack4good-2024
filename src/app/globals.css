@@ -25,11 +25,16 @@ body {
     )
     rgb(var(--background-start-rgb)) !important;
 
-  padding: 0.5rem 1rem
+  padding: 0rem 1rem
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+h1 {
+  font-weight: 600;
+  font-size: large;
 }
