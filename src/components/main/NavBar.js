@@ -15,9 +15,15 @@ import { useRouter } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import theme from "../../theme.js";
+import { UserAuth } from "../../app/context/AuthContext.js";
+import {
+	logOut
+} from "../../firebase/functions.js";
 
 export default function NavBar() {
+	const { user } = UserAuth();
 	const router = useRouter();
+	const [loginStatus, setLoginStatus] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
@@ -37,6 +43,20 @@ export default function NavBar() {
 	const navigateTo = (path) => {
 		router.push(`/${path}`);
 	};
+
+	const handleLogout = () => {
+		logOut();
+		console.log("you have been logout");
+		setLoginStatus((prevLoginStatus) => !prevLoginStatus);
+		console.log("New login status:", loginStatus);
+		navigateTo("");
+  };
+
+	const handleLogin = () => {
+		navigateTo("account/login");
+  };
+
+
 	return (
 		<div
 			style={{
@@ -106,11 +126,17 @@ export default function NavBar() {
 							leftIcon={<FaRegUser />}
 							rightIcon={<FaChevronDown />}
 						>
-							username
+							{user? user.name : "Guest"}
 						</MenuButton>
 						<MenuList>
-							<MenuItem key={"profile"}>Profile</MenuItem>
-							<MenuItem key={"account/login"}>Log in</MenuItem>
+							{user ? (
+								<>
+									<MenuItem key={"profile"}>Profile</MenuItem>
+									<MenuItem key={"account/logout"} onClick={handleLogout}>Log out</MenuItem>
+								</>
+							) : (
+								<MenuItem key={"account/login"} onClick={handleLogin}>Log in</MenuItem>
+							)}
 						</MenuList>
 					</>
 				)}

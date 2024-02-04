@@ -22,6 +22,8 @@ export const AuthContextProvider = ({ children }) => {
                     setUser(doc.data());
                     console.log('User data:', doc.data());
                 }
+            } else {
+                setUser(currentUser);
             }
             setIsLoading(false);
         });
