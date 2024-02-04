@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserAuth } from '../app/context/AuthContext';
 
-const withAuth = (Components) => {
-  return (props) => {
+const withAuth = (Component) => {
+  const WrappedComponent = (props) => {
     const { user, isLoading } = UserAuth();
     const router = useRouter();
 
@@ -15,15 +15,18 @@ const withAuth = (Components) => {
       if (!user) {
         router.push('/account/login');
       }
-    }, [user, isLoading]);
+    }, [user, isLoading, router]);
 
     if (isLoading || !user) {
-      return () => {}
+      return () => {};
     }
 
-    return <Components user={user} {...props} />;
+    return <Component user={user} {...props} />;
   };
+
+  WrappedComponent.displayName = `withAuth(${Component.displayName || Component.name})`;
+
+  return WrappedComponent;
 };
 
 export default withAuth;
-
