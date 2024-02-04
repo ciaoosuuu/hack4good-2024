@@ -6,13 +6,16 @@ import { db } from "../../../../firebase/config";
 import Attendance from "../../../../components/activities/Attendance.js";
 import Posts from "../../../../components/activities/Posts.js";
 import CreatePost from "../../../../components/activities/CreatePost.js";
+import withAuth from "../../../../hoc/withAuth";
 
 import classes from "./page.module.css";
 
-const Volunteer = ({ params }) => {
+const Volunteer = ({ user, params }) => {
   const { id } = params;
-  const userId = "mGNzGgpP0ZNwxbDDcTsvFGboPtD2";
-  const userRole = "admin";
+  const userId = user.uid;
+  const userRole = user.role;
+
+  console.log(user);
 
   const [activity, setActivity] = useState();
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -262,4 +265,4 @@ const Volunteer = ({ params }) => {
   );
 };
 
-export default Volunteer;
+export default withAuth(Volunteer);
