@@ -16,6 +16,7 @@ const Volunteer = ({ user, params }) => {
   const userRole = user.role;
 
   console.log(user);
+  console.log(userRole);
 
   const [activity, setActivity] = useState();
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -158,11 +159,57 @@ const Volunteer = ({ user, params }) => {
         ["participants_attended"]: marked,
       });
 
+      const activityInformation = {
+        activity_id: id,
+        activity_name: activity.name, // Replace with the actual activity name
+        activity_hours: parseFloat(
+          (
+            (activity.datetime_end.toDate() -
+              activity.datetime_start.toDate()) /
+            (1000 * 60 * 60)
+          ).toFixed(2)
+        ),
+        activity_date: activity.datetime_start,
+        activity_type: "Volunteer",
+      };
+
+      for (const markedId of marked) {
+        await updateUserDocument(markedId, activityInformation);
+      }
+
       console.log("Attendance submitted successfully!");
 
       setMarked([]);
     } catch (error) {
       console.error("Error updating field:", error);
+    }
+  };
+
+  const updateUserDocument = async (userId, activityInfo) => {
+    try {
+      const userRef = db.collection("Users").doc(userId);
+
+      await db.runTransaction(async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+
+          if (!userData.activities_attended) {
+            userData.activities_attended = [activityInfo];
+          } else {
+            userData.activities_attended.push(activityInfo);
+          }
+
+          transaction.update(userRef, {
+            activities_attended: userData.activities_attended,
+          });
+        }
+      });
+
+      console.log(`User ${userId} updated successfully`);
+    } catch (error) {
+      console.error(`Error updating user ${userId}:`, error);
     }
   };
 
@@ -212,10 +259,14 @@ const Volunteer = ({ user, params }) => {
                   })}
                 </p>
                 <p>{vacancyRemaining} slots left</p>
-                {isSignedUp ? (
-                  <div className={classes["signedup"]}>Signed Up</div>
+                {userRole === "volunteer" ? (
+                  isSignedUp ? (
+                    <div className={classes["signedup"]}>Signed Up</div>
+                  ) : (
+                    <button onClick={handleSignUp}>Sign Up Now</button>
+                  )
                 ) : (
-                  <button onClick={handleSignUp}>Sign Up Now</button>
+                  <div />
                 )}
               </div>
             </li>
