@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { db } from "../../../../firebase/config";
 
+import Attendance from "../../../../components/activities/Attendance.js";
+import Posts from "../../../../components/activities/Posts.js";
+import CreatePost from "../../../../components/activities/CreatePost.js";
+
 import classes from "./page.module.css";
 
 const Volunteer = ({ params }) => {
@@ -15,7 +19,9 @@ const Volunteer = ({ params }) => {
   const [vacancyRemaining, setVacancyRemaining] = useState(0);
   const [signups, setSignups] = useState([]);
 
-  const [attended, setAttended] = useState([]);
+  const [marked, setMarked] = useState([]);
+
+  const [reflections, setReflections] = useState();
 
   const attendees = [
     {
@@ -88,6 +94,30 @@ const Volunteer = ({ params }) => {
     fetchActivityContent();
   }, [id]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        try {
+          const collectionRef = db.collection("Posts");
+          const querySnapshot = await collectionRef
+            .where("activity_id", "==", id)
+            .get();
+
+          const reflectionsArray = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setReflections(reflectionsArray);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSignUp = async () => {
     try {
       //   const userRef = db.collection("Users").doc(userId);
@@ -118,27 +148,27 @@ const Volunteer = ({ params }) => {
   };
 
   const handleMark = (attendeeId) => {
-    if (!attended.includes(attendeeId)) {
-      setAttended((prevAttended) => [...prevAttended, attendeeId]);
+    if (!marked.includes(attendeeId)) {
+      setMarked((prevMarked) => [...prevMarked, attendeeId]);
     }
-    // console.log(attended);
+    // console.log(marked);
   };
 
   useEffect(() => {
-    console.log(attended);
-  }, [attended]);
+    console.log(marked);
+  }, [marked]);
 
   const handleSubmit = async () => {
     try {
       const activityRef = db.collection("Activities").doc(id);
 
       await activityRef.update({
-        ["participants_attended"]: attended,
+        ["participants_attended"]: marked,
       });
 
       console.log("Attendance submitted successfully!");
 
-      setAttended([]);
+      setMarked([]);
     } catch (error) {
       console.error("Error updating field:", error);
     }
@@ -216,43 +246,16 @@ const Volunteer = ({ params }) => {
               </div>
             </div>
           </div>
-          {userRole == "admin" && (
-            <div className={classes["container"]}>
-              <h1>Attendance</h1>
-              <ul className={classes["grid_list"]}>
-                {attendees
-                  .slice()
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((attendee, index) => (
-                    <li key={attendee.id} className={classes["item"]}>
-                      <div className={classes["index"]}>
-                        <p>{index}</p>
-                      </div>
-                      <div className={classes["profilepic"]}>
-                        <img src={attendee.picture} />
-                      </div>
-                      <div className={classes["details"]}>
-                        <h1>{attendee.name}</h1>
-                        <p>{attendee.email}</p>
-                        <p>{attendee.contact}</p>
-                      </div>
-                      <div className={classes["markattendance"]}>
-                        {attended.includes(attendee.id) ? (
-                          <div className={classes["marked"]}>Marked</div>
-                        ) : (
-                          <button onClick={() => handleMark(attendee.id)}>
-                            Mark As Attended
-                          </button>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-              <div className={classes["submitattendance"]}>
-                <button onClick={handleSubmit}>Submit Attendance</button>
-              </div>
-            </div>
-          )}
+          <Attendance
+            userRole={userRole}
+            classes={classes}
+            attendees={attendees}
+            attended={marked}
+            handleMark={handleMark}
+            handleSubmit={handleSubmit}
+          />
+          <CreatePost activityId={id} classes={classes} />
+          {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}
     </div>
