@@ -5,7 +5,6 @@ import { UserAuth } from "../../context/AuthContext";
 import {
 	emailPwSignIn,
 	googleSignIn,
-	logOut,
 } from "../../../firebase/functions";
 import {
 	Box,
