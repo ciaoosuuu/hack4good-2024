@@ -6,13 +6,16 @@ import { db } from "../../../../firebase/config";
 import Attendance from "../../../../components/activities/Attendance.js";
 import Posts from "../../../../components/activities/Posts.js";
 import CreatePost from "../../../../components/activities/CreatePost.js";
+import withAuth from "../../../../hoc/withAuth";
 
 import classes from "./page.module.css";
 
-const Volunteer = ({ params }) => {
+const Volunteer = ({ user, params }) => {
   const { id } = params;
-  const userId = "mGNzGgpP0ZNwxbDDcTsvFGboPtD2";
-  const userRole = "admin";
+  const userId = user.uid;
+  const userRole = user.role;
+
+  console.log(user);
 
   const [activity, setActivity] = useState();
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -23,48 +26,37 @@ const Volunteer = ({ params }) => {
 
   const [reflections, setReflections] = useState();
 
-  const attendees = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      contact: "+1234567890",
-      picture:
-        "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fcuterabbit.png?alt=media&token=50ae6081-5abe-4c96-905a-7190597fe4a0",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      contact: "+9876543210",
-      picture:
-        "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fcuterabbit.png?alt=media&token=50ae6081-5abe-4c96-905a-7190597fe4a0",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      email: "bob.johnson@example.com",
-      contact: "+1112223333",
-      picture:
-        "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fcuterabbit.png?alt=media&token=50ae6081-5abe-4c96-905a-7190597fe4a0",
-    },
-    {
-      id: 4,
-      name: "Alice Brown",
-      email: "alice.brown@example.com",
-      contact: "+4445556666",
-      picture:
-        "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fcuterabbit.png?alt=media&token=50ae6081-5abe-4c96-905a-7190597fe4a0",
-    },
-    {
-      id: 5,
-      name: "Charlie Wilson",
-      email: "charlie.wilson@example.com",
-      contact: "+7778889999",
-      picture:
-        "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fcuterabbit.png?alt=media&token=50ae6081-5abe-4c96-905a-7190597fe4a0",
-    },
-  ];
+  const [attendees, setAttendees] = useState([]);
+
+  useEffect(() => {
+    // Replace userIDs with your list of user IDs
+    const userIDs = signups;
+
+    const fetchUserDetails = async () => {
+      const promises = userIDs.map(async (userID) => {
+        try {
+          const userDoc = await db.collection("Users").doc(userID).get();
+          console.log(userDoc);
+          if (userDoc.exists) {
+            // Access user details from the document data
+            return { id: userID, ...userDoc.data() };
+          } else {
+            console.log(`User with ID ${userID} not found`);
+            return null;
+          }
+        } catch (error) {
+          console.error(`Error fetching user details for ${userID}:`, error);
+          return null;
+        }
+      });
+
+      // Wait for all promises to resolve
+      const userResults = await Promise.all(promises);
+      setAttendees(userResults.filter(Boolean));
+    };
+
+    fetchUserDetails();
+  }, [signups]);
 
   useEffect(() => {
     const fetchActivityContent = async () => {
@@ -262,4 +254,4 @@ const Volunteer = ({ params }) => {
   );
 };
 
-export default Volunteer;
+export default withAuth(Volunteer);

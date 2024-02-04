@@ -23,7 +23,7 @@ const Attendance = ({
                 <p>{index}</p>
               </div>
               <div className={classes["profilepic"]}>
-                <img src={attendee.picture} alt="Profile" />
+                <img src={attendee.image} alt="Profile" />
               </div>
               <div className={classes["details"]}>
                 <h1>{attendee.name}</h1>
