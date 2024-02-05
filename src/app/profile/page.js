@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
+import calculateUserExp from "../../utils/calculateUserExp";
 
 import ActivityCard from "../../components/activities/ActivityCard";
 import classes from "./page.module.css";
@@ -20,6 +21,21 @@ const Profile = ({ user }) => {
   const [attended, setAttended] = useState([]);
   const postIds = user.posts;
   const [posts, setPosts] = useState([]);
+
+  const [userExp, setUserExp] = useState(0);
+
+  useEffect(() => {
+    const fetchUserExp = async () => {
+      const totalExp = await calculateUserExp(user);
+      setUserExp(totalExp);
+    };
+
+    fetchUserExp();
+  }, [user]);
+
+  useEffect(() => {
+    console.log(userExp);
+  }, [userExp]);
 
   useEffect(() => {
     const fetchSignedUp = async () => {
@@ -118,6 +134,7 @@ const Profile = ({ user }) => {
         <img src={user.image} />
         <p>Name: {user.name}</p>
         <p>Birthday: {user.dateOfBirth}</p>
+        <p>Total EXP: {userExp}</p>
       </div>
       <br />
       <h2>My Activities</h2>
