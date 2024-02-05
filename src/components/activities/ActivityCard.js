@@ -24,6 +24,84 @@ import { useRouter } from "next/navigation";
 
 const ActivityCard = ({ activity, mini }) => {
 	const router = useRouter();
+	const ActivityTypeIcon = (activityType, marginTop, marginLeft) => {
+		if (activityType === "Training") {
+			return (
+				<Tooltip label={activityType}>
+					<Flex
+						style={{
+							position: "absolute",
+							zIndex: 10,
+							marginTop: `${marginTop ? marginTop : "-10px"}`,
+							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
+							width: "45px",
+							height: "45px",
+							textAlign: "center",
+							backgroundColor: "#68bbde",
+							borderRadius: "100px",
+							color: "rgb(235,234,228)",
+							boxShadow: "2px 2px 2px #00000020",
+							opacity: "90%",
+						}}
+						justify={"center"}
+						align={"center"}
+					>
+						<MdMenuBook size={27} />
+					</Flex>
+				</Tooltip>
+			);
+		} else if (activityType === "Workshop") {
+			return (
+				<Tooltip label={activityType}>
+					<Flex
+						style={{
+							position: "absolute",
+							zIndex: 10,
+							marginTop: `${marginTop ? marginTop : "-10px"}`,
+							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
+							width: "45px",
+							height: "45px",
+							textAlign: "center",
+							backgroundColor: "#68bbde",
+							borderRadius: "100px",
+							color: "rgb(235,234,228)",
+							boxShadow: "2px 2px 2px #00000020",
+							opacity: "90%",
+						}}
+						justify={"center"}
+						align={"center"}
+					>
+						<MdMenuBook size={27} />
+					</Flex>
+				</Tooltip>
+			);
+		} else {
+			return (
+				<Tooltip label={activityType}>
+					<Flex
+						style={{
+							position: "absolute",
+							zIndex: 10,
+							marginTop: `${marginTop ? marginTop : "-10px"}`,
+							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
+							width: "45px",
+							height: "45px",
+							textAlign: "center",
+							backgroundColor: "#de7268",
+							borderRadius: "100px",
+							color: "rgb(235,234,228)",
+							boxShadow: "2px 2px 2px #00000020",
+							opacity: "90%",
+						}}
+						justify={"center"}
+						align={"center"}
+					>
+						<MdOutlineVolunteerActivism size={27} />
+					</Flex>
+				</Tooltip>
+			);
+		}
+	};
 	return (
 		<>
 			{!mini ? (
@@ -50,36 +128,7 @@ const ActivityCard = ({ activity, mini }) => {
 						gap={3}
 					>
 						<GridItem rowSpan={4} colSpan={2}>
-							<Tooltip label={activity.type}>
-								<Flex
-									style={{
-										position: "absolute",
-										zIndex: 10,
-										marginTop: "-10px",
-										marginLeft: "-10px",
-										width: "45px",
-										height: "45px",
-										textAlign: "center",
-										backgroundColor: `${
-											activity.type !== "Volunteering"
-												? "#68bbde"
-												: "#de7268"
-										}`,
-										borderRadius: "100px",
-										color: "rgb(235,234,228)",
-										boxShadow: "2px 2px 2px #00000020",
-										opacity: "90%",
-									}}
-									justify={"center"}
-									align={"center"}
-								>
-									{activity.type !== "Volunteering" ? (
-										<MdMenuBook size={27} />
-									) : (
-										<MdOutlineVolunteerActivism size={27} />
-									)}
-								</Flex>
-							</Tooltip>
+							{ActivityTypeIcon(activity.type)}
 							<Image
 								style={{
 									height: "100%",
@@ -173,7 +222,8 @@ const ActivityCard = ({ activity, mini }) => {
 						router.push(`/activities/volunteer/${activity.id}`)
 					}
 				>
-					<Tooltip label={activity.type}>
+					{ActivityTypeIcon(activity.type, "15px", "-29px")}
+					{/* <Tooltip label={activity.type}>
 						<Flex
 							style={{
 								position: "absolute",
@@ -202,7 +252,7 @@ const ActivityCard = ({ activity, mini }) => {
 								<MdOutlineVolunteerActivism size={27} />
 							)}
 						</Flex>
-					</Tooltip>
+					</Tooltip> */}
 					<Grid
 						h="80px"
 						templateRows="repeat(4, 1fr)"
