@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { arrayUnion } from "firebase/firestore";
 import { db } from "../../../../firebase/config";
 
 import Attendance from "../../../../components/activities/Attendance.js";
@@ -113,7 +114,6 @@ const Volunteer = ({ user, params }) => {
 
   const handleSignUp = async () => {
     try {
-      //   const userRef = db.collection("Users").doc(userId);
 
       if (!signups.includes(userId)) {
         setSignups((prevSignups) => [...prevSignups, userId]);
@@ -122,10 +122,10 @@ const Volunteer = ({ user, params }) => {
         await activityRef.update({
           participants_signups: [...signups, userId],
         });
-
-        // await userRef.update({
-
-        // })
+        const userRef = db.collection("Users").doc(userId);
+        await userRef.update({
+          activities_signedup: arrayUnion(id),
+        });
 
         console.log("Signed up successfully!");
         setIsSignedUp(true);
