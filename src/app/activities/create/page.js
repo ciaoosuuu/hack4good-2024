@@ -398,6 +398,17 @@ const CreateActivity = ({ user }) => {
 					/>
 				</FormControl>
 				<br />
+				<FormControl isRequired>
+					<FormLabel>Sign Up Deadline:</FormLabel>
+					<Input
+						type="datetime-local"
+						name="signup_deadline"
+						value={formatDateForInput(formData.signup_deadline)}
+						onChange={handleChange}
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
 				<Button
 					type="submit"
 					colorScheme="red"
