@@ -35,7 +35,6 @@ export default function RootLayout({ children }) {
 				<AuthContextProvider>
 					{showNavBar && <NavBar />}
 					<body className={inter.className}>{children}</body>
-					<footer></footer>
 				</AuthContextProvider>
 			</Providers>
 		</html>

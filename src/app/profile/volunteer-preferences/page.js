@@ -24,41 +24,63 @@ import { Select } from "chakra-react-select";
 import withAuth from "../../../hoc/withAuth";
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
+import {
+	skills,
+	interests,
+	capitalise,
+} from "../../../resources/skills-interests";
 
 const VolunteerPreferences = ({ stepIndex, user }) => {
-	const interestAreasItems = {
-		["migrantWorkers"]: {
-			index: "migrantWorkers",
-			value: "migrantWorkers",
-			label: "Migrant Workers",
-			description: "",
-			checked: false,
-		},
-		["elderly"]: {
-			index: "elderly",
-			value: "elderly",
-			label: "Elderly",
-			description: "",
-			checked: false,
-		},
-		["children"]: {
-			index: "children",
-			value: "children",
-			label: "Children/Youth",
-			description: "",
-			checked: false,
-		},
-		["lowIncome"]: {
-			index: "lowIncome",
-			value: "lowIncome",
-			label: "Low Income Communities",
-			description: "",
-			checked: false,
-		},
-	};
+	// const interestAreasItems = {
+	// 	["migrantWorkers"]: {
+	// 		index: "migrantWorkers",
+	// 		value: "migrantWorkers",
+	// 		label: "Migrant Workers",
+	// 		description: "",
+	// 		checked: false,
+	// 	},
+	// 	["elderly"]: {
+	// 		index: "elderly",
+	// 		value: "elderly",
+	// 		label: "Elderly",
+	// 		description: "",
+	// 		checked: false,
+	// 	},
+	// 	["children"]: {
+	// 		index: "children",
+	// 		value: "children",
+	// 		label: "Children/Youth",
+	// 		description: "",
+	// 		checked: false,
+	// 	},
+	// 	["lowIncome"]: {
+	// 		index: "lowIncome",
+	// 		value: "lowIncome",
+	// 		label: "Low Income Communities",
+	// 		description: "",
+	// 		checked: false,
+	// 	},
+	// };
 
 	const router = useRouter();
-	const [interestAreas, setInterestAreas] = useState(interestAreasItems);
+	const [interestAreas, setInterestAreas] = useState(
+		interests.map((interest) => {
+			return {
+				key: interest,
+				value: interest,
+				label: capitalise(interest),
+			};
+		})
+	);
+	const [skillsOptions, setSkillsOptions] = useState(
+		skills.map((skill) => {
+			return {
+				key: skill,
+				value: skill,
+				label: capitalise(skill),
+			};
+		})
+	);
 	const [step1ChangesMade, setStep1ChangesMade] = useState(false);
 	const [step2ChangesMade, setStep2ChangesMade] = useState(false);
 	const [form1Data, setForm1Data] = useState({
@@ -72,21 +94,24 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		experience: user.preferences?.experience
 			? user.preferences.experience
 			: null,
-		technicalSkills: user.preferences?.technicalSkills
-			? user.preferences.technicalSkills
-			: null,
+		skills: user.preferences?.skills ? user.preferences.skills : [],
 		interestAreas: user.preferences?.interestAreas
 			? user.preferences.interestAreas
-			: null,
+			: [],
 	});
 
 	useEffect(() => {
 		console.log("user", user);
+		console.log("interests", form2Data.interestAreas);
 	}, [user]);
 
 	const steps = [
-		{ title: "About you", description: "Volunteer Details", count: "1" },
-		{ title: "Skills, Interests", description: "About you", count: "2" },
+		{ title: "About you", description: "User Profile", count: "1" },
+		{
+			title: "Skills, Interests",
+			description: "Volunteering Preferences",
+			count: "2",
+		},
 	];
 
 	const [activeStep, setActiveStep] = useState(stepIndex ? stepIndex : 1);
@@ -148,6 +173,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 
 	const handleSubmitStep2 = async (e) => {
 		e.preventDefault();
+		console.log("submitting", form2Data);
 		try {
 			const userRef = db.collection("Users").doc(user.uid);
 			await userRef.update({
@@ -157,9 +183,10 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 					experience: form2Data.experience
 						? form2Data.experience
 						: null,
-					technicalSkills: form2Data.technicalSkills
-						? form2Data.technicalSkills
+					interestAreas: form2Data.interestAreas
+						? form2Data.interestAreas
 						: null,
+					skills: form2Data.skills ? form2Data.skills : null,
 				},
 			});
 			// Optionally, you can redirect the user or perform other actions after submission.
@@ -253,7 +280,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 					) : (
 						<>
 							<Flex style={{ marginBottom: "8px" }} gap={6}>
-								<FormControl>
+								{/* <FormControl>
 									<FormLabel>
 										Language Proficiencies:
 									</FormLabel>
@@ -264,24 +291,89 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 										value={form2Data.languages}
 										onChange={handleChangeStep2}
 									></Input>
+								</FormControl> */}
+								<FormControl>
+									<FormLabel>Technical Skills:</FormLabel>
+									{skillsOptions && (
+										<Select
+											isMulti
+											value={form2Data.skills.map(
+												(skill) => {
+													return {
+														value: skill,
+														label: capitalise(
+															skill
+														),
+													};
+												}
+											)}
+											variant="filled"
+											tagVariant="solid"
+											onChange={(
+												selectedSkillsOptions
+											) => {
+												setStep2ChangesMade(true);
+												setForm2Data((form2Data) => {
+													const newSkills =
+														selectedSkillsOptions.map(
+															(skillsOption) =>
+																skillsOption.value
+														);
+													return {
+														...form2Data,
+														skills: newSkills,
+													};
+												});
+											}}
+										/>
+									)}
 								</FormControl>
 								<FormControl>
 									<FormLabel>
 										Volunteering Interest Areas:
 									</FormLabel>
-									{interestAreas && (
-										<Select
-											isMulti
-											options={Object.keys(
-												interestAreas
-											).map(
-												(interestArea) =>
-													interestAreas[interestArea]
-											)}
-											variant="filled"
-											tagVariant="solid"
-										/>
-									)}
+									{interestAreas &&
+										form2Data.interestAreas && (
+											<Select
+												isMulti
+												value={form2Data.interestAreas.map(
+													(interestArea) => {
+														return {
+															value: interestArea,
+															label: capitalise(
+																interestArea
+															),
+														};
+													}
+												)}
+												options={interestAreas}
+												variant="filled"
+												tagVariant="solid"
+												onChange={(
+													selectedInterestAreas
+												) =>
+													setForm2Data(
+														(form2Data) => {
+															setStep2ChangesMade(
+																true
+															);
+															const newInterestAreas =
+																selectedInterestAreas.map(
+																	(
+																		interestArea
+																	) =>
+																		interestArea.value
+																);
+															return {
+																...form2Data,
+																interestAreas:
+																	newInterestAreas,
+															};
+														}
+													)
+												}
+											/>
+										)}
 								</FormControl>
 							</Flex>
 							<FormControl style={{ marginBottom: "8px" }}>
@@ -295,12 +387,12 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 								/>
 							</FormControl>
 							<FormControl>
-								<FormLabel>Technical Skills:</FormLabel>
+								<FormLabel>Languages:</FormLabel>
 								<Input
 									type="text"
 									variant={"filled"}
-									name="technicalSkills"
-									value={form2Data.technicalSkills}
+									name="languages"
+									value={form2Data.languages}
 									onChange={handleChangeStep2}
 								></Input>
 							</FormControl>
@@ -350,7 +442,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 							<Button onClick={() => setActiveStep(1)}>
 								Back
 							</Button>
-							<span>
+							<p>
 								<Button
 									onClick={() => router.push("/activities")}
 									style={{ marginRight: "8px" }}
@@ -364,7 +456,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 								>
 									Submit
 								</Button>
-							</span>
+							</p>
 						</>
 					)}
 				</Flex>
