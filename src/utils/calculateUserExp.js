@@ -2,13 +2,16 @@
 
 const calculateUserExp = async (user) => {
   const activities = user.activities_attended;
+  const posts = user.posts;
   const activitiesExp = activities.reduce((exp, activity) => {
-    console.log(activity);
     if (activity.activity_type === "Volunteer") {
       return exp + activity.activity_hours * 25;
     } else {
       return exp + activity.activity_hours * 15;
     }
+  }, 0);
+  const postsExp = posts.reduce((exp) => {
+    return exp + 10;
   }, 0);
 
   //   const missionsRef = firestore.collection("userMissions").doc(userId);
@@ -21,7 +24,7 @@ const calculateUserExp = async (user) => {
   //       }, 0)
   //     : 0;
 
-  return activitiesExp;
+  return activitiesExp + postsExp;
 };
 
 export default calculateUserExp;
