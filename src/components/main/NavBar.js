@@ -16,9 +16,7 @@ import { FaChevronDown, FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import theme from "../../theme.js";
 import { UserAuth } from "../../app/context/AuthContext.js";
-import {
-	logOut
-} from "../../firebase/functions.js";
+import { logOut } from "../../firebase/functions.js";
 
 export default function NavBar() {
 	const { user } = UserAuth();
@@ -50,12 +48,11 @@ export default function NavBar() {
 		setLoginStatus((prevLoginStatus) => !prevLoginStatus);
 		console.log("New login status:", loginStatus);
 		navigateTo("");
-  };
+	};
 
 	const handleLogin = () => {
 		navigateTo("account/login");
-  };
-
+	};
 
 	return (
 		<div
@@ -67,7 +64,7 @@ export default function NavBar() {
 				width: "100%",
 				justifyContent: "space-between",
 				alignItems: "center",
-				backgroundColor: "rgb(235,234,228)",
+				backgroundColor: "rgb(247, 246, 240)",
 				padding: "0.5rem 1rem 0 1rem",
 
 				boxShadow: "1px 1px 5px #00000010",
@@ -126,16 +123,26 @@ export default function NavBar() {
 							leftIcon={<FaRegUser />}
 							rightIcon={<FaChevronDown />}
 						>
-							{user? user.name : "Guest"}
+							{user ? user.name : "Guest"}
 						</MenuButton>
 						<MenuList>
 							{user ? (
 								<>
 									<MenuItem key={"profile"}>Profile</MenuItem>
-									<MenuItem key={"account/logout"} onClick={handleLogout}>Log out</MenuItem>
+									<MenuItem
+										key={"account/logout"}
+										onClick={handleLogout}
+									>
+										Log out
+									</MenuItem>
 								</>
 							) : (
-								<MenuItem key={"account/login"} onClick={handleLogin}>Log in</MenuItem>
+								<MenuItem
+									key={"account/login"}
+									onClick={handleLogin}
+								>
+									Log in
+								</MenuItem>
 							)}
 						</MenuList>
 					</>

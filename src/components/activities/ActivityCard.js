@@ -14,6 +14,7 @@ import {
 	ListItem,
 	UnorderedList,
 	Tooltip,
+	HStack,
 	Spacer,
 } from "@chakra-ui/react";
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
@@ -108,13 +109,14 @@ const ActivityCard = ({ activity, mini }) => {
 				<Box
 					key={activity.id}
 					borderWidth="1px"
-					borderRadius="lg"
 					overflow="hidden"
 					boxShadow="md"
 					p={3}
 					style={{
-						height: "200px",
+						height: "190px",
 						textAlign: "left",
+						minWidth: "700px",
+						borderRadius: "10px",
 					}}
 					className={classes["item_horizontal"]}
 					onClick={() =>
@@ -124,70 +126,89 @@ const ActivityCard = ({ activity, mini }) => {
 					<Grid
 						h="175px"
 						templateRows="repeat(4, 1fr)"
-						templateColumns="repeat(8, 1fr)"
+						templateColumns="repeat(12, 1fr)"
 						gap={3}
 					>
-						<GridItem rowSpan={4} colSpan={2}>
+						<GridItem
+							rowSpan={4}
+							colSpan={3}
+							style={{ minWidth: "250px" }}
+						>
 							{ActivityTypeIcon(activity.type)}
 							<Image
 								style={{
 									height: "100%",
 									width: "100%",
 									borderRadius: "8px",
+									objectFit: "cover",
 								}}
 								src={activity.image}
-								alt={activity.name}
+								alt={activity.activity_name}
 							/>
 						</GridItem>
-						<GridItem rowSpan={3} colSpan={5}>
+						<GridItem rowSpan={3} colSpan={7}>
 							<Stack spacing="2">
-								<Text fontWeight="bold">{activity.name}</Text>
-								<Text>
-									<Icon as={FaRegCalendarAlt} mr="2" />
-									{activity.datetime_start
-										.toDate()
-										.toLocaleString("en-EN", {
-											year: "numeric",
-											month: "long",
-											day: "numeric",
-										}) +
-										", " +
-										activity.datetime_start
+								<Text fontWeight="bold">
+									{activity.activity_name}
+								</Text>
+								<p style={{ opacity: "80%", fontSize: "14px" }}>
+									<Text>
+										<Icon as={FaRegCalendarAlt} mr="2" />
+										{activity.datetime_start
 											.toDate()
 											.toLocaleString("en-EN", {
-												weekday: "long",
-											})}
-								</Text>
-								<Text>
-									<Icon as={FaRegClock} mr="2" />
-									{activity.datetime_start
-										.toDate()
-										.toLocaleString("en-EN", {
-											hour: "numeric",
-											minute: "numeric",
-											hour12: true,
-										}) +
-										" to " +
-										activity.datetime_end
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+											}) +
+											", " +
+											activity.datetime_start
+												.toDate()
+												.toLocaleString("en-EN", {
+													weekday: "long",
+												})}
+									</Text>
+									<Text>
+										<Icon as={FaRegClock} mr="2" />
+										{activity.datetime_start
 											.toDate()
 											.toLocaleString("en-EN", {
 												hour: "numeric",
 												minute: "numeric",
 												hour12: true,
-											})}
-								</Text>
-								<Text>
-									<Icon as={FaMapPin} mr="2" />
-									{activity.location_name}
-								</Text>
+											}) +
+											" to " +
+											activity.datetime_end
+												.toDate()
+												.toLocaleString("en-EN", {
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+									</Text>
+									<Text>
+										<Icon as={FaMapPin} mr="2" />
+										{activity.location_name}
+									</Text>
+								</p>
 							</Stack>
 						</GridItem>
 
-						<GridItem rowSpan={3} colSpan={1}></GridItem>
+						<GridItem rowSpan={1} colSpan={2}></GridItem>
 
-						<GridItem rowSpan={1} colSpan={5}>
-							<Flex>
-								<UnorderedList styleType="none" ml="0">
+						<GridItem rowSpan={1} colSpan={2}></GridItem>
+						{/* <GridItem rowSpan={2} colSpan={2}>
+							<Flex align={"center"}>
+								<LuUsers2 style={{ marginRight: "4px" }} />
+								Vacancy:{" "}
+								{activity.vacancy_total
+									? activity.vacancy_total
+									: "TBA"}
+							</Flex>
+						</GridItem> */}
+						<GridItem rowSpan={1} colSpan={7}>
+							<UnorderedList styleType="none" ml="0">
+								<HStack>
 									{activity.tags.map((tag, index) => (
 										<ListItem key={index}>
 											<Badge colorScheme="green">
@@ -195,12 +216,33 @@ const ActivityCard = ({ activity, mini }) => {
 											</Badge>
 										</ListItem>
 									))}
-								</UnorderedList>
-							</Flex>
+								</HStack>
+							</UnorderedList>
 						</GridItem>
-						<GridItem rowSpan={1} colSpan={1}>
-							<p>
-								<LuUsers2 /> Vacancy: 20
+						<GridItem rowSpan={2} colSpan={2}>
+							<p
+								style={{
+									opacity: "50%",
+									fontSize: "14px",
+									marginTop: "-7px",
+								}}
+							>
+								<Flex align={"center"}>
+									<LuUsers2 style={{ marginRight: "5px" }} />
+									Vacancy:{" "}
+									{activity.vacancy_total
+										? activity.vacancy_total
+										: "TBA"}
+								</Flex>
+								<Flex align={"center"}>
+									<LuUsers2 style={{ marginRight: "5px" }} />
+									Slots left:{" "}
+									{activity.vacancy_total &&
+									activity.participants_signups
+										? activity.vacancy_total -
+										  activity.participants_signups.length
+										: "TBA"}
+								</Flex>
 							</p>
 						</GridItem>
 					</Grid>
@@ -208,16 +250,16 @@ const ActivityCard = ({ activity, mini }) => {
 			) : (
 				<Box
 					key={activity.id}
-					borderWidth="1px"
+					// borderWidth="1px"
 					borderRadius="lg"
 					overflow="hidden"
-					boxShadow="md"
 					p={3}
 					style={{
 						height: "100px",
 						textAlign: "left",
+						boxShadow: "3px 3px 3px #00000060",
 					}}
-					className={classes["item_horizontal"]}
+					className={classes["item_horizontal_dark"]}
 					onClick={() =>
 						router.push(`/activities/volunteer/${activity.id}`)
 					}
@@ -263,42 +305,51 @@ const ActivityCard = ({ activity, mini }) => {
 						<GridItem rowSpan={3} colSpan={11}>
 							<Stack spacing="1">
 								<Text fontWeight="bold" noOfLines={1}>
-									{activity.name}
+									{activity.activity_name}
 								</Text>
-								<Text>
-									<Icon as={FaRegCalendarAlt} mr="2" />
-									{activity.datetime_start
-										.toDate()
-										.toLocaleString("en-EN", {
-											year: "numeric",
-											month: "long",
-											day: "numeric",
-										}) +
-										", " +
-										activity.datetime_start
+								<p
+									style={{
+										opacity: "80%",
+										fontSize: "14px",
+										opacity: "50%",
+									}}
+								>
+									<Text>
+										<Icon as={FaRegCalendarAlt} mr="2" />
+										{activity.datetime_start
 											.toDate()
 											.toLocaleString("en-EN", {
-												weekday: "long",
-											})}
-								</Text>
-								<Text>
-									<Icon as={FaRegClock} mr="2" />
-									{activity.datetime_start
-										.toDate()
-										.toLocaleString("en-EN", {
-											hour: "numeric",
-											minute: "numeric",
-											hour12: true,
-										}) +
-										" to " +
-										activity.datetime_end
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+											}) +
+											", " +
+											activity.datetime_start
+												.toDate()
+												.toLocaleString("en-EN", {
+													weekday: "long",
+												})}
+									</Text>
+
+									<Text>
+										<Icon as={FaRegClock} mr="2" />
+										{activity.datetime_start
 											.toDate()
 											.toLocaleString("en-EN", {
 												hour: "numeric",
 												minute: "numeric",
 												hour12: true,
-											})}
-								</Text>
+											}) +
+											" to " +
+											activity.datetime_end
+												.toDate()
+												.toLocaleString("en-EN", {
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+									</Text>
+								</p>
 							</Stack>
 						</GridItem>
 					</Grid>
