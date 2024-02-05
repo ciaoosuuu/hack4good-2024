@@ -1,6 +1,6 @@
 .page_layout {
   display: grid;
-  grid-template-columns: 831px 1fr;
+  grid-template-columns: 5fr 3fr;
   gap: 30px;
   margin-left: 10%;
   margin-right: 10%;

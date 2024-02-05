@@ -162,6 +162,8 @@
   font-size: large;
   font-weight: bold;
   margin-bottom: 15px;
+}
+
 .page_layout {
   /* display: grid;
   grid-template-columns: 3fr 1fr;
