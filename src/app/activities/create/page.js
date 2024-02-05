@@ -31,6 +31,7 @@ const CreateActivity = ({user}) => {
     location_name: '',
     activity_name: '',
     activity_type: '',
+    signup_deadline: null,
     organiser_id: '',
     organiser_name: '',
     participants_attended: [],
@@ -71,7 +72,7 @@ const CreateActivity = ({user}) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name.includes('datetime')) {
+    if (name.includes('datetime') || name.includes('deadline')) {
       // Handle date fields separately
       const timestampDate = value ? Timestamp.fromDate(new Date(value)) : Timestamp.fromDate(new Date());
 
@@ -247,6 +248,11 @@ const CreateActivity = ({user}) => {
       <label style={styles.label}>
         End Date and Time:
         <input type="datetime-local" name="datetime_end" value={formatDateForInput(formData.datetime_end)} onChange={handleChange} style={styles.input} />
+      </label>
+
+      <label style={styles.label}>
+        Sign Up Deadline:
+        <input type="datetime-local" name="signup_deadline" value={formatDateForInput(formData.signup_deadline)} onChange={handleChange} style={styles.input} />
       </label>
 
       <button type="button" onClick={handleSubmit} style={styles.button}>
