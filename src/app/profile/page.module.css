@@ -162,6 +162,15 @@
   font-size: large;
   font-weight: bold;
   margin-bottom: 15px;
+.page_layout {
+  /* display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 30px; */
+  margin-left: 10%;
+  margin-right: 10%;
+  /* padding-left: 10%;
+  padding-right: 10%;
+  width: 100%; */
 }
 
 .grid_list {

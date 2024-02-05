@@ -1,8 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { db } from "../../firebase/config";
+// import withAuth from "../../hoc/withAuth";
 
-const CreatePost = ({ activityId, classes }) => {
-  const userId = "posttestuserid";
+const CreatePost = ({ activityId, activityName, user, classes }) => {
+  const userId = user.uid;
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [postType, setPostType] = useState("reflection");
   const [postText, setPostText] = useState("");
@@ -30,12 +33,13 @@ const CreatePost = ({ activityId, classes }) => {
     try {
       const currentDate = new Date();
 
-      const activityRef = await db.collection("Posts").add({
+      const postRef = await db.collection("Posts").add({
         activity_id: activityId,
+        activity_name: activityName,
+        content: postText,
         datetime_posted: currentDate,
         isanonymous: isAnonymous,
         type: postType,
-        content: postText,
         image: "",
         user_id: userId,
       });
@@ -90,7 +94,9 @@ const CreatePost = ({ activityId, classes }) => {
         </div>
 
         <div>
-          <button type="submit">Submit Post</button>
+          <button type="submit">
+            Submit Post
+          </button>
         </div>
       </form>
     </div>
