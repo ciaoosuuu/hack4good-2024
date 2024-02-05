@@ -219,7 +219,12 @@ const Volunteer = ({ user, params }) => {
             activity={activity}
             activityId={id}
           />
-          <CreatePost activityId={id} classes={classes} />
+          <CreatePost
+            activityId={id}
+            activityName={activity.activity_name}
+            user={user}
+            classes={classes}
+          />
           {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}
