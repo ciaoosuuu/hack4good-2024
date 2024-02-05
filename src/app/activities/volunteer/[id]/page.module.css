@@ -221,7 +221,7 @@
   padding-right: 10px;
 }
 
-.markattendance button {
+.unmarked {
   background-color: maroon;
   color: white;
   padding: 5px 8px 5px 8px;
@@ -230,6 +230,17 @@
   width: 80%;
 }
 
+.marked {
+  /* background-color: white; */
+  color: maroon;
+  padding: 5px 8px 5px 8px;
+  font-size: small;
+  border-radius: 5px;
+  border: 1px solid maroon;
+  width: 80%;
+}
+
+/* 
 .marked {
   display: flex;
   align-items: center;
@@ -240,7 +251,7 @@
   border-radius: 5px;
   border: 1px solid maroon;
   width: 80%;
-}
+} */
 
 .submitattendance {
   width: 100%;

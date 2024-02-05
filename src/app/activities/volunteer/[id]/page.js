@@ -19,46 +19,14 @@ const Volunteer = ({ user, params }) => {
   console.log(user);
   console.log(userRole);
 
-  const [activity, setActivity] = useState();
-  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [activity, setActivity] = useState(); // the page
+  const [isSignedUp, setIsSignedUp] = useState(false); // if current user signed up
   const [vacancyRemaining, setVacancyRemaining] = useState(0);
-  const [signups, setSignups] = useState([]);
 
+  const [signups, setSignups] = useState([]); // users who have signed up for this activity -> ids
   const [marked, setMarked] = useState([]);
 
   const [reflections, setReflections] = useState();
-
-  const [attendees, setAttendees] = useState([]);
-
-  useEffect(() => {
-    // Replace userIDs with your list of user IDs
-    const userIDs = signups;
-
-    const fetchUserDetails = async () => {
-      const promises = userIDs.map(async (userID) => {
-        try {
-          const userDoc = await db.collection("Users").doc(userID).get();
-          console.log(userDoc);
-          if (userDoc.exists) {
-            // Access user details from the document data
-            return { id: userID, ...userDoc.data() };
-          } else {
-            console.log(`User with ID ${userID} not found`);
-            return null;
-          }
-        } catch (error) {
-          console.error(`Error fetching user details for ${userID}:`, error);
-          return null;
-        }
-      });
-
-      // Wait for all promises to resolve
-      const userResults = await Promise.all(promises);
-      setAttendees(userResults.filter(Boolean));
-    };
-
-    fetchUserDetails();
-  }, [signups]);
 
   useEffect(() => {
     const fetchActivityContent = async () => {
@@ -70,6 +38,7 @@ const Volunteer = ({ user, params }) => {
             setActivity(activityData);
             setIsSignedUp(activityData.participants_signups.includes(userId));
             setSignups(activityData.participants_signups);
+            setMarked(activityData.participants_attended);
             setVacancyRemaining(
               activityData.vacancy_total -
                 activityData.participants_signups.length
@@ -89,7 +58,7 @@ const Volunteer = ({ user, params }) => {
   }, [id]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       if (id) {
         try {
           const collectionRef = db.collection("Posts");
@@ -109,12 +78,11 @@ const Volunteer = ({ user, params }) => {
       }
     };
 
-    fetchData();
+    fetchPosts();
   }, []);
 
   const handleSignUp = async () => {
     try {
-
       if (!signups.includes(userId)) {
         setSignups((prevSignups) => [...prevSignups, userId]);
 
@@ -122,6 +90,7 @@ const Volunteer = ({ user, params }) => {
         await activityRef.update({
           participants_signups: [...signups, userId],
         });
+
         const userRef = db.collection("Users").doc(userId);
         await userRef.update({
           activities_signedup: arrayUnion(id),
@@ -135,51 +104,6 @@ const Volunteer = ({ user, params }) => {
       } else {
         console.log("Already signed up.");
       }
-    } catch (error) {
-      console.error("Error updating field:", error);
-    }
-  };
-
-  const handleMark = (attendeeId) => {
-    if (!marked.includes(attendeeId)) {
-      setMarked((prevMarked) => [...prevMarked, attendeeId]);
-    }
-    // console.log(marked);
-  };
-
-  useEffect(() => {
-    console.log(marked);
-  }, [marked]);
-
-  const handleSubmit = async () => {
-    try {
-      const activityRef = db.collection("Activities").doc(id);
-
-      await activityRef.update({
-        ["participants_attended"]: marked,
-      });
-
-      const activityInformation = {
-        activity_id: id,
-        activity_name: activity.name, // Replace with the actual activity name
-        activity_hours: parseFloat(
-          (
-            (activity.datetime_end.toDate() -
-              activity.datetime_start.toDate()) /
-            (1000 * 60 * 60)
-          ).toFixed(2)
-        ),
-        activity_date: activity.datetime_start,
-        activity_type: "Volunteer",
-      };
-
-      for (const markedId of marked) {
-        await updateUserDocument(markedId, activityInformation);
-      }
-
-      console.log("Attendance submitted successfully!");
-
-      setMarked([]);
     } catch (error) {
       console.error("Error updating field:", error);
     }
@@ -228,7 +152,7 @@ const Volunteer = ({ user, params }) => {
                 className={classes["image"]}
               />
               <div className={classes["overlay-main"]}>
-                <h1>{activity.name}</h1>
+                <h1>{activity.activity_name}</h1>
                 <h2>{activity.organiser_name}</h2>
                 <p>{activity.description}</p>
               </div>
@@ -292,12 +216,15 @@ const Volunteer = ({ user, params }) => {
           <Attendance
             userRole={userRole}
             classes={classes}
-            attendees={attendees}
-            attended={marked}
-            handleMark={handleMark}
-            handleSubmit={handleSubmit}
+            activity={activity}
+            activityId={id}
           />
-          <CreatePost activityId={id} classes={classes} />
+          <CreatePost
+            activityId={id}
+            activityName={activity.activity_name}
+            user={user}
+            classes={classes}
+          />
           {reflections && <Posts reflections={reflections} classes={classes} />}
         </div>
       )}
