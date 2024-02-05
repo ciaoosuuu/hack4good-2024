@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase/config";
+import calculateUserExp from "../../utils/calculateUserExp";
 // import withAuth from "../../hoc/withAuth";
 
 const CreatePost = ({ activityId, activityName, user, classes }) => {
@@ -44,12 +46,19 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
         user_id: userId,
       });
 
-      console.log({
-        isAnonymous,
-        postType,
-        postText,
-        image,
-      });
+      const newPostId = postRef.id;
+
+      const userRef = db.collection("Users").doc(userId);
+      await userRef
+        .update({
+          posts: arrayUnion(newPostId),
+        })
+        .then(async () => {
+          const newExp = await calculateUserExp(user);
+          return userRef.update({
+            exp_points: newExp,
+          });
+        });
     } catch (error) {
       console.error("Error updating field:", error);
     }
@@ -94,9 +103,7 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
         </div>
 
         <div>
-          <button type="submit">
-            Submit Post
-          </button>
+          <button type="submit">Submit Post</button>
         </div>
       </form>
     </div>

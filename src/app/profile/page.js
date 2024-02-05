@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
+import calculateUserExp from "../../utils/calculateUserExp";
 
 import ActivityCard from "../../components/activities/ActivityCard";
+import UserBadges from "../../components/gamify/UserBadges";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
@@ -118,6 +120,8 @@ const Profile = ({ user }) => {
         <img src={user.image} />
         <p>Name: {user.name}</p>
         <p>Birthday: {user.dateOfBirth}</p>
+        <p>Total EXP: {user.exp_points}</p>
+        {user.exp_points && <UserBadges userExp={user.exp_points} />}
       </div>
       <br />
       <h2>My Activities</h2>
