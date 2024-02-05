@@ -1,3 +1,5 @@
+export const activityTypes = ["Volunteering", "Workshop", "Training"];
+
 export const skills = [
 	"art & craft",
 	"befriending",

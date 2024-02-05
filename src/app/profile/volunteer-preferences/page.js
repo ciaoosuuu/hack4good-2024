@@ -307,6 +307,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 													};
 												}
 											)}
+											options={skillsOptions}
 											variant="filled"
 											tagVariant="solid"
 											onChange={(
