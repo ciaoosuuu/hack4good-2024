@@ -1,50 +1,46 @@
 'use client'
 
 import { useState } from 'react';
-import { PDFDocument, PDFFont, rgb } from 'pdf-lib';
-import { generateCertificateByActivity } from './helper';
+import { calcHrsGivenRange, generateCertificateByActivity, generateCertificateByTime } from './helper';
+import withAuth from '../../../hoc/withAuth';
 
 
-
-
-const RequestCertificatePage = () => {
+const RequestCertificatePage = ({user}) => {
   const [selectedOption, setSelectedOption] = useState('');
-  const [selectedActivity, setSelectedActivity] = useState('');
+  const [selectedActivity, setSelectedActivity] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmitActivity = async (e) => {
     e.preventDefault();
-    console.log('Requesting Certificate:', { selectedOption, selectedActivity, startDate, endDate });
+    console.log('Requesting Certificate:', { selectedOption, selectedActivity });
 
-    const generatedPdfUrl = await generatePdf();
+    const generatedPdfUrl = await generatePdfActivity();
     setPdfUrl(generatedPdfUrl);
   };
 
-  const generatePdf = async () => {
-    const pdfBytes = await generateCertificateByActivity('Micaella Vivien He', 'Care for the elderly', '20 June 2024', 7);
+  const generatePdfActivity = async () => {
+    const pdfBytes = await generateCertificateByActivity(user.name, selectedActivity.activity_name, selectedActivity.activity_date, selectedActivity.activity_hours);
     const previewBlob = new Blob([pdfBytes], { type: 'application/pdf' });
     const previewUrl = URL.createObjectURL(previewBlob);
     return previewUrl;
   };
 
-  const generatePdfBytes = async () => {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
+  const handleSubmitTime = async (e) => {
+    e.preventDefault();
+    console.log('Requesting Certificate:', { selectedOption, startDate, endDate });
 
-    const volunteerName = 'John Doe';
-    const currentDate = new Date().toLocaleDateString();
+    const generatedPdfUrl = await generatePdfTime();
+    setPdfUrl(generatedPdfUrl);
+  };
 
-    page.drawText(`Certificate of Appreciation\n\nThis is to certify that ${volunteerName} has volunteered on ${currentDate}.\n\nThank you for your dedication and hard work.`, {
-      x: 50,
-      y: 400,
-      font: PDFFont.Helvetica,
-      color: rgb(0, 0, 0),
-      size: 12,
-    });
-
-    return pdfDoc.save();
+  const generatePdfTime = async () => {
+    const hours = calcHrsGivenRange(user.activities_attended, startDate, endDate);
+    const pdfBytes = await generateCertificateByTime(user.name, startDate, endDate, hours);
+    const previewBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const previewUrl = URL.createObjectURL(previewBlob);
+    return previewUrl;
   };
 
   return (
@@ -76,17 +72,24 @@ const RequestCertificatePage = () => {
       {selectedOption === 'byActivity' && (
         <section style={styles.section}>
           <h2 style={styles.sectionHeading}>By Activity</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmitActivity}>
             <label style={styles.inputBlock}>
               Select Activity:
               <select
-                value={selectedActivity}
-                onChange={(e) => setSelectedActivity(e.target.value)}
+                value={selectedActivity ? selectedActivity.activity_id : ''}
+                onChange={(e) => {
+                  const selectedActivityId = e.target.value;
+                  const selectedActivityObject = user.activities_attended.find(activity => activity.activity_id === selectedActivityId,);
+                  setSelectedActivity(selectedActivityObject);
+                }}
                 style={styles.input}
               >
                 <option value="">Select Activity</option>
-                <option value="activity1">Activity 1</option>
-                <option value="activity2">Activity 2</option>
+                {user.activities_attended.map(activity => (
+                  <option key={activity.activity_id} value={activity.activity_id}>
+                    {activity.activity_name}
+                  </option>
+                ))}
               </select>
             </label>
 
@@ -100,7 +103,7 @@ const RequestCertificatePage = () => {
       {selectedOption === 'byDateRange' && (
         <section style={styles.section}>
           <h2 style={styles.sectionHeading}>By Date Range</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmitTime}>
             <label style={styles.inputBlock}>
               Start Date:
               <input
@@ -108,6 +111,7 @@ const RequestCertificatePage = () => {
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 style={styles.input}
+                required
               />
             </label>
 
@@ -118,6 +122,7 @@ const RequestCertificatePage = () => {
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 style={styles.input}
+                required
               />
             </label>
 
@@ -179,4 +184,4 @@ const styles = {
   },
 };
 
-export default RequestCertificatePage;
+export default withAuth(RequestCertificatePage);
