@@ -230,6 +230,9 @@ const ProfileSettings = ({ user }) => {
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
+			}).then((result) => {
+				// Reload the Page
+				location.reload();
 			});
 		} catch (error) {
 			console.log("error", error);
@@ -243,6 +246,12 @@ const ProfileSettings = ({ user }) => {
 				allowOutsideClick: false,
 			});
 		}
+		setPasswordFormData({
+			oldPassword: null,
+			password: null,
+			password2: null,
+		});
+		setPasswordFormChanged(false);
 	};
 
 	const handleClick = (event) => {
