@@ -171,12 +171,12 @@ const Profile = ({ user }) => {
                   (activity) =>
                     activity.datetime_end.toDate() < currentTimestamp
                 )
-                .slice(0, 3)
                 .sort((activityA, activityB) => {
                   const startTimeA = activityA.datetime_start.toDate();
                   const startTimeB = activityB.datetime_start.toDate();
                   return startTimeB - startTimeA; // show latest first
                 })
+                .slice(0, 3)
                 .map((activity) => (
                   <ActivityCard key={activity.id} activity={activity} />
                 ))}

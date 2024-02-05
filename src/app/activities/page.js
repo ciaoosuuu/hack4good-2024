@@ -143,11 +143,11 @@ const Activities = ({ user }) => {
                     (activity) =>
                       activity.datetime_end.toDate() < currentTimestamp
                   )
-                  .slice()
+                  //   .slice()
                   .sort((activityA, activityB) => {
                     const startTimeA = activityA.datetime_start.toDate();
                     const startTimeB = activityB.datetime_start.toDate();
-                    return startTimeA - startTimeB;
+                    return startTimeB - startTimeA; // show newest first
                   })
                   .map((activity) => (
                     <ActivityCard key={activity.id} activity={activity} />
