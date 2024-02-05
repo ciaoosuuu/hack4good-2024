@@ -61,7 +61,7 @@ const Activities = ({ user }) => {
           if (activityDoc.exists) {
             return { id: activityId, ...activityDoc.data() };
           } else {
-            console.log(`User with ID ${activityId} not found`);
+            console.log(`Activity with ID ${activityId} not found`);
             return null;
           }
         } catch (error) {
@@ -226,7 +226,7 @@ const Activities = ({ user }) => {
                   (activity) =>
                     activity.datetime_end.toDate() >= currentTimestamp
                 )
-                .slice(0, 2)
+                .slice(0, 5)
                 .sort((activityA, activityB) => {
                   const startTimeA = activityA.datetime_start.toDate();
                   const startTimeB = activityB.datetime_start.toDate();
