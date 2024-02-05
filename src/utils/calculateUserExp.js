@@ -4,7 +4,7 @@ const calculateUserExp = async (user) => {
   const activities = user.activities_attended;
   const posts = user.posts;
   const activitiesExp = activities.reduce((exp, activity) => {
-    if (activity.activity_type === "Volunteer") {
+    if (activity.activity_type === "Volunteering") {
       return exp + activity.activity_hours * 25;
     } else {
       return exp + activity.activity_hours * 15;

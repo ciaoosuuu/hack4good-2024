@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { arrayUnion, arrayRemove } from "firebase/firestore";
 import { db } from "../../firebase/config";
+import calculateUserExp from "../../utils/calculateUserExp";
 
 const Attendance = ({ userRole, classes, activity, activityId }) => {
   if (userRole !== "admin") {
@@ -65,10 +66,19 @@ const Attendance = ({ userRole, classes, activity, activityId }) => {
         participants_attended: arrayUnion(attendeeId),
       });
 
-      const userRef = db.collection("Users").doc(attendeeId);
-      await userRef.update({
-        activities_attended: arrayUnion(activityInformation),
-      });
+      const attendeeRef = db.collection("Users").doc(attendeeId);
+      await attendeeRef
+        .update({
+          activities_attended: arrayUnion(activityInformation),
+        })
+        .then(async () => {
+          const attendeeSnapshot = await attendeeRef.get();
+          const attendee = attendeeSnapshot.data();
+          const newExp = await calculateUserExp(attendee);
+          return attendeeRef.update({
+            exp_points: newExp,
+          });
+        });
 
       setMarked((prevMarked) => [...prevMarked, attendeeId]);
 
@@ -85,10 +95,19 @@ const Attendance = ({ userRole, classes, activity, activityId }) => {
         participants_attended: arrayRemove(attendeeId),
       });
 
-      const userRef = db.collection("Users").doc(attendeeId);
-      await userRef.update({
-        activities_attended: arrayRemove(activityInformation),
-      });
+      const attendeeRef = db.collection("Users").doc(attendeeId);
+      await attendeeRef
+        .update({
+          activities_attended: arrayRemove(activityInformation),
+        })
+        .then(async () => {
+          const attendeeSnapshot = await attendeeRef.get();
+          const attendee = attendeeSnapshot.data();
+          const newExp = await calculateUserExp(attendee);
+          return attendeeRef.update({
+            exp_points: newExp,
+          });
+        });
 
       setMarked((prevMarked) => prevMarked.filter((id) => id !== attendeeId));
 

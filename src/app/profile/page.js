@@ -23,21 +23,6 @@ const Profile = ({ user }) => {
   const postIds = user.posts;
   const [posts, setPosts] = useState([]);
 
-  const [userExp, setUserExp] = useState(0);
-
-  useEffect(() => {
-    const fetchUserExp = async () => {
-      const totalExp = await calculateUserExp(user);
-      setUserExp(totalExp);
-    };
-
-    fetchUserExp();
-  }, [user]);
-
-  useEffect(() => {
-    console.log(userExp);
-  }, [userExp]);
-
   useEffect(() => {
     const fetchSignedUp = async () => {
       if (!signedUpIds || !Array.isArray(signedUpIds)) {
@@ -135,8 +120,8 @@ const Profile = ({ user }) => {
         <img src={user.image} />
         <p>Name: {user.name}</p>
         <p>Birthday: {user.dateOfBirth}</p>
-        <p>Total EXP: {userExp}</p>
-        {userExp && <UserBadges userExp={userExp} />}
+        <p>Total EXP: {user.exp_points}</p>
+        {user.exp_points && <UserBadges userExp={user.exp_points} />}
       </div>
       <br />
       <h2>My Activities</h2>
