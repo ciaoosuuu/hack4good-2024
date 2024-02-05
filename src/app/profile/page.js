@@ -6,6 +6,7 @@ import withAuth from "../../hoc/withAuth";
 import calculateUserExp from "../../utils/calculateUserExp";
 
 import ActivityCard from "../../components/activities/ActivityCard";
+import UserBadges from "../../components/gamify/UserBadges";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
@@ -135,6 +136,7 @@ const Profile = ({ user }) => {
         <p>Name: {user.name}</p>
         <p>Birthday: {user.dateOfBirth}</p>
         <p>Total EXP: {userExp}</p>
+        {userExp && <UserBadges userExp={userExp} />}
       </div>
       <br />
       <h2>My Activities</h2>
