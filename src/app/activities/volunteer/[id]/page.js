@@ -34,7 +34,7 @@ const Volunteer = ({ user, params }) => {
     // Replace userIDs with your list of user IDs
     const userIDs = signups;
 
-    const fetchUserDetails = async () => {
+    const fetchSignups = async () => {
       const promises = userIDs.map(async (userID) => {
         try {
           const userDoc = await db.collection("Users").doc(userID).get();
@@ -57,7 +57,7 @@ const Volunteer = ({ user, params }) => {
       setAttendees(userResults.filter(Boolean));
     };
 
-    fetchUserDetails();
+    fetchSignups();
   }, [signups]);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const Volunteer = ({ user, params }) => {
   }, [id]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       if (id) {
         try {
           const collectionRef = db.collection("Posts");
@@ -109,12 +109,11 @@ const Volunteer = ({ user, params }) => {
       }
     };
 
-    fetchData();
+    fetchPosts();
   }, []);
 
   const handleSignUp = async () => {
     try {
-
       if (!signups.includes(userId)) {
         setSignups((prevSignups) => [...prevSignups, userId]);
 
