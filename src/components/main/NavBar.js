@@ -10,8 +10,9 @@ import {
 	MenuItem,
 	MenuList,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import theme from "../../theme.js";
@@ -21,6 +22,26 @@ import { logOut } from "../../firebase/functions.js";
 export default function NavBar() {
 	const { user } = UserAuth();
 	const router = useRouter();
+	const pathname = usePathname();
+	const [activeIndex, setActiveIndex] = useState(0);
+
+	useEffect(() => {
+		console.log("pathname", pathname.split("/"));
+		const path = pathname.split("/")[1];
+		// console.log("activepath", path);
+		// setActiveTab(path);
+		console.log("path", path);
+
+		const activeIndex = items.findIndex((item) => item.key.includes(path)); // Check if the current path contains the item key
+
+		if (activeIndex) {
+			console.log("matchingItem", activeIndex);
+			setActiveIndex(activeIndex); // Set the active tab to the matching key
+		} else {
+			setActiveIndex(0); // Set the active tab to an empty string if no match is found
+		}
+	}, [pathname]);
+
 	const [loginStatus, setLoginStatus] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
@@ -98,20 +119,21 @@ export default function NavBar() {
 					justifyContent: "center",
 				}}
 				colorScheme={"red"}
+				index={activeIndex}
 			>
 				<Flex key={"tabs"} style={{ width: "100%" }}>
-					{items &&
-						items.map((navItem) => (
-							<>
-								<Tab
-									key={navItem.key}
-									onClick={() => navigateTo(navItem.key)}
-								>
-									{navItem.label}
-								</Tab>
-								<Spacer key={navItem.key} />
-							</>
-						))}
+					{items.map((navItem) => (
+						<>
+							<Tab
+								key={navItem.key}
+								onClick={() => navigateTo(navItem.key)}
+								// isSelected={true}
+							>
+								{navItem.label}
+							</Tab>
+							<Spacer key={"spacer-" + navItem.key} />
+						</>
+					))}
 				</Flex>
 			</Tabs>{" "}
 			<Menu>
@@ -132,7 +154,9 @@ export default function NavBar() {
 						<MenuList>
 							{user ? (
 								<>
-									<MenuItem key={"profile"}>Profile</MenuItem>
+									<MenuItem key={"profile/go"}>
+										Profile
+									</MenuItem>
 									<MenuItem
 										key={"account/logout"}
 										onClick={handleLogout}

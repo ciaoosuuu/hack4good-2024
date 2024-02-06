@@ -151,7 +151,9 @@ const ActivityCard = ({ activity, mini }) => {
 								<Text fontWeight="bold">
 									{activity.activity_name}
 								</Text>
-								<p style={{ opacity: "80%", fontSize: "14px" }}>
+								<div
+									style={{ opacity: "80%", fontSize: "14px" }}
+								>
 									<Text>
 										<Icon as={FaRegCalendarAlt} mr="2" />
 										{activity.datetime_start
@@ -190,7 +192,7 @@ const ActivityCard = ({ activity, mini }) => {
 										<Icon as={FaMapPin} mr="2" />
 										{activity.location_name}
 									</Text>
-								</p>
+								</div>
 							</Stack>
 						</GridItem>
 
@@ -220,7 +222,7 @@ const ActivityCard = ({ activity, mini }) => {
 							</UnorderedList>
 						</GridItem>
 						<GridItem rowSpan={2} colSpan={2}>
-							<p
+							<div
 								style={{
 									opacity: "50%",
 									fontSize: "14px",
@@ -243,7 +245,7 @@ const ActivityCard = ({ activity, mini }) => {
 										  activity.participants_signups.length
 										: "TBA"}
 								</Flex>
-							</p>
+							</div>
 						</GridItem>
 					</Grid>
 				</Box>
@@ -307,7 +309,7 @@ const ActivityCard = ({ activity, mini }) => {
 								<Text fontWeight="bold" noOfLines={1}>
 									{activity.activity_name}
 								</Text>
-								<p
+								<div
 									style={{
 										opacity: "80%",
 										fontSize: "14px",
@@ -349,7 +351,7 @@ const ActivityCard = ({ activity, mini }) => {
 													hour12: true,
 												})}
 									</Text>
-								</p>
+								</div>
 							</Stack>
 						</GridItem>
 					</Grid>
