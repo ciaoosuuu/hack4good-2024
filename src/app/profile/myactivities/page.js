@@ -1,28 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "../../firebase/config";
-import withAuth from "../../hoc/withAuth";
-import Link from "next/link";
-import calculateUserExp from "../../utils/calculateUserExp";
+import { db } from "../../../firebase/config";
+import withAuth from "../../../hoc/withAuth";
 
-import ActivityCard from "../../components/activities/ActivityCard";
-import UserBadges from "../../components/gamify/UserBadges";
-import classes from "./page.module.css";
+import ActivityCard from "../../../components/activities/ActivityCard";
+import classes from "../page.module.css";
 
-const Profile = ({ user }) => {
-  console.log(user);
-  const userId = user.uid;
-  const userName = user.name;
-
+const MyActivities = ({ user }) => {
   const currentTimestamp = new Date();
   const [selectedView, setSelectedView] = useState("Signed Up");
   const signedUpIds = user.activities_signedup;
   const [signedUp, setSignedUp] = useState([]);
   const attendedDetails = user.activities_attended;
+  console.log(attendedDetails);
   const [attended, setAttended] = useState([]);
-  const postIds = user.posts;
-  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchSignedUp = async () => {
@@ -85,63 +77,16 @@ const Profile = ({ user }) => {
       setAttended(activityResults.filter(Boolean));
     };
 
-    const fetchPosts = async () => {
-      if (!postIds || !Array.isArray(postIds)) {
-        return;
-      }
-      const promises = postIds.map(async (postId) => {
-        try {
-          const postDoc = await db.collection("Posts").doc(postId).get();
-          console.log(postDoc);
-          if (postDoc.exists) {
-            return { id: postId, ...postDoc.data() };
-          } else {
-            console.log(`Post with ID ${postId} not found`);
-            return null;
-          }
-        } catch (error) {
-          console.error(`Error fetching post details for ${postId}:`, error);
-          return null;
-        }
-      });
-
-      const postResults = await Promise.all(promises);
-      setPosts(postResults.filter(Boolean));
-    };
-
     fetchSignedUp();
     fetchAttended();
-    fetchPosts();
   }, []);
-
   return (
     <div className={classes["page_layout"]}>
-      <h1>Profile</h1>
-      <div className={classes["two-column-container"]}>
-        <div className={classes["column-left"]}>
-          <img
-            src={user.image}
-            style={{
-              marginTop: "20px",
-              marginBottom: "20px",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-        <div className={classes["column-right"]}>
-          <p>Name: {user.name}</p>
-          <p>Birthday: {user.dateOfBirth}</p>
-          <p>Email: {user.email}</p>
-          <p>Total EXP: {user.exp_points}</p>
-        </div>
+      <div style={{ display: "block" }}>
+        <button type="button" onClick={() => window.history.back()}>
+          Back
+        </button>
       </div>
-      <div>
-        <b>My Badges</b>
-        <div style={{ marginTop: "10px" }}>
-          {user.exp_points && <UserBadges userExp={user.exp_points} />}
-        </div>
-      </div>
-      <br />
       <b>My Activities</b>
       <div>
         <div className={classes["selection-bar"]}>
@@ -174,7 +119,6 @@ const Profile = ({ user }) => {
                   (activity) =>
                     activity.datetime_end.toDate() >= currentTimestamp
                 )
-                .slice(0, 3)
                 .sort((activityA, activityB) => {
                   const startTimeA = activityA.datetime_start.toDate();
                   const startTimeB = activityB.datetime_start.toDate();
@@ -189,78 +133,19 @@ const Profile = ({ user }) => {
           <ul className={classes["grid_list_horizontal"]}>
             {attended &&
               attended
-                .filter(
-                  (activity) =>
-                    activity.datetime_end.toDate() < currentTimestamp
-                )
                 .sort((activityA, activityB) => {
                   const startTimeA = activityA.datetime_start.toDate();
                   const startTimeB = activityB.datetime_start.toDate();
                   return startTimeB - startTimeA; // show latest first
                 })
-                .slice(0, 3)
                 .map((activity) => (
                   <ActivityCard key={activity.id} activity={activity} />
                 ))}
           </ul>
         )}
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            color: "maroon",
-            marginTop: "10px",
-          }}
-        >
-          <button>
-            <Link href="/profile/myactivities">SEE MORE...</Link>
-          </button>
-        </div>
-      </div>
-      <br />
-      <div>
-        <b>My Posts</b>
-        <ul className={classes["grid_list"]}>
-          {posts &&
-            posts.map((post) => (
-              <div key={post.id} className={classes["item"]}>
-                {post.image && (
-                  <img
-                    src={post.image}
-                    style={{
-                      height: "100px",
-                      width: "auto",
-                      marginLeft: "50px",
-                      marginRight: "50px",
-                    }}
-                  />
-                )}
-                <div
-                  style={{
-                    display: "block",
-                    height: "200px",
-                    maxWidth: "200px",
-                  }}
-                >
-                  <b>{post.activity_name}</b>
-                  <p
-                    style={{
-                      height: "150px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {post.content}
-                  </p>
-                </div>
-              </div>
-            ))}
-        </ul>
       </div>
     </div>
   );
 };
 
-export default withAuth(Profile);
+export default withAuth(MyActivities);

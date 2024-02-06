@@ -34,7 +34,6 @@ const UserBadges = ({ userExp }) => {
 
   return (
     <div>
-      <h3>Your Badges</h3>
       <ul style={{ display: "flex" }}>
         {userLevels &&
           userLevels
