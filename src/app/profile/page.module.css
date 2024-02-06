@@ -110,18 +110,19 @@
 
 .two-column-container {
   display: flex;
-  margin: 0% 8% 6% 8%;
+  /* margin: 0% 10% 6% 10%; */
 }
 
 .column-left {
-  flex: 68%;
-  margin: 6% 10% 0% 0%;
+  flex: 30%;
+  /* margin: 6% 10% 0% 0%; */
   /* padding: 6% 8% 0px 8%; */
 }
 
 .column-right {
-  flex: 32%;
-  padding: 6% 0% 0% 0%;
+  flex: 70%;
+  margin-top: 20px;
+  /* padding: 6% 0% 0% 0%; */
 }
 
 .two-column-container h1 {
@@ -164,19 +165,12 @@
 }
 
 .page_layout {
-  /* display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 30px; */
-  margin-left: 10%;
-  margin-right: 10%;
-  /* padding-left: 10%;
-  padding-right: 10%;
-  width: 100%; */
+  margin: 2% 10% 6% 10%;
 }
 
 .grid_list {
   display: grid;
-  /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 0;
   gap: 15px;
   width: 100%;
@@ -185,8 +179,10 @@
 .item {
   background-color: pink;
   display: flex;
-  height: 100px;
+  flex-direction: column;
+  height: 300px;
   border-radius: 10px;
+  padding: 10px;
 }
 
 .index {

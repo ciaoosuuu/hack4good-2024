@@ -7,6 +7,10 @@ import calculateUserExp from "../../utils/calculateUserExp";
 // import withAuth from "../../hoc/withAuth";
 
 const CreatePost = ({ activityId, activityName, user, classes }) => {
+  if (user.role !== "volunteer") {
+    return null;
+  }
+
   const userId = user.uid;
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [postType, setPostType] = useState("reflection");

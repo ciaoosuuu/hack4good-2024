@@ -4,80 +4,86 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase/config";
 
 const UserBadges = ({ userExp }) => {
-  const [userBadges, setUserBadges] = useState([]);
+  const [userLevels, setUserLevels] = useState([]);
 
   useEffect(() => {
-    const fetchUserBadges = async () => {
+    const fetchUserLevels = async () => {
       try {
-        const userBadgesSnapshot = await db.collection("Levels").get();
+        const userLevelsSnapshot = await db.collection("Levels").get();
 
-        if (userBadgesSnapshot.empty) {
+        if (userLevelsSnapshot.empty) {
           console.log("No badges found.");
           return;
         }
 
-        const userBadgesData = userBadgesSnapshot.docs
+        const userLevelsData = userLevelsSnapshot.docs
           .map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }))
           .sort((a, b) => a.level - b.level);
 
-        setUserBadges(userBadgesData);
+        setUserLevels(userLevelsData);
       } catch (error) {
         console.error("Error fetching badges:", error);
       }
     };
 
-    fetchUserBadges();
+    fetchUserLevels();
   }, [userExp]);
 
   return (
     <div>
-      <h3>Your Badges</h3>
-      <ul>
-        {userBadges &&
-          userBadges
-            .filter((badge) => badge.exp <= userExp)
-            .map((badge) => (
-              <div key={badge.level}>
-                <b>BADGE {badge.level}</b>
-                <p>{badge.title}</p>
-              </div>
-            ))}
-        {/* .map((badgeId) => <Badge key={badgeId} badgeId={badgeId} />)} */}
+      <ul style={{ display: "flex" }}>
+        {userLevels &&
+          userLevels
+            .filter((level) => level.exp <= userExp)
+            // .map((level) => (
+            //   <div key={level.level}>
+            //     <b>BADGE {level.level}</b>
+            //     <p>{level.title}</p>
+            //   </div>
+            // ))}
+            .map((level) => <Badge key={level.id} level={level} />)}
       </ul>
     </div>
   );
 };
 
-// const Badge = ({ badgeId }) => {
-//   const [badgeInfo, setBadgeInfo] = useState(null);
+const Badge = ({ level }) => {
+  const badgeUrl = level.badge;
+  const badgeName = level.title;
+  const badgeLevel = level.level;
 
-//   useEffect(() => {
-//     const fetchBadgeInfo = async () => {
-//       const badgeRef = firestore.collection("badges").doc(badgeId);
-//       const badgeSnapshot = await badgeRef.get();
-//       const badgeData = badgeSnapshot.data();
-
-//       if (badgeData) {
-//         setBadgeInfo(badgeData);
-//       }
-//     };
-
-//     fetchBadgeInfo();
-//   }, [badgeId]);
-
-//   return (
-//     <li>
-//       {badgeInfo && (
-//         <>
-//           <img src={badgeInfo.image} alt={badgeInfo.name} />
-//           <p>{badgeInfo.name}</p>
-//         </>
-//       )}
-//     </li>
-//   );
-// };
+  return (
+    <li
+      style={{
+        // marginLeft: "20px",
+        // marginRight: "20px",
+        width: "200px",
+        textAlign: "center",
+        listStyle: "none",
+      }}
+    >
+      <img
+        src={badgeUrl}
+        alt={badgeName}
+        style={{
+          marginLeft: "50px",
+          marginBottom: "8px",
+          // marginRight: "46px",
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      />
+      <p style={{ fontSize: "small", fontWeight: "bold" }}>
+        Level {badgeLevel}
+      </p>
+      <p style={{ fontSize: "small" }}>{badgeName}</p>
+    </li>
+  );
+};
 
 export default UserBadges;
