@@ -26,19 +26,13 @@ export default function NavBar() {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	useEffect(() => {
-		console.log("pathname", pathname.split("/"));
 		const path = pathname.split("/")[1];
-		// console.log("activepath", path);
-		// setActiveTab(path);
-		console.log("path", path);
-
-		const activeIndex = items.findIndex((item) => item.key.includes(path)); // Check if the current path contains the item key
-
+		const activeIndex = items.findIndex((item) => item.key.includes(path));
 		if (activeIndex) {
 			console.log("matchingItem", activeIndex);
-			setActiveIndex(activeIndex); // Set the active tab to the matching key
+			setActiveIndex(activeIndex);
 		} else {
-			setActiveIndex(0); // Set the active tab to an empty string if no match is found
+			setActiveIndex(0);
 		}
 	}, [pathname]);
 
@@ -154,7 +148,10 @@ export default function NavBar() {
 						<MenuList>
 							{user ? (
 								<>
-									<MenuItem key={"profile/go"}>
+									<MenuItem
+										key={"profile/go"}
+										onClick={() => navigateTo("profile")}
+									>
 										Profile
 									</MenuItem>
 									<MenuItem

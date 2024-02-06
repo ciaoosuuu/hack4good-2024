@@ -11,7 +11,6 @@ import UserBadges from "../../components/gamify/UserBadges";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
-	console.log(user);
 	const userId = user.uid;
 	const userName = user.name;
 

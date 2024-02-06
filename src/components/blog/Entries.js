@@ -20,7 +20,6 @@ const Entries = ({ entries, classes }) => {
 						.doc(entry.user_id)
 						.get();
 					if (userDoc.exists) {
-						console.log("user exists", userDoc.data());
 						setUserData(userDoc.data());
 					}
 				}
