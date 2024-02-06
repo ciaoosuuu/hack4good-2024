@@ -25,12 +25,16 @@ export default function NavBar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
-			key: "home",
+			key: "",
 			label: `Home`,
 		},
 		{
 			key: "activities",
 			label: `Activities`,
+		},
+		{
+			key: "blog",
+			label: `Blog`,
 		},
 		{
 			key: "profile",

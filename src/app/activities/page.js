@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { db } from "../../firebase/config";
 import { Box } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
+import { Image as ChakraImage } from "@chakra-ui/react";
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
 import ActivityCard from "../../components/activities/ActivityCard";
 import withAuth from "../../hoc/withAuth";
 import classes from "./page.module.css";
+import Image from "next/image";
 
 const Activities = ({ user }) => {
 	const currentTimestamp = new Date();
@@ -86,196 +87,28 @@ const Activities = ({ user }) => {
 	}, []);
 
 	return (
-		// <div>
-		// 	<br />
-		// 	<div className={classes["page_layout"]}>
-		// 		<Box>
-		// 			<h1>Activities</h1>
-		// 			<br />
-		// 			<Image
-		// 				src={
-		// 					"https://static.wixstatic.com/media/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg/v1/fill/w_980,h_463,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg"
-		// 				}
-		// 				className={classes["promo_slideshow"]}
-		// 			/>
-		// 			<br />
-		// 			<div className={classes["selection-bar"]}>
-		// 				<div
-		// 					className={
-		// 						selectedView === "Upcoming"
-		// 							? `${classes["option-selected"]}`
-		// 							: `${classes["option-unselected"]}`
-		// 					}
-		// 					onClick={() => setSelectedView("Upcoming")}
-		// 				>
-		// 					Upcoming Activities
-		// 				</div>
-		// 				<div
-		// 					className={
-		// 						selectedView === "Completed"
-		// 							? `${classes["option-selected"]}`
-		// 							: `${classes["option-unselected"]}`
-		// 					}
-		// 					onClick={() => setSelectedView("Completed")}
-		// 				>
-		// 					Completed Activities
-		// 				</div>
-		// 			</div>
-		// 			{selectedView === "Upcoming" && (
-		// 				<ul className={classes["grid_list_horizontal"]}>
-		// 					{activities &&
-		// 						activities
-		// 							.filter(
-		// 								(activity) =>
-		// 									activity.datetime_end.toDate() >=
-		// 									currentTimestamp
-		// 							)
-		// 							.slice()
-		// 							.sort((activityA, activityB) => {
-		// 								const startTimeA =
-		// 									activityA.datetime_start.toDate();
-		// 								const startTimeB =
-		// 									activityB.datetime_start.toDate();
-		// 								return startTimeA - startTimeB;
-		// 							})
-		// 							.map((activity) => (
-		// 								<ActivityCard
-		// 									key={activity.id}
-		// 									activity={activity}
-		// 								/>
-		// 							))}
-		// 				</ul>
-		// 			)}
-		// 			{selectedView === "Completed" && (
-		// 				<ul className={classes["grid_list_horizontal"]}>
-		// 					{activities &&
-		// 						activities
-		// 							.filter(
-		// 								(activity) =>
-		// 									activity.datetime_end.toDate() <
-		// 									currentTimestamp
-		// 							)
-		// 							//   .slice()
-		// 							.sort((activityA, activityB) => {
-		// 								const startTimeA =
-		// 									activityA.datetime_start.toDate();
-		// 								const startTimeB =
-		// 									activityB.datetime_start.toDate();
-		// 								return startTimeB - startTimeA; // show newest first
-		// 							})
-		// 							.map((activity) => (
-		// 								<ActivityCard
-		// 									key={activity.id}
-		// 									activity={activity}
-		// 								/>
-		// 							))}
-		// 				</ul>
-		// 			)}
-		// 		</Box>
-
-		// 		{/* {activities &&
-		//   activities
-		//     .slice()
-		//     .sort((activityA, activityB) => {
-		//       const startTimeA = activityA.datetime_start.toDate();
-		//       const startTimeB = activityB.datetime_start.toDate();
-		//       return startTimeA - startTimeB;
-		//     })
-		//     .map((activity) => (
-		//       <div key={activity.id} className={classes["item"]}>
-		//         <Link href={`/activities/volunteer/${activity.id}`}>
-		//           <img src={activity.image} className={classes["image"]} />
-		//           <div className={classes["type-tag"]}>{activity.type}</div>
-		//           <p>{activity.name}</p>
-		//           <div>
-		//             <FaRegCalendarAlt />
-		//             {activity.datetime_start.toDate().toLocaleString("en-EN", {
-		//               year: "numeric",
-		//               month: "long",
-		//               day: "numeric",
-		//             }) +
-		//               ", " +
-		//               activity.datetime_start.toDate().toLocaleString("en-EN", {
-		//                 weekday: "long",
-		//               })}
-		//           </div>
-		//           <div>
-		//             <FaRegClock />
-		//             {activity.datetime_start.toDate().toLocaleString("en-EN", {
-		//               hour: "numeric",
-		//               minute: "numeric",
-		//               hour12: true,
-		//             }) +
-		//               " to " +
-		//               activity.datetime_end.toDate().toLocaleString("en-EN", {
-		//                 hour: "numeric",
-		//                 minute: "numeric",
-		//                 hour12: true,
-		//               })}
-		//           </div>
-		//           <div>
-		//             <FaMapPin />
-		//             {activity.location_name}
-		//           </div>
-		//           <div>
-		//             <ul className={classes["tags"]}>
-		//               {activity.tags.map((tag, index) => (
-		//                 <li key={index}>{tag}</li>
-		//               ))}
-		//             </ul>
-		//           </div>
-		//         </Link>
-		//       </div>
-		//     ))} */}
-
-		// 		<Box
-		// 			style={{
-		// 				height: "500px",
-		// 				padding: "0 0.5rem",
-		// 			}}
-		// 		>
-		// 			<h1>Upcoming Activities</h1>
-		// 			<br />
-		// 			<ul className={classes["grid_list_horizontal"]}>
-		// 				{upcomingActivities &&
-		// 					upcomingActivities
-		// 						.filter(
-		// 							(activity) =>
-		// 								activity.datetime_end.toDate() >=
-		// 								currentTimestamp
-		// 						)
-		// 						.slice(0, 5)
-		// 						.sort((activityA, activityB) => {
-		// 							const startTimeA =
-		// 								activityA.datetime_start.toDate();
-		// 							const startTimeB =
-		// 								activityB.datetime_start.toDate();
-		// 							return startTimeA - startTimeB;
-		// 						})
-		// 						.map((activity) => (
-		// 							<ActivityCard
-		// 								key={activity.id}
-		// 								activity={activity}
-		// 								mini={true}
-		// 							/>
-		// 						))}
-		// 			</ul>
-		// 		</Box>
-		// 	</div>
-		// </div>
 		<>
 			<div style={{ zIndex: 30 }}>
 				<br />
 				<div className={classes["page_layout"]}>
 					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
-						<h1>Activities</h1>
-						<br />
-						<Image
-							src={
-								"https://static.wixstatic.com/media/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg/v1/fill/w_980,h_463,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg"
-							}
-							className={classes["promo_slideshow"]}
-						/>
+						<h1 style={{ fontSize: "30px" }}>Activities</h1>
+						<div style={{ height: "380px" }}>
+							<Image
+								src={require("../../resources/vector-building-2.png")}
+								width={831}
+								height={50}
+								alt="Big At Heart"
+								style={{ position: "absolute" }}
+							/>
+							<br />
+							<ChakraImage
+								src={
+									"https://static.wixstatic.com/media/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg/v1/fill/w_980,h_463,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg"
+								}
+								className={classes["promo_slideshow"]}
+							/>
+						</div>
 						<br />
 						<div className={classes["selection-bar"]}>
 							<div
@@ -299,6 +132,7 @@ const Activities = ({ user }) => {
 								Completed Activities
 							</div>
 						</div>
+						<br />
 						{selectedView === "Upcoming" && (
 							<ul className={classes["grid_list_horizontal"]}>
 								{activities &&
@@ -369,25 +203,15 @@ const Activities = ({ user }) => {
 							<h1>Announcements</h1>
 							<br />
 
-							{/* <ul className={classes["grid_list_horizontal"]}>
-								{activities && //replace this with list of actual activities just for this user
-									activities //replace this with list of actual activities just for this user
-										.slice(0, 2)
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeA - startTimeB;
-										})
-										.map((activity) => (
-											<ActivityCard
-												key={activity.id}
-												activity={activity}
-												mini={true}
-											/>
-										))}
-							</ul> */}
+							<div
+								style={{
+									fontSize: "15px",
+									opacity: "60%",
+									textAlign: "center",
+								}}
+							>
+								Watch out for announcements here!
+							</div>
 
 							<br />
 						</div>
@@ -402,16 +226,16 @@ const Activities = ({ user }) => {
 								color: "#f7f2f2",
 							}}
 						>
-							<h1>Upcoming Activities</h1>
+							<h1>My Activities</h1>
 							<br />
 
 							<ul
 								className={classes["grid_list_horizontal"]}
 								style={{ paddingLeft: "20px" }}
 							>
-								{activities && //replace this with list of actual activities just for this user
-									activities //replace this with list of actual activities just for this user
-										.slice(0, 2)
+								{upcomingActivities &&
+								upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
+									upcomingActivities //replace this with list of actual activities just for this user
 										.sort((activityA, activityB) => {
 											const startTimeA =
 												activityA.datetime_start.toDate();
@@ -425,7 +249,19 @@ const Activities = ({ user }) => {
 												activity={activity}
 												mini={true}
 											/>
-										))}
+										))
+								) : (
+									<div
+										style={{
+											fontSize: "15px",
+											opacity: "60%",
+											textAlign: "center",
+										}}
+									>
+										Activities you've signed up for will
+										show up here!
+									</div>
+								)}
 							</ul>
 
 							<br />
