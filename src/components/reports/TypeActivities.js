@@ -38,7 +38,7 @@ const TypesActivities = () => {
           labels: ["Volunteering", "Workshop", "Training"],
           datasets: [
             {
-              label: "Number",
+              label: "# Activities",
               data: activityCountByType,
               backgroundColor: [
                 "rgb(255, 99, 132)",

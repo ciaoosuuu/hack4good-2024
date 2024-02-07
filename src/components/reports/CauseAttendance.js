@@ -39,7 +39,7 @@ const CauseActivities = () => {
           labels: causes,
           datasets: [
             {
-              label: "Sales $",
+              label: "# Volunteers",
               data: attendanceCountByCauses,
               borderColor: "rgb(53, 162, 235)",
               backgroundColor: "rgb(53, 162, 235, 0.4",

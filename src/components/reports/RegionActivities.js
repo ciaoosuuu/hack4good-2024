@@ -40,7 +40,7 @@ const RegionActivities = () => {
           labels: ["North-East", "North", "Central", "West", "East"],
           datasets: [
             {
-              label: "Number",
+              label: "# Activities",
               data: activityCountByRegion,
               backgroundColor: [
                 "rgb(255, 99, 132)",
@@ -80,7 +80,7 @@ const RegionActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "380px" }}>
+      <div style={{ backgroundColor: "white", height: "360px" }}>
         <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>

@@ -40,7 +40,7 @@ const PastYearAttendees = () => {
           labels: months,
           datasets: [
             {
-              label: "Sales $",
+              label: "# Volunteers",
               data: attendanceCountByMonths,
               borderColor: "rgb(53, 162, 235)",
               backgroundColor: "rgb(53, 162, 235, 0.4",
@@ -54,7 +54,7 @@ const PastYearAttendees = () => {
             },
             title: {
               display: true,
-              text: "Number of volunteers in the past 12 months",
+              text: "Number of volunteers who attended activities in the past 12 months",
             },
           },
           maintainAspectRatio: false,

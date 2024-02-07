@@ -33,16 +33,30 @@ const CauseActivities = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const activityCountByCauses = await getActivityCountByCause();
+        const [
+          causeCountArrayVolunteering,
+          causeCountArrayWorkshop,
+          causeCountArrayTraining,
+          causeCountArray,
+        ] = await getActivityCountByCause();
 
         setChartData({
           labels: causes,
           datasets: [
             {
-              label: "# of activities",
-              data: activityCountByCauses,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              label: "# Volunteerinig",
+              data: causeCountArrayVolunteering,
+              backgroundColor: "rgb(255, 99, 132)",
+            },
+            {
+              label: "# Workshops",
+              data: causeCountArrayWorkshop,
+              backgroundColor: "rgb(75, 192, 192)",
+            },
+            {
+              label: "# Trainings",
+              data: causeCountArrayTraining,
+              backgroundColor: "rgb(53, 162, 235)",
             },
           ],
         });
@@ -62,6 +76,12 @@ const CauseActivities = () => {
             ticks: {
               precision: 0,
             },
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
+            },
           },
         });
       } catch (error) {
@@ -74,7 +94,7 @@ const CauseActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "450px" }}>
+      <div style={{ backgroundColor: "white", height: "420px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>

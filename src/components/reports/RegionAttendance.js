@@ -1,12 +1,12 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
@@ -16,7 +16,7 @@ import getAttendanceCountByRegion from "../../utils/reports/getAttendanceCountBy
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -40,8 +40,13 @@ const RegionAttendance = () => {
             {
               label: "Number",
               data: attendanceCountByRegion,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(255, 159, 64)",
+                "rgb(255, 205, 86)",
+                "rgb(76, 193, 192)",
+                "rgb(55, 162, 235)",
+              ],
             },
           ],
         });
@@ -73,8 +78,8 @@ const RegionAttendance = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }}>
-        <Bar data={chartData} options={chartOptions} />
+      <div style={{ backgroundColor: "white", height: "380px" }}>
+        <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>
   );

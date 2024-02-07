@@ -9,12 +9,30 @@ import RegionAttendance from "../../components/reports/RegionAttendance";
 import CauseActivities from "../../components/reports/CauseActivities";
 import CauseAttendance from "../../components/reports/CauseAttendance";
 import TypeActivities from "../../components/reports/TypeActivities";
+import TypeAttendance from "../../components/reports/TypeAttendance";
 import PastYearUsers from "../../components/reports/PastYearUsers";
 
 import classes from "./page.module.css";
 
 const Reports = () => {
   const [selectedView, setSelectedView] = useState("Volunteers");
+  const chartStyleLeft = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginRight: "10px",
+    padding: "10px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+  };
+
+  const chartStyleRight = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    padding: "10px",
+    backgroundColor: "white",
+    borderRadius: "10px",
+  };
+
   return (
     <div
       style={{
@@ -48,46 +66,35 @@ const Reports = () => {
         </div>
       </div>
       {selectedView === "Volunteers" && (
-        <div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <PastYearUsers />
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: "70%" }}>
+            <div style={chartStyleLeft}>
+              <PastYearUsers />
+            </div>
+            <div style={chartStyleLeft}>
+              <PastYearAttendees />
+            </div>
+            <div style={chartStyleLeft}>
+              <CauseAttendance />
+            </div>
           </div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <PastYearAttendees />
-          </div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <RegionAttendance />
-          </div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <CauseAttendance />
+          <div style={{ flex: "30%" }}>
+            <div style={chartStyleRight}>
+              <RegionAttendance />
+            </div>
+            <div style={chartStyleRight}>
+              <TypeAttendance />
+            </div>
           </div>
         </div>
       )}
       {selectedView === "Activities" && (
         <div style={{ display: "flex" }}>
           <div style={{ flex: "70%" }}>
-            <div
-              style={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                marginRight: "10px",
-                padding: "10px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-            >
+            <div style={chartStyleLeft}>
               <PastYearActivities />
             </div>
-            <div
-              style={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                marginRight: "10px",
-                padding: "10px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-            >
+            <div style={chartStyleLeft}>
               <CauseActivities />
             </div>
           </div>
@@ -99,29 +106,13 @@ const Reports = () => {
                 padding: "10px",
                 backgroundColor: "white",
                 borderRadius: "10px",
-                height: "160px",
+                height: "120px",
               }}
             ></div>
-            <div
-              style={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                padding: "10px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-            >
+            <div style={chartStyleRight}>
               <RegionActivities />
             </div>
-            <div
-              style={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                padding: "10px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-              }}
-            >
+            <div style={chartStyleRight}>
               <TypeActivities />
             </div>
           </div>

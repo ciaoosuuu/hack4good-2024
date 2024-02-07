@@ -33,17 +33,31 @@ const PastYearActivities = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const activityCountByMonths = await getActivityCountByMonth();
+        const [
+          volunteeringCountByMonth,
+          workshopCountByMonth,
+          trainingCountByMonth,
+          activityCountByMonth,
+        ] = await getActivityCountByMonth();
         const months = getPast12Months();
 
         setChartData({
           labels: months,
           datasets: [
             {
-              label: "# of activities",
-              data: activityCountByMonths,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              label: "# Volunteering",
+              data: volunteeringCountByMonth,
+              backgroundColor: "rgb(255, 99, 132)",
+            },
+            {
+              label: "# Workshops",
+              data: workshopCountByMonth,
+              backgroundColor: "rgb(75, 192, 192)",
+            },
+            {
+              label: "# Trainings",
+              data: trainingCountByMonth,
+              backgroundColor: "rgb(53, 162, 235)",
             },
           ],
         });
@@ -63,6 +77,12 @@ const PastYearActivities = () => {
             ticks: {
               precision: 0,
             },
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
+            },
           },
         });
       } catch (error) {
@@ -75,7 +95,7 @@ const PastYearActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "450px" }}>
+      <div style={{ backgroundColor: "white", height: "420px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>
