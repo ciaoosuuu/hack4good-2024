@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
 	Box,
@@ -16,47 +16,68 @@ import { FiAlertCircle } from "react-icons/fi";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RiAdminLine } from "react-icons/ri";
 import { UserAuth } from "../../../context/AuthContext";
+import Swal from "sweetalert2"
 import {
-	emailPwSignIn,
 	emailPwSignUp,
-	logOut,
 	googleSignIn,
 } from "../../../../firebase/functions";
 import { db } from "../../../../firebase/config";
-import { doc, setDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
-const addVolunteerToDb = async (userCredential) => {
+const addVolunteerToDb = async (userCredential, name) => {
 	const data = {
 		uid: userCredential.user.uid,
 		email: userCredential.user.email,
 		role: "volunteer",
+		name: name,
+		created_on: Timestamp.fromDate(new Date()),
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);
-		console.log("added");
 	} catch (error) {
 		console.log(error);
+		throw error;
 	}
 };
 
 const VolunteerSignup = () => {
 	const router = useRouter();
-	const { user } = UserAuth();
+	const { user, isLoading } = UserAuth();
+	const [isJustSignedUp, setIsJustSignedUp] = useState(false);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
 
+	useEffect(() => {
+		if (user) {
+		  Swal.fire({
+			title: "You have logged in.",
+			text: "Redirecting ...",
+			icon: "success",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		  }).then(() => {
+			// setTimeout(() => {
+				if (!isJustSignedUp) {
+					router.push("/activities");
+				}
+			//   }, 500);
+		  });
+		}
+	  }, [user]);
+
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
 			.then(async (userCredential) => {
-				await addVolunteerToDb(userCredential);
-				console.log("Sign up");
+				await addVolunteerToDb(userCredential, name);
+				setIsJustSignedUp(true);
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
-				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.log(`Email sign up error: ${errorMessage}`);
 				setLoginError(errorMessage);
@@ -66,35 +87,20 @@ const VolunteerSignup = () => {
 	const handleGoogleSignUp = async (e) => {
 		e.preventDefault();
 		googleSignIn()
-			.then(() => {
+			.then(async(userCredential) => {
 				//successfully login
-				console.log("Log in.");
+				await addVolunteerToDb(userCredential, name);
+				setIsJustSignedUp(true);
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
-				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.log(`Email login error: ${errorMessage}`);
 				setLoginError(errorMessage);
 			});
 	};
 
-	const handleDbAdd = async (e) => {
-		e.preventDefault();
-		const data = {
-			name: "Los Angeles",
-			state: "CA",
-			country: "USA",
-		};
-		try {
-			await db.collection("Users").doc("LA").set(data);
-			console.log("added");
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	return (
+	return isLoading || user ? null : (
 		<>
 			<Button
 				style={{ top: "1.5rem", right: "1.5rem", position: "fixed" }}
@@ -168,12 +174,6 @@ const VolunteerSignup = () => {
 							{loginError}{" "}
 						</Alert>
 					)}
-					{/* {!loginError && user && (
-					<Alert status="error">
-						<FiAlertCircle style={{ marginRight: "10px" }} />
-						{user.email}
-					</Alert>
-				)} */}
 				</Box>
 				<div
 					style={{

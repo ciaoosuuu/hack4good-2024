@@ -108,7 +108,6 @@ const ActivityCard = ({ activity, mini }) => {
 			{!mini ? (
 				<Box
 					key={activity.id}
-					borderWidth="1px"
 					overflow="hidden"
 					boxShadow="md"
 					p={3}
@@ -252,7 +251,6 @@ const ActivityCard = ({ activity, mini }) => {
 			) : (
 				<Box
 					key={activity.id}
-					// borderWidth="1px"
 					borderRadius="lg"
 					overflow="hidden"
 					p={3}

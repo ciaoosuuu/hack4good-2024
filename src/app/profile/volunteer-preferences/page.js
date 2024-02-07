@@ -21,6 +21,7 @@ import {
 	StepNumber,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
+import { FiArrowLeft } from "react-icons/fi";
 import withAuth from "../../../hoc/withAuth";
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
@@ -29,39 +30,20 @@ import {
 	interests,
 	capitalise,
 } from "../../../resources/skills-interests";
+import classes from "../page.module.css";
+import { Timestamp } from "firebase/firestore";
+
+const formatDateForInput = (timestamp) => {
+	if (!timestamp) return "";
+
+	const date = timestamp.toDate();
+	const year = date.getFullYear();
+	const month = `0${date.getMonth() + 1}`.slice(-2);
+	const day = `0${date.getDate()}`.slice(-2);
+	return `${year}-${month}-${day}`;
+};
 
 const VolunteerPreferences = ({ stepIndex, user }) => {
-	// const interestAreasItems = {
-	// 	["migrantWorkers"]: {
-	// 		index: "migrantWorkers",
-	// 		value: "migrantWorkers",
-	// 		label: "Migrant Workers",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["elderly"]: {
-	// 		index: "elderly",
-	// 		value: "elderly",
-	// 		label: "Elderly",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["children"]: {
-	// 		index: "children",
-	// 		value: "children",
-	// 		label: "Children/Youth",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["lowIncome"]: {
-	// 		index: "lowIncome",
-	// 		value: "lowIncome",
-	// 		label: "Low Income Communities",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// };
-
 	const router = useRouter();
 	const [interestAreas, setInterestAreas] = useState(
 		interests.map((interest) => {
@@ -119,11 +101,20 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 	const handleChangeStep1 = (e) => {
 		setStep1ChangesMade(true);
 		const { name, value } = e.target;
-		setForm1Data((prevData) => ({
-			...prevData,
-			[name]: value,
-		}));
-		// }
+		if (name.includes("dateOfBirth")) {
+			const timestampDate = value
+				? Timestamp.fromDate(new Date(value))
+				: null;
+			setForm1Data((prevData) => ({
+				...prevData,
+				[name]: timestampDate,
+			}));
+		} else {
+			setForm1Data((prevData) => ({
+				...prevData,
+				[name]: value,
+			}));
+		}
 	};
 	const handleChangeStep2 = (e) => {
 		setStep2ChangesMade(true);
@@ -217,11 +208,20 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		<div
 			style={{
 				width: "80%",
-				margin: "0 auto",
+				margin: "80px auto",
 			}}
 		>
+			<Box
+				style={{ width: "220px" }}
+				className={classes["profile-button-dark"]}
+				onClick={() => router.push("/profile")}
+			>
+				<FiArrowLeft style={{ marginRight: "16px" }} />
+				Return to Profile
+			</Box>
 			<br />
-			<h1>Volunteer Preferences</h1>
+			<br />
+			<h1 style={{ fontSize: "24px" }}>Volunteer Preferences</h1>
 			<br />
 			{activeStep !== null && (
 				<>
@@ -261,7 +261,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 									type="date"
 									variant={"filled"}
 									name="dateOfBirth"
-									value={form1Data.dateOfBirth}
+									value={formatDateForInput(form1Data.dateOfBirth)}
 									onChange={handleChangeStep1}
 								></Input>
 							</FormControl>

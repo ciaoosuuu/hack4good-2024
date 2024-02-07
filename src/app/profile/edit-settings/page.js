@@ -20,6 +20,7 @@ import {
 	AccordionPanel,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
+import { FiArrowLeft } from "react-icons/fi";
 import {
 	activityTypes as activityTypesData,
 	capitalise,
@@ -259,151 +260,164 @@ const ProfileSettings = ({ user }) => {
 	};
 
 	return (
-		<Box style={{ maxWidth: "600px", margin: "80px auto" }}>
-			<h1 style={{ textAlign: "center" }}>Edit Profile</h1>
-			<button
-				className={classes["image_input"]}
-				onClick={handleClick}
-				style={{ margin: "0 auto" }}
+		<div style={{ width: "80%", margin: "80px auto" }}>
+			<Box
+				style={{ width: "220px" }}
+				className={classes["profile-button-dark"]}
+				onClick={() => router.push("/profile")}
 			>
-				<GrEdit
-					size={45}
-					style={{
-						position: "absolute",
-						translate: "52px 52px",
-						color: "white",
-					}}
-				/>
-				{formData.image && (
-					<Image
-						style={{
-							height: "100%",
-							width: "100%",
-							borderRadius: "8px",
-							objectFit: "cover",
-						}}
-						src={formData.image}
-						alt={""}
-					/>
-				)}
-
-				<input
-					type="file"
-					accept="image/*"
-					onChange={handleImageChange}
-					ref={fileInput}
-					style={{ display: "none" }}
-					// className={classes["image_input"]}
-					// style={styles.input}
-				/>
-			</button>
-
-			<form onSubmit={handleSubmit}>
-				<br />
-
-				<br />
-				<FormControl isRequired>
-					<FormLabel>Name:</FormLabel>
-					<Input
-						type="text"
-						name="name"
-						value={formData.name}
-						onChange={handleChange}
-						placeholder="Name"
-						variant="filled"
-					/>
-				</FormControl>
-
-				<br />
-
-				<FormControl isRequired>
-					<FormLabel>Email:</FormLabel>
-					<Input
-						type="text"
-						name="email"
-						value={formData.email}
-						onChange={handleChange}
-						placeholder="Email"
-						variant="filled"
-					/>
-				</FormControl>
-
-				<br />
-				<Button
-					type="submit"
-					colorScheme="red"
-					variant={"outline"}
-					style={{ width: "100%" }}
-					isDisabled={!formChanged}
-					//onClick={handleSubmit}
+				<FiArrowLeft style={{ marginRight: "16px" }} />
+				Return to Profile
+			</Box>
+			<br />
+			<Box style={{ maxWidth: "600px", margin: "0 auto" }}>
+				<h1 style={{ textAlign: "center" }}>Edit Profile</h1>
+				<button
+					className={classes["image_input"]}
+					onClick={handleClick}
+					style={{ margin: "0 auto" }}
 				>
-					Submit
-				</Button>
-			</form>
-			<br />
-			<br />
-			<Accordion allowToggle={true}>
-				<AccordionItem>
-					<h2>
-						<AccordionButton>
-							<Box as="span" flex="1" textAlign="left">
-								Change Password
-							</Box>
-							<AccordionIcon />
-						</AccordionButton>
-					</h2>
-					<AccordionPanel pb={4}>
-						<form onSubmit={handleSubmitPassword}>
-							<FormControl isRequired>
-								<FormLabel>Old password:</FormLabel>
-								<Input
-									type="password"
-									name="oldPassword"
-									value={passwordFormData.oldPassword}
-									onChange={handleChangePassword}
-									placeholder="Password"
-									variant="filled"
-								/>
-							</FormControl>
-							<br />
-							<FormControl isRequired>
-								<FormLabel>New password:</FormLabel>
-								<Input
-									type="password"
-									name="password"
-									value={passwordFormData.password}
-									onChange={handleChangePassword}
-									placeholder="Password"
-									variant="filled"
-								/>
-							</FormControl>
-							<br />
-							<FormControl isRequired>
-								<FormLabel>Re-Enter new password:</FormLabel>
-								<Input
-									type="password"
-									name="password2"
-									value={passwordFormData.password2}
-									onChange={handleChangePassword}
-									placeholder="Password"
-									variant="filled"
-								/>
-							</FormControl>
-							<br />
-							<Button
-								type="submit"
-								colorScheme="red"
-								variant={"outline"}
-								style={{ width: "100%" }}
-								isDisabled={!passwordFormChanged}
-							>
-								Confirm
-							</Button>
-						</form>
-					</AccordionPanel>
-				</AccordionItem>
-			</Accordion>
-		</Box>
+					<GrEdit
+						size={45}
+						style={{
+							position: "absolute",
+							translate: "52px 52px",
+							color: "white",
+						}}
+					/>
+					{formData.image && (
+						<Image
+							style={{
+								height: "100%",
+								width: "100%",
+								borderRadius: "8px",
+								objectFit: "cover",
+							}}
+							src={formData.image}
+							alt={""}
+						/>
+					)}
+
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleImageChange}
+						ref={fileInput}
+						style={{ display: "none" }}
+						// className={classes["image_input"]}
+						// style={styles.input}
+					/>
+				</button>
+
+				<form onSubmit={handleSubmit}>
+					<br />
+
+					<br />
+					<FormControl isRequired>
+						<FormLabel>Name:</FormLabel>
+						<Input
+							type="text"
+							name="name"
+							value={formData.name}
+							onChange={handleChange}
+							placeholder="Name"
+							variant="filled"
+						/>
+					</FormControl>
+
+					<br />
+
+					<FormControl isRequired>
+						<FormLabel>Email:</FormLabel>
+						<Input
+							type="text"
+							name="email"
+							value={formData.email}
+							onChange={handleChange}
+							placeholder="Email"
+							variant="filled"
+						/>
+					</FormControl>
+
+					<br />
+					<Button
+						type="submit"
+						colorScheme="red"
+						variant={"outline"}
+						style={{ width: "100%" }}
+						isDisabled={!formChanged}
+						//onClick={handleSubmit}
+					>
+						Submit
+					</Button>
+				</form>
+				<br />
+				<br />
+				<Accordion allowToggle={true}>
+					<AccordionItem>
+						<h2>
+							<AccordionButton>
+								<Box as="span" flex="1" textAlign="left">
+									Change Password
+								</Box>
+								<AccordionIcon />
+							</AccordionButton>
+						</h2>
+						<AccordionPanel pb={4}>
+							<form onSubmit={handleSubmitPassword}>
+								<FormControl isRequired>
+									<FormLabel>Old password:</FormLabel>
+									<Input
+										type="password"
+										name="oldPassword"
+										value={passwordFormData.oldPassword}
+										onChange={handleChangePassword}
+										placeholder="Password"
+										variant="filled"
+									/>
+								</FormControl>
+								<br />
+								<FormControl isRequired>
+									<FormLabel>New password:</FormLabel>
+									<Input
+										type="password"
+										name="password"
+										value={passwordFormData.password}
+										onChange={handleChangePassword}
+										placeholder="Password"
+										variant="filled"
+									/>
+								</FormControl>
+								<br />
+								<FormControl isRequired>
+									<FormLabel>
+										Re-Enter new password:
+									</FormLabel>
+									<Input
+										type="password"
+										name="password2"
+										value={passwordFormData.password2}
+										onChange={handleChangePassword}
+										placeholder="Password"
+										variant="filled"
+									/>
+								</FormControl>
+								<br />
+								<Button
+									type="submit"
+									colorScheme="red"
+									variant={"outline"}
+									style={{ width: "100%" }}
+									isDisabled={!passwordFormChanged}
+								>
+									Confirm
+								</Button>
+							</form>
+						</AccordionPanel>
+					</AccordionItem>
+				</Accordion>
+			</Box>
+		</div>
 	);
 };
 
