@@ -28,6 +28,7 @@ const Blog = () => {
 
 		fetchData();
 	}, []);
+
 	return (
 		<>
 			<div style={{ zIndex: 30 }}>
@@ -43,7 +44,7 @@ const Blog = () => {
 								style={{
 									position: "absolute",
 									// backgroundColor: "red",
-									marginLeft: "100px",
+									marginLeft: "80px",
 								}}
 							/>
 							<br />

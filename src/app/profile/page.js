@@ -1,7 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Image } from "@chakra-ui/react";
+import {
+	Box,
+	Image as ChakraImage,
+	Tabs,
+	TabList,
+	Tab,
+	TabPanels,
+	TabPanel,
+	Flex,
+} from "@chakra-ui/react";
+import Image from "next/image";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
 import Link from "next/link";
@@ -9,6 +19,7 @@ import calculateUserExp from "../../utils/calculateUserExp";
 
 import ActivityCard from "../../components/activities/ActivityCard";
 import UserBadges from "../../components/gamify/UserBadges";
+import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
@@ -137,16 +148,27 @@ const Profile = ({ user }) => {
 			>
 				<br />
 				<div>
-					<Image
-						style={{
-							height: "400px",
-							width: "100%",
-							borderRadius: "30px",
-							objectFit: "cover",
-						}}
-						src={user.image}
-						alt={user.image}
-					/>
+					<div>
+						<div
+							style={{
+								position: "absolute",
+								marginTop: "30px",
+								marginLeft: "-40px",
+							}}
+						>
+							<UserBadges userExp={user.exp_points} best={true} />
+						</div>
+						<ChakraImage
+							style={{
+								height: "400px",
+								width: "100%",
+								borderRadius: "30px",
+								objectFit: "cover",
+							}}
+							src={user.image}
+							alt={user.image}
+						/>
+					</div>
 					<br />
 					<h1
 						style={{
@@ -157,25 +179,170 @@ const Profile = ({ user }) => {
 						{user.name}
 					</h1>
 					<p>{user.description}</p>
-					<h1>Total EXP: {user.exp_points}</h1>
+					<br />
+					<Flex align={"center"}>
+						<Image
+							src={require("../../resources/gem.png")}
+							width={30}
+							height={30}
+							alt="Big At Heart"
+							style={{ marginRight: "10px" }}
+						/>
+						<h1>Total EXP: {user.exp_points}</h1>
+					</Flex>
+					<br />
 					{user.exp_points && (
 						<UserBadges userExp={user.exp_points} />
 					)}
+					{/* <UserBadges userExp={user.exp_points} best={true} /> */}
 				</div>
 				<br />
 			</Box>
 			<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
 				<br />
-				<Box
-					style={{
-						// position: "absolute",
-						zIndex: -100,
-						backgroundColor: "#662828",
-						borderRadius: "20px",
-						padding: "20px",
-						color: "#f7f2f2",
-						minHeight: "400px",
-					}}
+				<Tabs isFitted variant="soft-rounded" colorScheme="red">
+					<TabList
+						style={{
+							borderRadius: "20px",
+							boxShadow: "2px 2px 2px #00000020",
+						}}
+					>
+						<Tab>Activities</Tab>
+						<Tab>Blog Posts</Tab>
+					</TabList>
+					<TabPanels>
+						<TabPanel>
+							<div>
+								<div className={classes["selection-bar"]}>
+									<div
+										className={
+											selectedView === "Signed Up"
+												? `${classes["option-selected"]}`
+												: `${classes["option-unselected"]}`
+										}
+										onClick={() =>
+											setSelectedView("Signed Up")
+										}
+									>
+										Signed Up
+									</div>
+									<div
+										className={
+											selectedView === "Attended"
+												? `${classes["option-selected"]}`
+												: `${classes["option-unselected"]}`
+										}
+										onClick={() =>
+											setSelectedView("Attended")
+										}
+									>
+										Attended
+									</div>
+								</div>
+								{selectedView === "Signed Up" && (
+									<ul
+										className={
+											classes["grid_list_horizontal"]
+										}
+									>
+										{signedUp &&
+											signedUp
+												.filter(
+													(activity) =>
+														activity.datetime_end.toDate() >=
+														currentTimestamp
+												)
+												.sort(
+													(activityA, activityB) => {
+														const startTimeA =
+															activityA.datetime_start.toDate();
+														const startTimeB =
+															activityB.datetime_start.toDate();
+														return (
+															startTimeA -
+															startTimeB
+														);
+													}
+												)
+												.map((activity) => (
+													<ActivityCard
+														key={activity.id}
+														activity={activity}
+													/>
+												))}
+									</ul>
+								)}
+								{selectedView === "Attended" && (
+									<ul
+										className={
+											classes["grid_list_horizontal"]
+										}
+									>
+										{attended &&
+											attended
+												.filter(
+													(activity) =>
+														activity.datetime_end.toDate() <
+														currentTimestamp
+												)
+												.sort(
+													(activityA, activityB) => {
+														const startTimeA =
+															activityA.datetime_start.toDate();
+														const startTimeB =
+															activityB.datetime_start.toDate();
+														return (
+															startTimeB -
+															startTimeA
+														); // show latest first
+													}
+												)
+												.map((activity) => (
+													<ActivityCard
+														key={activity.id}
+														activity={activity}
+													/>
+												))}
+									</ul>
+								)}
+								{/* <div
+									style={{
+										width: "100%",
+										display: "flex",
+										justifyContent: "center",
+										color: "maroon",
+										marginTop: "10px",
+									}}
+								>
+									<button>
+										<Link href="/profile/myactivities">
+											SEE MORE...
+										</Link>
+									</button>
+								</div> */}
+							</div>
+						</TabPanel>
+						<TabPanel>
+							{posts && (
+								<Entries
+									entries={posts}
+									classes={classes}
+									numColsInput={3}
+								/>
+							)}
+						</TabPanel>
+					</TabPanels>
+				</Tabs>
+				{/* <Box
+				// style={{
+				// 	// position: "absolute",
+				// 	zIndex: -100,
+				// 	backgroundColor: "#662828",
+				// 	borderRadius: "20px",
+				// 	padding: "20px",
+				// 	color: "#f7f2f2",
+				// 	minHeight: "400px",
+				// }}
 				>
 					<h1>My Activities</h1>
 
@@ -251,30 +418,32 @@ const Profile = ({ user }) => {
 							</ul>
 						)}
 						<div
-                style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                color: "maroon",
-                marginTop: "10px",
-              }}
-            >
-              <button>
-                <Link href="/profile/myactivities">SEE MORE...</Link>
-              </button>
-          </div>
+							style={{
+								width: "100%",
+								display: "flex",
+								justifyContent: "center",
+								color: "maroon",
+								marginTop: "10px",
+							}}
+						>
+							<button>
+								<Link href="/profile/myactivities">
+									SEE MORE...
+								</Link>
+							</button>
+						</div>
 					</div>
 					<br />
 				</Box>
 				<br />
 				<Box
-					style={{
-						// position: "absolute",
-						zIndex: -100,
-						backgroundColor: "#e2b7a6",
-						borderRadius: "20px",
-						padding: "20px",
-					}}
+				// style={{
+				// 	// position: "absolute",
+				// 	zIndex: -100,
+				// 	backgroundColor: "#e2b7a6",
+				// 	borderRadius: "20px",
+				// 	padding: "20px",
+				// }}
 				>
 					<h1>Blog Posts</h1>
 					<br />
@@ -304,7 +473,7 @@ const Profile = ({ user }) => {
 							</div>
 						)}
 					</ul>
-				</Box>
+				</Box> */}
 			</Box>
 		</div>
 	);

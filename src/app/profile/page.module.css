@@ -280,8 +280,8 @@
 }
 
 .four-column-container {
+  width: 100%;
   display: flex;
-  margin: 0% 8% 6% 8%;
   gap: 20px;
 }
 
