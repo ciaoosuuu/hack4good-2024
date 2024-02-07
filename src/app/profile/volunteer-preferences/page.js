@@ -131,7 +131,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		try {
 			const userRef = db.collection("Users").doc(user.uid);
 			await userRef.update({
-				dateOfBirth: form1Data.dateOfBirth
+				date_of_birth: form1Data.dateOfBirth
 					? form1Data.dateOfBirth
 					: null,
 				description: form1Data.description
@@ -421,7 +421,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 							>
 								Skip
 							</Button>
-							{user.dateOfBirth || user.description ? (
+							{user.date_of_birth || user.description ? (
 								<Button
 									colorScheme={"red"}
 									onClick={handleSubmitStep1}
