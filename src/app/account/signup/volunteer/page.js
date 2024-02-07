@@ -23,23 +23,25 @@ import {
 } from "../../../../firebase/functions";
 import { db } from "../../../../firebase/config";
 
-const addVolunteerToDb = async (userCredential) => {
+const addVolunteerToDb = async (userCredential, name) => {
 	const data = {
 		uid: userCredential.user.uid,
 		email: userCredential.user.email,
 		role: "volunteer",
+		name: name,
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);
-		console.log("added");
 	} catch (error) {
 		console.log(error);
+		throw error;
 	}
 };
 
 const VolunteerSignup = () => {
 	const router = useRouter();
 	const { user, isLoading } = UserAuth();
+	const [isJustSignedUp, setIsJustSignedUp] = useState(false);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -57,7 +59,9 @@ const VolunteerSignup = () => {
 			allowOutsideClick: false,
 		  }).then(() => {
 			// setTimeout(() => {
-				router.push("/activities");
+				if (!isJustSignedUp) {
+					router.push("/activities");
+				}
 			//   }, 500);
 		  });
 		}
@@ -67,7 +71,8 @@ const VolunteerSignup = () => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
 			.then(async (userCredential) => {
-				await addVolunteerToDb(userCredential);
+				await addVolunteerToDb(userCredential, name);
+				setIsJustSignedUp(true);
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
@@ -80,8 +85,10 @@ const VolunteerSignup = () => {
 	const handleGoogleSignUp = async (e) => {
 		e.preventDefault();
 		googleSignIn()
-			.then(() => {
+			.then(async(userCredential) => {
 				//successfully login
+				await addVolunteerToDb(userCredential, name);
+				setIsJustSignedUp(true);
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
@@ -165,12 +172,6 @@ const VolunteerSignup = () => {
 							{loginError}{" "}
 						</Alert>
 					)}
-					{/* {!loginError && user && (
-					<Alert status="error">
-						<FiAlertCircle style={{ marginRight: "10px" }} />
-						{user.email}
-					</Alert>
-				)} */}
 				</Box>
 				<div
 					style={{

@@ -23,10 +23,27 @@ import {
 } from "../../../../firebase/functions";
 
 import { UserAuth } from "../../../context/AuthContext";
+import { db } from "../../../../firebase/config";
+
+const addAdminToDb = async (userCredential, name) => {
+	const data = {
+		uid: userCredential.user.uid,
+		email: userCredential.user.email,
+		role: "admin",
+		name: name
+	};
+	try {
+		await db.collection("Users").doc(userCredential.user.uid).set(data);
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
 
 const AdminSignup = () => {
 	const router = useRouter();
 	const { user , isLoading } = UserAuth();
+	const [isJustSignedUp, setIsJustSignedUp] = useState(false);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -44,7 +61,9 @@ const AdminSignup = () => {
 			allowOutsideClick: false,
 		  }).then(() => {
 			// setTimeout(() => {
-				router.push("/activities");
+				if (!isJustSignedUp) {
+					router.push("/activities");
+				}
 			//   }, 500);
 		  });
 		}
@@ -53,9 +72,11 @@ const AdminSignup = () => {
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
-			.then(() => {
-				//successfully login
-				router.push("/profile/volunteer-preferences");
+			.then(async (userCredential) => {
+				await addAdminToDb(userCredential, name);
+				setIsJustSignedUp(true);
+				// here can push to somewhere else to configure admin settings
+				router.push("/activities");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
@@ -67,9 +88,11 @@ const AdminSignup = () => {
 	const handleGoogleSignUp = async (e) => {
 		e.preventDefault();
 		googleSignIn()
-			.then(() => {
-				//successfully login
-				router.push("/profile/volunteer-preferences");
+			.then(async (userCredential) => {
+				await addAdminToDb(userCredential, name);
+				setIsJustSignedUp(true);
+				// here can push to somewhere else to configure admin settings
+				router.push("/activities");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
