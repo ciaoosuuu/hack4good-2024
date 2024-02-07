@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { arrayUnion } from "firebase/firestore";
+import { arrayUnion, arrayRemove } from "firebase/firestore";
 import { db } from "../../../../firebase/config";
 
 import Attendance from "../../../../components/activities/Attendance.js";
@@ -88,7 +88,7 @@ const Volunteer = ({ user, params }) => {
 
         const activityRef = db.collection("Activities").doc(id);
         await activityRef.update({
-          participants_signups: [...signups, userId],
+          participants_signups: arrayUnion(userId),
         });
 
         const userRef = db.collection("Users").doc(userId);
@@ -109,31 +109,29 @@ const Volunteer = ({ user, params }) => {
     }
   };
 
-  const updateUserDocument = async (userId, activityInfo) => {
+  const handleUnsignUp = async () => {
     try {
-      const userRef = db.collection("Users").doc(userId);
+      if (signups.includes(userId)) {
+        setSignups((prevSignups) => prevSignups.filter((id) => id !== userId));
 
-      await db.runTransaction(async (transaction) => {
-        const userDoc = await transaction.get(userRef);
+        const activityRef = db.collection("Activities").doc(id);
+        await activityRef.update({
+          participants_signups: arrayRemove(userId),
+        });
 
-        if (userDoc.exists) {
-          const userData = userDoc.data();
+        const userRef = db.collection("Users").doc(userId);
+        await userRef.update({
+          activities_signedup: arrayRemove(id),
+        });
 
-          if (!userData.activities_attended) {
-            userData.activities_attended = [activityInfo];
-          } else {
-            userData.activities_attended.push(activityInfo);
-          }
-
-          transaction.update(userRef, {
-            activities_attended: userData.activities_attended,
-          });
-        }
-      });
-
-      console.log(`User ${userId} updated successfully`);
+        console.log("Sign up removed successfully!");
+        setIsSignedUp(false);
+        setVacancyRemaining((prevVacancyRemaining) => prevVacancyRemaining + 1);
+      } else {
+        console.log("Not signed up.");
+      }
     } catch (error) {
-      console.error(`Error updating user ${userId}:`, error);
+      console.error("Error updating field:", error);
     }
   };
 
@@ -185,9 +183,19 @@ const Volunteer = ({ user, params }) => {
                 <p>{vacancyRemaining} slots left</p>
                 {userRole === "volunteer" ? (
                   isSignedUp ? (
-                    <div className={classes["signedup"]}>Signed Up</div>
+                    <button
+                      onClick={handleUnsignUp}
+                      className={classes["signedup"]}
+                    >
+                      Remove Sign Up
+                    </button>
                   ) : (
-                    <button onClick={handleSignUp}>Sign Up Now</button>
+                    <button
+                      onClick={handleSignUp}
+                      className={classes["notsignedup"]}
+                    >
+                      Sign Up Now
+                    </button>
                   )
                 ) : (
                   <div />
