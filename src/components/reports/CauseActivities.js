@@ -11,8 +11,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import getPast12Months from "../../utils/reports/getPast12Months";
-import getActivityCountByMonth from "../../utils/reports/getActivityCountByMonth";
+import getActivityCountByCause from "../../utils/reports/getActivityCountByCause";
+import causes from "../../utils/reports/causes";
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const PastYearActivities = () => {
+const CauseActivities = () => {
   const [chartData, setChartData] = useState({
     datasets: [],
   });
@@ -33,15 +33,14 @@ const PastYearActivities = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const activityCountByMonths = await getActivityCountByMonth();
-        const months = getPast12Months();
+        const activityCountByCauses = await getActivityCountByCause();
 
         setChartData({
-          labels: months,
+          labels: causes,
           datasets: [
             {
               label: "Sales $",
-              data: activityCountByMonths,
+              data: activityCountByCauses,
               borderColor: "rgb(53, 162, 235)",
               backgroundColor: "rgb(53, 162, 235, 0.4",
             },
@@ -54,7 +53,7 @@ const PastYearActivities = () => {
             },
             title: {
               display: true,
-              text: "Number of activities held in the past 12 months",
+              text: "Number of activities held for each cause",
             },
           },
           maintainAspectRatio: false,
@@ -82,4 +81,4 @@ const PastYearActivities = () => {
   );
 };
 
-export default PastYearActivities;
+export default CauseActivities;
