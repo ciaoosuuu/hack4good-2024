@@ -268,7 +268,7 @@
   
   .four-column-container {
     display: flex;
-    margin: 0% 8% 6% 8%;
+    margin: 0% 8% 0% 8%;
     gap: 20px;
   }
   

@@ -38,3 +38,33 @@ h1 {
   font-weight: 600;
   font-size: large;
 }
+
+.give-button {
+  padding: 8px 40px;
+  border-radius: 100px;
+  border-width: 1px;
+  border-color: rgb(255,255,255,0.8);
+  cursor: pointer
+}
+
+.give-button:hover {
+  background-color: rgb(255,255,255,0.8);
+  color: maroon
+}
+
+.more-button {
+  margin: 0 auto;
+  width: 200px;
+  text-align: center;
+  padding: 8px 40px;
+  border-radius: 100px;
+  border-width: 1px;
+  border-color: rgba(39, 37, 37, 0.8);
+  cursor: pointer
+}
+
+.more-button:hover {
+  background-color: rgba(39, 37, 37, 0.8);
+  color: rgb(255,255,255);
+
+}

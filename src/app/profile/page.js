@@ -66,7 +66,14 @@ const Profile = ({ user }) => {
 			});
 
 			const activityResults = await Promise.all(promises);
-			setSignedUp(activityResults.filter(Boolean));
+			const activitySorted = activityResults
+				.filter(Boolean)
+				.sort((activityA, activityB) => {
+					const startTimeA = activityA.datetime_start.toDate();
+					const startTimeB = activityB.datetime_start.toDate();
+					return startTimeA - startTimeB;
+				});
+			setSignedUp(activitySorted);
 		};
 
 		const fetchAttended = async () => {
@@ -101,7 +108,15 @@ const Profile = ({ user }) => {
 			});
 
 			const activityResults = await Promise.all(promises);
-			setAttended(activityResults.filter(Boolean));
+			const activitySorted = activityResults
+				.filter(Boolean)
+				.sort((activityA, activityB) => {
+					const startTimeA = activityA.datetime_start.toDate();
+					const startTimeB = activityB.datetime_start.toDate();
+					return startTimeB - startTimeA; // show latest first
+				});
+
+			setAttended(activitySorted);
 		};
 
 		const fetchPosts = async () => {
@@ -131,7 +146,14 @@ const Profile = ({ user }) => {
 			});
 
 			const postResults = await Promise.all(promises);
-			setPosts(postResults.filter(Boolean));
+			const postsSorted = postsData
+				.filter(Boolean)
+				.sort((entryA, entryB) => {
+					const postTimeA = entryA.datetime_posted.toDate();
+					const postTimeB = entryB.datetime_posted.toDate();
+					return postTimeA - postTimeB;
+				});
+			setPosts(postsSorted);
 		};
 
 		fetchSignedUp();
@@ -143,7 +165,6 @@ const Profile = ({ user }) => {
 		<div className={classes["page_layout"]}>
 			<Box
 				style={{
-					height: "500px",
 					padding: "0 0.5rem",
 					minWidth: "400px",
 				}}
@@ -283,13 +304,6 @@ const Profile = ({ user }) => {
 													activity.datetime_end.toDate() >=
 													currentTimestamp
 											)
-											.sort((activityA, activityB) => {
-												const startTimeA =
-													activityA.datetime_start.toDate();
-												const startTimeB =
-													activityB.datetime_start.toDate();
-												return startTimeA - startTimeB;
-											})
 											.map((activity) => (
 												<ActivityCard
 													key={activity.id}
@@ -308,13 +322,6 @@ const Profile = ({ user }) => {
 													activity.datetime_end.toDate() <
 													currentTimestamp
 											)
-											.sort((activityA, activityB) => {
-												const startTimeA =
-													activityA.datetime_start.toDate();
-												const startTimeB =
-													activityB.datetime_start.toDate();
-												return startTimeB - startTimeA; // show latest first
-											})
 											.map((activity) => (
 												<ActivityCard
 													key={activity.id}

@@ -20,12 +20,12 @@ const Entries = ({ entries, classes, numColsInput }) => {
 			{colsArr.map((columnIndex) => (
 				<div key={columnIndex} className={classes["column-four"]}>
 					{entries
-						.slice()
-						.sort((entryA, entryB) => {
-							const postTimeA = entryA.datetime_posted.toDate();
-							const postTimeB = entryB.datetime_posted.toDate();
-							return postTimeA - postTimeB;
-						})
+						// .slice()
+						// .sort((entryA, entryB) => {
+						// 	const postTimeA = entryA.datetime_posted.toDate();
+						// 	const postTimeB = entryB.datetime_posted.toDate();
+						// 	return postTimeA - postTimeB;
+						// })
 						.map(
 							(entry, index) =>
 								index % numCols === columnIndex &&
