@@ -40,7 +40,7 @@ const PastYearActivities = () => {
           labels: months,
           datasets: [
             {
-              label: "Sales $",
+              label: "# of activities",
               data: activityCountByMonths,
               borderColor: "rgb(53, 162, 235)",
               backgroundColor: "rgb(53, 162, 235, 0.4",
@@ -75,7 +75,7 @@ const PastYearActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{ backgroundColor: "white", height: "450px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>

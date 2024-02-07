@@ -8,6 +8,7 @@ import RegionActivities from "../../components/reports/RegionActivities";
 import RegionAttendance from "../../components/reports/RegionAttendance";
 import CauseActivities from "../../components/reports/CauseActivities";
 import CauseAttendance from "../../components/reports/CauseAttendance";
+import TypeActivities from "../../components/reports/TypeActivities";
 import PastYearUsers from "../../components/reports/PastYearUsers";
 
 import classes from "./page.module.css";
@@ -63,15 +64,66 @@ const Reports = () => {
         </div>
       )}
       {selectedView === "Activities" && (
-        <div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <PastYearActivities />
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: "70%" }}>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                marginRight: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+              }}
+            >
+              <PastYearActivities />
+            </div>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                marginRight: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+              }}
+            >
+              <CauseActivities />
+            </div>
           </div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <RegionActivities />
-          </div>
-          <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-            <CauseActivities />
+          <div style={{ flex: "30%" }}>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                height: "160px",
+              }}
+            ></div>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+              }}
+            >
+              <RegionActivities />
+            </div>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+              }}
+            >
+              <TypeActivities />
+            </div>
           </div>
         </div>
       )}

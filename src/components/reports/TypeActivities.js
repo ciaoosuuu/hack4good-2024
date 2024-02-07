@@ -1,29 +1,28 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import getActivityCountByCause from "../../utils/reports/getActivityCountByCause";
-import causes from "../../utils/reports/causes";
+import getActivityCountByType from "../../utils/reports/getActivityCountByType";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
 );
 
-const CauseActivities = () => {
+const TypesActivities = () => {
   const [chartData, setChartData] = useState({
     datasets: [],
   });
@@ -33,16 +32,19 @@ const CauseActivities = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const activityCountByCauses = await getActivityCountByCause();
+        const activityCountByType = await getActivityCountByType();
 
         setChartData({
-          labels: causes,
+          labels: ["Volunteering", "Workshop", "Training"],
           datasets: [
             {
-              label: "# of activities",
-              data: activityCountByCauses,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              label: "Number",
+              data: activityCountByType,
+              backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(255, 159, 64)",
+                "rgb(55, 162, 235)",
+              ],
             },
           ],
         });
@@ -53,7 +55,7 @@ const CauseActivities = () => {
             },
             title: {
               display: true,
-              text: "Number of activities held for each cause",
+              text: "Number of activities by type",
             },
           },
           maintainAspectRatio: false,
@@ -74,11 +76,11 @@ const CauseActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "450px" }}>
-        <Bar data={chartData} options={chartOptions} />
+      <div style={{ backgroundColor: "white", height: "350px" }}>
+        <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>
   );
 };
 
-export default CauseActivities;
+export default TypesActivities;
