@@ -42,7 +42,7 @@ const Reports = () => {
         marginBottom: "2%",
       }}
     >
-      <b>Reports</b>
+      <h1 style={{ fontSize: "30px" }}>Reports</h1>
       <div className={classes["selection-bar"]}>
         <div
           className={
