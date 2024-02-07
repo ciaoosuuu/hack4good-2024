@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Box, Image } from "@chakra-ui/react";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
+import Link from "next/link";
 import calculateUserExp from "../../utils/calculateUserExp";
 
 import ActivityCard from "../../components/activities/ActivityCard";
@@ -249,9 +250,19 @@ const Profile = ({ user }) => {
 										))}
 							</ul>
 						)}
-						<p>Show 3 signed up / attended</p>
-						<p>SEE MORE...</p>
-						{/* make see more like a button users can click to see all their activities */}
+						<div
+                style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                color: "maroon",
+                marginTop: "10px",
+              }}
+            >
+              <button>
+                <Link href="/profile/myactivities">SEE MORE...</Link>
+              </button>
+          </div>
 					</div>
 					<br />
 				</Box>
