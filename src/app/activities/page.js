@@ -37,7 +37,15 @@ const Activities = ({ user }) => {
 					...doc.data(),
 				}));
 
-				setActivities(activitiesData);
+				const activitiesDataSorted = activitiesData.sort(
+					(activityA, activityB) => {
+						const startTimeA = activityA.datetime_start.toDate();
+						const startTimeB = activityB.datetime_start.toDate();
+						return startTimeA - startTimeB;
+					}
+				);
+
+				setActivities(activitiesDataSorted);
 
 				console.log(activitiesData);
 			} catch (error) {
@@ -143,13 +151,13 @@ const Activities = ({ user }) => {
 												currentTimestamp
 										)
 										.slice()
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeA - startTimeB;
-										})
+										// .sort((activityA, activityB) => {
+										// 	const startTimeA =
+										// 		activityA.datetime_start.toDate();
+										// 	const startTimeB =
+										// 		activityB.datetime_start.toDate();
+										// 	return startTimeA - startTimeB;
+										// })
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -168,13 +176,13 @@ const Activities = ({ user }) => {
 												currentTimestamp
 										)
 										//   .slice()
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeB - startTimeA; // show newest first
-										})
+										// .sort((activityA, activityB) => {
+										// 	const startTimeA =
+										// 		activityA.datetime_start.toDate();
+										// 	const startTimeB =
+										// 		activityB.datetime_start.toDate();
+										// 	return startTimeB - startTimeA; // show newest first
+										// })
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}

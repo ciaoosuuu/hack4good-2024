@@ -1,5 +1,9 @@
 .image_wrapper {
-  margin-top: 0.8%;
+  margin-top: -0.2%;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  border-radius: 0 0 30px 30px;
+  overflow: hidden;
   position: relative;
   list-style: none;
   /* margin: 0.8% 4% 0% 4%; */
@@ -52,7 +56,7 @@
 .overlay-container {
   position: absolute;
   left: 67%;
-  top: 30%;
+  top: 27%;
   width: 25%;
   height: 300px;
   background-color: white;
@@ -305,9 +309,9 @@
 }
 
 .postform {
-  margin: 0% 8% 6% 8%;
+  /* margin: 0% 8% 6% 8%; */
   padding: 15px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.59);
   border-radius: 10px;
 }
 
@@ -321,7 +325,7 @@
   flex-direction: column;
 }
 
-.postform input[type="checkbox"] {
+/* .postform input[type="checkbox"] {
   margin: 10px 15px 10px 0;
 }
 
@@ -336,14 +340,14 @@
   padding: 10px;
   border: 1px solid maroon;
   margin-bottom: 10px;
-}
-
+} */
+/* 
 .postform button {
   background-color: pink;
   padding: 5px 15px 5px 15px;
   margin-top: 15px;
   border-radius: 5px;
-}
+} */
 
 .selection-bar {
   margin-left: 10%;
