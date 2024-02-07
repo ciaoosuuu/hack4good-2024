@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import calculateUserExp from "../../utils/calculateUserExp";
 
@@ -26,7 +27,9 @@ const Profile = ({ user }) => {
 	const userId = user.uid;
 	const userName = user.name;
 
+	const router = useRouter();
 	const currentTimestamp = new Date();
+	const [selectedMainView, setSelectedMainView] = useState("Activities");
 	const [selectedView, setSelectedView] = useState("Signed Up");
 	const signedUpIds = user.activities_signedup;
 	const [signedUp, setSignedUp] = useState([]);
@@ -143,7 +146,6 @@ const Profile = ({ user }) => {
 					height: "500px",
 					padding: "0 0.5rem",
 					minWidth: "400px",
-					//backgroundColor: "teal",
 				}}
 			>
 				<br />
@@ -180,159 +182,160 @@ const Profile = ({ user }) => {
 					</h1>
 					<p>{user.description}</p>
 					<br />
-					<Flex align={"center"}>
-						<Image
-							src={require("../../resources/gem.png")}
-							width={30}
-							height={30}
-							alt="Big At Heart"
-							style={{ marginRight: "10px" }}
-						/>
-						<h1>Total EXP: {user.exp_points}</h1>
-					</Flex>
+					<Box
+						style={{
+							backgroundColor: "rgb(255,255,255,0.6",
+							padding: "1rem",
+							borderRadius: "20px",
+						}}
+					>
+						<Flex align={"center"}>
+							<Image
+								src={require("../../resources/gem.png")}
+								width={30}
+								height={30}
+								alt="Big At Heart"
+								style={{ marginRight: "10px" }}
+							/>
+							<h1>Total EXP: {user.exp_points}</h1>
+						</Flex>
+						<br />
+						{user.exp_points && (
+							<UserBadges userExp={user.exp_points} />
+						)}
+					</Box>
 					<br />
-					{user.exp_points && (
-						<UserBadges userExp={user.exp_points} />
-					)}
-					{/* <UserBadges userExp={user.exp_points} best={true} /> */}
+					<Box
+						style={{ marginBottom: "8px" }}
+						className={classes["profile-button-dark"]}
+						onClick={() => router.push("/profile/edit-settings")}
+					>
+						Edit Settings
+					</Box>
+					<Box
+						className={classes["profile-button"]}
+						onClick={() =>
+							router.push("/profile/volunteer-preferences")
+						}
+					>
+						Edit Skills & Preferences
+					</Box>
 				</div>
 				<br />
 			</Box>
 			<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
 				<br />
-				<Tabs isFitted variant="soft-rounded" colorScheme="red">
-					<TabList
-						style={{
-							borderRadius: "20px",
-							boxShadow: "2px 2px 2px #00000020",
-						}}
+				<div className={classes["main-selection-bar"]}>
+					<div
+						className={
+							selectedMainView === "Activities"
+								? `${classes["main-option-selected"]}`
+								: `${classes["main-option-unselected"]}`
+						}
+						onClick={() => setSelectedMainView("Activities")}
 					>
-						<Tab>Activities</Tab>
-						<Tab>Blog Posts</Tab>
-					</TabList>
-					<TabPanels>
-						<TabPanel>
-							<div>
-								<div className={classes["selection-bar"]}>
-									<div
-										className={
-											selectedView === "Signed Up"
-												? `${classes["option-selected"]}`
-												: `${classes["option-unselected"]}`
-										}
-										onClick={() =>
-											setSelectedView("Signed Up")
-										}
-									>
-										Signed Up
-									</div>
-									<div
-										className={
-											selectedView === "Attended"
-												? `${classes["option-selected"]}`
-												: `${classes["option-unselected"]}`
-										}
-										onClick={() =>
-											setSelectedView("Attended")
-										}
-									>
-										Attended
-									</div>
-								</div>
-								{selectedView === "Signed Up" && (
-									<ul
-										className={
-											classes["grid_list_horizontal"]
-										}
-									>
-										{signedUp &&
-											signedUp
-												.filter(
-													(activity) =>
-														activity.datetime_end.toDate() >=
-														currentTimestamp
-												)
-												.sort(
-													(activityA, activityB) => {
-														const startTimeA =
-															activityA.datetime_start.toDate();
-														const startTimeB =
-															activityB.datetime_start.toDate();
-														return (
-															startTimeA -
-															startTimeB
-														);
-													}
-												)
-												.map((activity) => (
-													<ActivityCard
-														key={activity.id}
-														activity={activity}
-													/>
-												))}
-									</ul>
-								)}
-								{selectedView === "Attended" && (
-									<ul
-										className={
-											classes["grid_list_horizontal"]
-										}
-									>
-										{attended &&
-											attended
-												.filter(
-													(activity) =>
-														activity.datetime_end.toDate() <
-														currentTimestamp
-												)
-												.sort(
-													(activityA, activityB) => {
-														const startTimeA =
-															activityA.datetime_start.toDate();
-														const startTimeB =
-															activityB.datetime_start.toDate();
-														return (
-															startTimeB -
-															startTimeA
-														); // show latest first
-													}
-												)
-												.map((activity) => (
-													<ActivityCard
-														key={activity.id}
-														activity={activity}
-													/>
-												))}
-									</ul>
-								)}
-								{/* <div
-									style={{
-										width: "100%",
-										display: "flex",
-										justifyContent: "center",
-										color: "maroon",
-										marginTop: "10px",
-									}}
-								>
-									<button>
-										<Link href="/profile/myactivities">
-											SEE MORE...
-										</Link>
-									</button>
-								</div> */}
+						Activities
+					</div>
+					<div
+						className={
+							selectedMainView === "Blog"
+								? `${classes["main-option-selected"]}`
+								: `${classes["main-option-unselected"]}`
+						}
+						onClick={() => setSelectedMainView("Blog")}
+					>
+						Blog Posts
+					</div>
+				</div>
+				<br />
+				{selectedMainView === "Activities" && (
+					<>
+						<div className={classes["selection-bar"]}>
+							<div
+								className={
+									selectedView === "Signed Up"
+										? `${classes["option-selected"]}`
+										: `${classes["option-unselected"]}`
+								}
+								onClick={() => setSelectedView("Signed Up")}
+							>
+								Signed Up
 							</div>
-						</TabPanel>
-						<TabPanel>
-							{posts && (
-								<Entries
-									entries={posts}
-									classes={classes}
-									numColsInput={3}
-								/>
+							<div
+								className={
+									selectedView === "Attended"
+										? `${classes["option-selected"]}`
+										: `${classes["option-unselected"]}`
+								}
+								onClick={() => setSelectedView("Attended")}
+							>
+								Attended
+							</div>
+						</div>
+
+						{selectedMainView === "Activities" &&
+							selectedView === "Signed Up" && (
+								<ul className={classes["grid_list_horizontal"]}>
+									{signedUp &&
+										signedUp
+											.filter(
+												(activity) =>
+													activity.datetime_end.toDate() >=
+													currentTimestamp
+											)
+											.sort((activityA, activityB) => {
+												const startTimeA =
+													activityA.datetime_start.toDate();
+												const startTimeB =
+													activityB.datetime_start.toDate();
+												return startTimeA - startTimeB;
+											})
+											.map((activity) => (
+												<ActivityCard
+													key={activity.id}
+													activity={activity}
+												/>
+											))}
+								</ul>
 							)}
-						</TabPanel>
-					</TabPanels>
-				</Tabs>
+						{selectedMainView === "Activities" &&
+							selectedView === "Attended" && (
+								<ul className={classes["grid_list_horizontal"]}>
+									{attended &&
+										attended
+											.filter(
+												(activity) =>
+													activity.datetime_end.toDate() <
+													currentTimestamp
+											)
+											.sort((activityA, activityB) => {
+												const startTimeA =
+													activityA.datetime_start.toDate();
+												const startTimeB =
+													activityB.datetime_start.toDate();
+												return startTimeB - startTimeA; // show latest first
+											})
+											.map((activity) => (
+												<ActivityCard
+													key={activity.id}
+													activity={activity}
+												/>
+											))}
+								</ul>
+							)}
+					</>
+				)}
+				{selectedMainView === "Blog" && (
+					<>
+						{posts && (
+							<Entries
+								entries={posts}
+								classes={classes}
+								numColsInput={3}
+							/>
+						)}
+					</>
+				)}
 				{/* <Box
 				// style={{
 				// 	// position: "absolute",
@@ -480,3 +483,99 @@ const Profile = ({ user }) => {
 };
 
 export default withAuth(Profile);
+
+{
+	/* <Tabs isFitted variant="soft-rounded" colorScheme="red">
+	<TabList
+		style={{
+			borderRadius: "20px",
+			boxShadow: "2px 2px 2px #00000020",
+		}}
+	>
+		<Tab>Activities</Tab>
+		<Tab>Blog Posts</Tab>
+	</TabList>
+	<TabPanels>
+		<TabPanel>
+			<div>
+				<div className={classes["selection-bar"]}>
+					<div
+						className={
+							selectedView === "Signed Up"
+								? `${classes["option-selected"]}`
+								: `${classes["option-unselected"]}`
+						}
+						onClick={() => setSelectedView("Signed Up")}
+					>
+						Signed Up
+					</div>
+					<div
+						className={
+							selectedView === "Attended"
+								? `${classes["option-selected"]}`
+								: `${classes["option-unselected"]}`
+						}
+						onClick={() => setSelectedView("Attended")}
+					>
+						Attended
+					</div>
+				</div>
+				{selectedView === "Signed Up" && (
+					<ul className={classes["grid_list_horizontal"]}>
+						{signedUp &&
+							signedUp
+								.filter(
+									(activity) =>
+										activity.datetime_end.toDate() >=
+										currentTimestamp
+								)
+								.sort((activityA, activityB) => {
+									const startTimeA =
+										activityA.datetime_start.toDate();
+									const startTimeB =
+										activityB.datetime_start.toDate();
+									return startTimeA - startTimeB;
+								})
+								.map((activity) => (
+									<ActivityCard
+										key={activity.id}
+										activity={activity}
+									/>
+								))}
+					</ul>
+				)}
+				{selectedView === "Attended" && (
+					<ul className={classes["grid_list_horizontal"]}>
+						{attended &&
+							attended
+								.filter(
+									(activity) =>
+										activity.datetime_end.toDate() <
+										currentTimestamp
+								)
+								.sort((activityA, activityB) => {
+									const startTimeA =
+										activityA.datetime_start.toDate();
+									const startTimeB =
+										activityB.datetime_start.toDate();
+									return startTimeB - startTimeA; // show latest first
+								})
+								.map((activity) => (
+									<ActivityCard
+										key={activity.id}
+										activity={activity}
+									/>
+								))}
+					</ul>
+				)}
+	
+			</div>
+		</TabPanel>
+		<TabPanel>
+			{posts && (
+				<Entries entries={posts} classes={classes} numColsInput={3} />
+			)}
+		</TabPanel>
+	</TabPanels>
+</Tabs>; */
+}

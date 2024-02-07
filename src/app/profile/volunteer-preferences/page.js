@@ -21,6 +21,7 @@ import {
 	StepNumber,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
+import { FiArrowLeft } from "react-icons/fi";
 import withAuth from "../../../hoc/withAuth";
 import { db } from "../../../firebase/config";
 import Swal from "sweetalert2";
@@ -29,6 +30,7 @@ import {
 	interests,
 	capitalise,
 } from "../../../resources/skills-interests";
+import classes from "../page.module.css";
 
 const VolunteerPreferences = ({ stepIndex, user }) => {
 	// const interestAreasItems = {
@@ -217,11 +219,20 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		<div
 			style={{
 				width: "80%",
-				margin: "0 auto",
+				margin: "80px auto",
 			}}
 		>
+			<Box
+				style={{ width: "220px" }}
+				className={classes["profile-button-dark"]}
+				onClick={() => router.push("/profile")}
+			>
+				<FiArrowLeft style={{ marginRight: "16px" }} />
+				Return to Profile
+			</Box>
 			<br />
-			<h1>Volunteer Preferences</h1>
+			<br />
+			<h1 style={{ fontSize: "24px" }}>Volunteer Preferences</h1>
 			<br />
 			{activeStep !== null && (
 				<>

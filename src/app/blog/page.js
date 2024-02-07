@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import { db } from "../../firebase/config";
 import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
@@ -9,6 +9,7 @@ import Image from "next/image";
 
 const Blog = () => {
 	const [posts, setPosts] = useState();
+	const [selectedView, setSelectedView] = useState("all");
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,7 +35,7 @@ const Blog = () => {
 			<div style={{ zIndex: 30 }}>
 				<div className={classes["page_layout"]}>
 					<br />
-					<Box style={{ height: "350px" }}>
+					<Box style={{ height: "350px", minWidth: "1200px" }}>
 						<div>
 							<Image
 								src={require("../../resources/vector-helping.png")}
@@ -75,8 +76,68 @@ const Blog = () => {
 							</p>
 						</div>
 					</Box>
+					<Tabs
+						isFitted
+						variant="enclosed"
+						colorScheme={"red"}
+						style={{
+							width: "80%",
+							margin: "0 auto",
+							borderColor: "#E4D5D5",
+						}}
+					>
+						<TabList mb="1em">
+							<Tab onClick={() => setSelectedView("reflection")}>
+								All
+							</Tab>
+							<Tab onClick={() => setSelectedView("reflection")}>
+								Reflections
+							</Tab>
+							<Tab onClick={() => setSelectedView("feedback")}>
+								Feedback
+							</Tab>
+						</TabList>
+						<TabPanels>
+							<TabPanel></TabPanel>
+							<TabPanel></TabPanel>
+							<TabPanel></TabPanel>
+						</TabPanels>
+					</Tabs>
 
-					{posts && <Entries entries={posts} classes={classes} />}
+					{posts && (
+						<>
+							{selectedView === "all" && (
+								<Entries
+									entries={posts.slice()}
+									classes={classes}
+								/>
+							)}
+							{selectedView === "reflection" && (
+								<Entries
+									entries={posts
+										.slice()
+										.filter(
+											(post) =>
+												post.type.toLowerCase() ===
+												"reflection"
+										)}
+									classes={classes}
+								/>
+							)}
+							{selectedView === "feedback" && (
+								<Entries
+									entries={posts
+										.slice()
+										.filter(
+											(post) =>
+												post.type.toLowerCase() ===
+												"feedback"
+										)}
+									classes={classes}
+								/>
+							)}
+						</>
+					)}
 				</div>{" "}
 			</div>
 		</>
