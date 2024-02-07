@@ -165,7 +165,11 @@
 }
 
 .page_layout {
-  margin: 2% 10% 6% 10%;
+  display: grid;
+  grid-template-columns: 3fr 5fr;
+  gap: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .grid_list {

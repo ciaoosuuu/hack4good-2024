@@ -1,9 +1,19 @@
+.page_layout {
+  /* display: grid;
+  grid-template-columns: 5fr 3fr;
+  gap: 30px; */
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 .image_wrapper {
     margin-top: 0.8%;
     position: relative;
     list-style: none;
     /* margin: 0.8% 4% 0% 4%; */
   }
+
+  
   
   .image {
     width: 100%;
@@ -269,12 +279,17 @@
   }
   
   .grid-item {
-    background-color: pink;
+    background-color: #2e2a2a;
     border-radius: 10px;
     color: #fff;
-    /* padding: 15px; */
+    padding: 15px;
     margin-bottom: 10px;
-    padding-top: 4px;
+    cursor: pointer
+  }
+
+  .grid-item:hover {
+    box-shadow: 2px 2px 5px #00000070;
+    opacity: 80%
   }
   
   .grid-item img {

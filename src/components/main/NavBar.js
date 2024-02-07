@@ -10,8 +10,9 @@ import {
 	MenuItem,
 	MenuList,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import theme from "../../theme.js";
@@ -21,16 +22,34 @@ import { logOut } from "../../firebase/functions.js";
 export default function NavBar() {
 	const { user } = UserAuth();
 	const router = useRouter();
+	const pathname = usePathname();
+	const [activeIndex, setActiveIndex] = useState(0);
+
+	useEffect(() => {
+		const path = pathname.split("/")[1];
+		const activeIndex = items.findIndex((item) => item.key.includes(path));
+		if (activeIndex) {
+			console.log("matchingItem", activeIndex);
+			setActiveIndex(activeIndex);
+		} else {
+			setActiveIndex(0);
+		}
+	}, [pathname]);
+
 	const [loginStatus, setLoginStatus] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
-			key: "home",
+			key: "",
 			label: `Home`,
 		},
 		{
 			key: "activities",
 			label: `Activities`,
+		},
+		{
+			key: "blog",
+			label: `Blog`,
 		},
 		{
 			key: "profile",
@@ -94,20 +113,21 @@ export default function NavBar() {
 					justifyContent: "center",
 				}}
 				colorScheme={"red"}
+				index={activeIndex}
 			>
 				<Flex key={"tabs"} style={{ width: "100%" }}>
-					{items &&
-						items.map((navItem) => (
-							<>
-								<Tab
-									key={navItem.key}
-									onClick={() => navigateTo(navItem.key)}
-								>
-									{navItem.label}
-								</Tab>
-								<Spacer key={navItem.key} />
-							</>
-						))}
+					{items.map((navItem) => (
+						<>
+							<Tab
+								key={navItem.key}
+								onClick={() => navigateTo(navItem.key)}
+								// isSelected={true}
+							>
+								{navItem.label}
+							</Tab>
+							<Spacer key={"spacer-" + navItem.key} />
+						</>
+					))}
 				</Flex>
 			</Tabs>{" "}
 			<Menu>
@@ -128,7 +148,12 @@ export default function NavBar() {
 						<MenuList>
 							{user ? (
 								<>
-									<MenuItem key={"profile"}>Profile</MenuItem>
+									<MenuItem
+										key={"profile/go"}
+										onClick={() => navigateTo("profile")}
+									>
+										Profile
+									</MenuItem>
 									<MenuItem
 										key={"account/logout"}
 										onClick={handleLogout}
