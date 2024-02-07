@@ -22,6 +22,7 @@ import {
 	googleSignIn,
 } from "../../../../firebase/functions";
 import { db } from "../../../../firebase/config";
+import { Timestamp } from "firebase/firestore";
 
 const addVolunteerToDb = async (userCredential, name) => {
 	const data = {
@@ -29,6 +30,7 @@ const addVolunteerToDb = async (userCredential, name) => {
 		email: userCredential.user.email,
 		role: "volunteer",
 		name: name,
+		created_on: Timestamp.fromDate(new Date()),
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);

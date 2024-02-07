@@ -24,13 +24,15 @@ import {
 
 import { UserAuth } from "../../../context/AuthContext";
 import { db } from "../../../../firebase/config";
+import { Timestamp } from "firebase/firestore";
 
 const addAdminToDb = async (userCredential, name) => {
 	const data = {
 		uid: userCredential.user.uid,
 		email: userCredential.user.email,
 		role: "admin",
-		name: name
+		name: name,
+		created_on: Timestamp.fromDate(new Date()),
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);
