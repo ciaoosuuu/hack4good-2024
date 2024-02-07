@@ -27,7 +27,8 @@ const getActivityCountByMonth = async () => {
           new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
       ) {
         const monthIndex =
-          (currentDate.getMonth() - activityDate.getMonth() + 11) % 12;
+          (11 - Math.abs(currentDate.getMonth() - activityDate.getMonth())) %
+          12;
 
         activityCountByMonth[monthIndex]++;
       }

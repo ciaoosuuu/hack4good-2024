@@ -59,6 +59,11 @@ const RegionActivities = () => {
           },
           maintainAspectRatio: false,
           responsive: true,
+          scale: {
+            ticks: {
+              precision: 0,
+            },
+          },
         });
       } catch (error) {
         console.error("Error fetching data:", error);
