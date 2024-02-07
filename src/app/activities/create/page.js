@@ -38,6 +38,26 @@ const formatDateForInput = (timestamp) => {
 
 const CreateActivity = ({ user }) => {
 	const router = useRouter();
+
+	useEffect(() => {
+		if (user.role !== "admin") {
+		  Swal.fire({
+			title: "Unauthorized Access!",
+			text: "Redirecting ...",
+			icon: "warning",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		  }).then(() => {
+			setTimeout(() => {
+				router.push("/activities");
+			  }, 500);
+		  });
+		}
+	  }, [user.role]);
+
+
 	const [activityTypes, setActivityTypes] = useState(activityTypesData);
 	const [tagOptions, setTagOptions] = useState(
 		[...interests, ...skills].map((tag) => {
@@ -61,6 +81,8 @@ const CreateActivity = ({ user }) => {
 		vacancy_total: 0,
 		created_on: null,
 	});
+
+
 
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
@@ -95,8 +117,7 @@ const CreateActivity = ({ user }) => {
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 
-		if (name.includes("datetime")) {
-			// Handle date fields separately
+		if (name.includes("datetime") || name.includes("deadline")) {
 			const timestampDate = value
 				? Timestamp.fromDate(new Date(value))
 				: Timestamp.fromDate(new Date());
@@ -121,32 +142,10 @@ const CreateActivity = ({ user }) => {
 			}));
 		}
 	};
+
 	useEffect(() => {
 		console.log("activity types", activityTypes);
 	}, []);
-
-	const handleTagChange = (e) => {
-		const value = e.target.value;
-
-		if (value.includes(",") || e.key === "Enter") {
-			e.preventDefault();
-
-			const newTag = value.replace(/[\n,]/g, "").trim();
-			if (newTag !== "") {
-				setFormData((prevData) => ({
-					...prevData,
-					tags: [...prevData.tags, newTag],
-				}));
-				e.target.value = ""; // Clear the input
-			}
-		}
-	};
-
-	const handleRemoveTag = (index) => {
-		const updatedTags = [...formData.tags];
-		updatedTags.splice(index, 1);
-		setFormData((prevData) => ({ ...prevData, tags: updatedTags }));
-	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -162,12 +161,10 @@ const CreateActivity = ({ user }) => {
 			let res = await db.collection("Activities").add(updatedFormData);
 			console.log("Activity added successfully!");
 			console.log(res.id);
-			// TODO: Add acitivty id to user
 			const userRef = db.collection("Users").doc(user.uid);
 			await userRef.update({
 				activities_created: arrayUnion(res.id),
 			});
-			// Optionally, you can redirect the user or perform other actions after submission.
 			Swal.fire({
 				title: "Success!",
 				text: "Activity successfully created!",
@@ -194,7 +191,7 @@ const CreateActivity = ({ user }) => {
 		}
 	};
 
-	return (
+	return user.role === "admin" ? (
 		<Box style={{ maxWidth: "600px", margin: "80px auto" }}>
 			<h1 style={{ textAlign: "center" }}>Create new Activity</h1>
 			<form onSubmit={handleSubmit}>
@@ -228,22 +225,6 @@ const CreateActivity = ({ user }) => {
 					)}
 				</FormControl>
 				<br />
-				{/* <label style={styles.label}>
-					Activity Type:
-					<select
-            option
-						name="activity_type"
-						value={formData.activity_type}
-						onChange={handleChange}
-						style={styles.input}
-					>
-						<option value="">Select Type</option>
-						<option value="Volunteering">Volunteering</option>
-						<option value="Training">Training</option>
-						<option value="Workshop">Workshop</option>
-					</select>
-				</label> */}
-
 				<FormControl isRequired>
 					<FormLabel>Description:</FormLabel>
 					<Textarea
@@ -253,16 +234,6 @@ const CreateActivity = ({ user }) => {
 						onChange={handleChange}
 					></Textarea>
 				</FormControl>
-
-				{/* <label style={styles.label}>
-					Description:
-					<textarea
-						name="description"
-						value={formData.description}
-						onChange={handleChange}
-						style={{ ...styles.input, height: "80px" }}
-					/>
-				</label> */}
 				<br />
 				<FormControl>
 					<FormLabel>Image:</FormLabel>
@@ -314,29 +285,6 @@ const CreateActivity = ({ user }) => {
 
 				<FormControl>
 					<FormLabel>Tags:</FormLabel>
-					{/* <div style={styles.tagContainer}>
-						<input
-							type="text"
-							name="tags"
-							onChange={handleTagChange}
-							placeholder="Add tags (press , to add)"
-							style={styles.tagInput}
-						/>
-					</div>
-					<div style={styles.tagContainer}>
-						{formData.tags.map((tag, index) => (
-							<div key={index} style={styles.tag}>
-								{tag}
-								<button
-									type="button"
-									onClick={() => handleRemoveTag(index)}
-									style={styles.removeButton}
-								>
-									X
-								</button>
-							</div>
-						))}
-					</div> */}
 					<MultiSelect
 						isMulti
 						value={formData.tags.map((tag) => {
@@ -414,78 +362,22 @@ const CreateActivity = ({ user }) => {
 					colorScheme="red"
 					variant={"outline"}
 					style={{ width: "100%" }}
-					//onClick={handleSubmit}
 				>
 					Submit
 				</Button>
 			</form>
 		</Box>
-	);
+		) : null;
 };
 
 const styles = {
-	form: {
-		display: "flex",
-		flexDirection: "column",
-		maxWidth: "400px",
-		margin: "auto",
-	},
-	label: {
-		margin: "10px 0",
-	},
 	input: {
 		padding: "8px",
 		margin: "5px 0",
 		borderRadius: "4px",
 		border: "1px solid #ccc",
 		width: "100%",
-	},
-	button: {
-		background: "#4caf50",
-		color: "#fff",
-		padding: "10px",
-		borderRadius: "4px",
-		border: "none",
-		cursor: "pointer",
-		marginTop: "10px",
-	},
-	tagContainer: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-		gap: "5px",
-		flexWrap: "wrap", // Allow tags to wrap to the next line
-		marginBottom: "5px",
-	},
-
-	tagInput: {
-		padding: "8px",
-		borderRadius: "5px",
-		border: "1px solid #ccc",
-		marginRight: "5px", // Add marginRight to create spacing between tags
-	},
-	tag: {
-		background: "#4caf50",
-		color: "#fff",
-		padding: "8px 12px",
-		borderRadius: "5px",
-		marginRight: "5px",
-		marginBottom: "5px",
-		display: "flex",
-		alignItems: "center",
-	},
-
-	removeButton: {
-		marginLeft: "5px",
-		cursor: "pointer",
-		background: "#ff6f6f",
-		border: "none",
-		borderRadius: "50%",
-		padding: "5px",
-		color: "#fff",
-		fontWeight: "bold",
-		fontSize: "12px",
-	},
+	}
 };
 
 export default withAuth(CreateActivity);
