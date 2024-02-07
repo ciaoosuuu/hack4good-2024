@@ -66,8 +66,8 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 	const [step1ChangesMade, setStep1ChangesMade] = useState(false);
 	const [step2ChangesMade, setStep2ChangesMade] = useState(false);
 	const [form1Data, setForm1Data] = useState({
-		dateOfBirth: user.dateOfBirth ? user.dateOfBirth : null,
-		description: user.description ? user.description : null,
+		dateOfBirth: user.date_of_birth ? user.date_of_birth : null,
+		description: user.description ? user.description : "",
 	});
 	const [form2Data, setForm2Data] = useState({
 		languages: user.preferences?.languages
@@ -136,7 +136,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 					: null,
 				description: form1Data.description
 					? form1Data.description
-					: null,
+					: "",
 			});
 			// Optionally, you can redirect the user or perform other actions after submission.
 			Swal.fire({
