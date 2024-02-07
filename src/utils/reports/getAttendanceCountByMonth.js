@@ -10,6 +10,9 @@ const getAttendanceCountByMonth = async () => {
     const currentDate = new Date();
 
     const attendanceCountByMonth = Array.from({ length: 12 }, () => 0);
+    const attendanceCountByMonthVolunteer = Array.from({ length: 12 }, () => 0);
+    const attendanceCountByMonthWorkshop = Array.from({ length: 12 }, () => 0);
+    const attendanceCountByMonthTraining = Array.from({ length: 12 }, () => 0);
 
     activitiesData.forEach((activity) => {
       const activityDate = new Date(
@@ -28,16 +31,29 @@ const getAttendanceCountByMonth = async () => {
           (11 - Math.abs(currentDate.getMonth() - activityDate.getMonth())) %
           12;
 
+        if (activity.activity_type === "Volunteering") {
+          attendanceCountByMonthVolunteer[monthIndex]++;
+        } else if (activity.activity_type === "Workshop") {
+          attendanceCountByMonthWorkshop[monthIndex]++;
+        } else if (activity.activity_type === "Training") {
+          attendanceCountByMonthTraining[monthIndex]++;
+        }
+
         attendanceCountByMonth[monthIndex] +=
           activity.participants_attended.length;
       }
     });
 
     console.log(attendanceCountByMonth);
-    return attendanceCountByMonth;
+    return [
+      attendanceCountByMonthVolunteer,
+      attendanceCountByMonthWorkshop,
+      attendanceCountByMonthTraining,
+      attendanceCountByMonth,
+    ];
   } catch (error) {
     console.error("Error fetching activities:", error);
-    return [];
+    return [[], [], [], []];
   }
 };
 

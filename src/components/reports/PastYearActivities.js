@@ -47,17 +47,17 @@ const PastYearActivities = () => {
             {
               label: "# Volunteering",
               data: volunteeringCountByMonth,
-              backgroundColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgb(255, 99, 132, 0.4)",
             },
             {
               label: "# Workshops",
               data: workshopCountByMonth,
-              backgroundColor: "rgb(75, 192, 192)",
+              backgroundColor: "rgb(75, 192, 192, 0.4)",
             },
             {
               label: "# Trainings",
               data: trainingCountByMonth,
-              backgroundColor: "rgb(53, 162, 235)",
+              backgroundColor: "rgb(53, 162, 235, 0.4)",
             },
           ],
         });
@@ -95,7 +95,7 @@ const PastYearActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "420px" }}>
+      <div style={{ backgroundColor: "white", height: "400px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>

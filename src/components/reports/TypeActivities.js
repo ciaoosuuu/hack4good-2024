@@ -41,9 +41,9 @@ const TypesActivities = () => {
               label: "# Activities",
               data: activityCountByType,
               backgroundColor: [
-                "rgb(255, 99, 132)",
-                "rgb(255, 159, 64)",
-                "rgb(55, 162, 235)",
+                "rgb(255, 99, 132, 0.4)",
+                "rgb(255, 159, 64, 0.4)",
+                "rgb(55, 162, 235, 0.4)",
               ],
             },
           ],
@@ -76,7 +76,7 @@ const TypesActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "350px" }}>
+      <div style={{ backgroundColor: "white", height: "340px" }}>
         <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>

@@ -41,9 +41,9 @@ const TypeActivities = () => {
               label: "Number",
               data: attendanceCountByType,
               backgroundColor: [
-                "rgb(255, 99, 132)",
-                "rgb(255, 159, 64)",
-                "rgb(55, 162, 235)",
+                "rgb(255, 99, 132, 0.4)",
+                "rgb(255, 159, 64, 0.4)",
+                "rgb(55, 162, 235, 0.4)",
               ],
             },
           ],

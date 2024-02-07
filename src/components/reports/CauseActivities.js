@@ -46,17 +46,17 @@ const CauseActivities = () => {
             {
               label: "# Volunteerinig",
               data: causeCountArrayVolunteering,
-              backgroundColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgb(255, 99, 132, 0.4)",
             },
             {
               label: "# Workshops",
               data: causeCountArrayWorkshop,
-              backgroundColor: "rgb(75, 192, 192)",
+              backgroundColor: "rgb(75, 192, 192, 0.4)",
             },
             {
               label: "# Trainings",
               data: causeCountArrayTraining,
-              backgroundColor: "rgb(53, 162, 235)",
+              backgroundColor: "rgb(53, 162, 235, 0.4)",
             },
           ],
         });
@@ -94,7 +94,7 @@ const CauseActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "420px" }}>
+      <div style={{ backgroundColor: "white", height: "400px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>

@@ -33,17 +33,31 @@ const PastYearAttendees = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const attendanceCountByMonths = await getAttendanceCountByMonth();
+        const [
+          attendanceCountByMonthVolunteer,
+          attendanceCountByMonthWorkshop,
+          attendanceCountByMonthTraining,
+          attendanceCountByMonth,
+        ] = await getAttendanceCountByMonth();
         const months = getPast12Months();
 
         setChartData({
           labels: months,
           datasets: [
             {
-              label: "# Volunteers",
-              data: attendanceCountByMonths,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              label: "# Volunteers (Volunteering)",
+              data: attendanceCountByMonthVolunteer,
+              backgroundColor: "rgb(255, 99, 132, 0.4)",
+            },
+            {
+              label: "# Volunteers (Workshop)",
+              data: attendanceCountByMonthWorkshop,
+              backgroundColor: "rgb(75, 192, 192, 0.4)",
+            },
+            {
+              label: "# Volunteers (Training)",
+              data: attendanceCountByMonthTraining,
+              backgroundColor: "rgb(53, 162, 235, 0.4)",
             },
           ],
         });
@@ -63,6 +77,12 @@ const PastYearAttendees = () => {
             ticks: {
               precision: 0,
             },
+            x: {
+              stacked: true,
+            },
+            y: {
+              stacked: true,
+            },
           },
         });
       } catch (error) {
@@ -75,7 +95,7 @@ const PastYearAttendees = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{ backgroundColor: "white", height: "400px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>

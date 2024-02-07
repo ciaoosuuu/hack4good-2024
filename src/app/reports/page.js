@@ -79,6 +79,20 @@ const Reports = () => {
             </div>
           </div>
           <div style={{ flex: "30%" }}>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                padding: "10px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                height: "140px",
+              }}
+            ></div>
+            <div style={chartStyleRight}>
+              <RegionAttendance />
+              {/* change this to languages spoke demographic */}
+            </div>
             <div style={chartStyleRight}>
               <RegionAttendance />
             </div>
@@ -106,7 +120,7 @@ const Reports = () => {
                 padding: "10px",
                 backgroundColor: "white",
                 borderRadius: "10px",
-                height: "120px",
+                height: "110px",
               }}
             ></div>
             <div style={chartStyleRight}>

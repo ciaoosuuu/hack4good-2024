@@ -42,8 +42,7 @@ const PastYearUsers = () => {
             {
               label: "# Volunteers",
               data: userCountByMonths,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              backgroundColor: "rgb(255, 99, 132, 0.4)",
             },
           ],
         });
@@ -75,7 +74,7 @@ const PastYearUsers = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{ backgroundColor: "white", height: "400px" }}>
         <Bar data={chartData} options={chartOptions} />
       </div>
     </>
