@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
 	Box,
@@ -15,31 +15,46 @@ import { FcGoogle } from "react-icons/fc";
 import { FiAlertCircle } from "react-icons/fi";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RiUserLine } from "react-icons/ri";
-import { auth } from "../../../context/AuthContext";
+import Swal from "sweetalert2";
+
 import {
-	emailPwSignIn,
 	emailPwSignUp,
-	logOut,
 	googleSignIn,
 } from "../../../../firebase/functions";
-import withAuth from "../../../../hoc/withAuth";
 
-const AdminSignup = ({ user }) => {
+import { UserAuth } from "../../../context/AuthContext";
+
+const AdminSignup = () => {
 	const router = useRouter();
+	const { user , isLoading } = UserAuth();
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
-	// console.log("adminsignup");
 
-	// console.log(user?.email);
+	useEffect(() => {
+		if (user) {
+		  Swal.fire({
+			title: "You have logged in.",
+			text: "Redirecting ...",
+			icon: "success",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		  }).then(() => {
+			// setTimeout(() => {
+				router.push("/activities");
+			//   }, 500);
+		  });
+		}
+	  }, [user]);
 
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
 			.then(() => {
 				//successfully login
-				console.log("Sign up");
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
@@ -54,18 +69,16 @@ const AdminSignup = ({ user }) => {
 		googleSignIn()
 			.then(() => {
 				//successfully login
-				console.log("Log in.");
 				router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
-				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.log(`Email login error: ${errorMessage}`);
 				setLoginError(errorMessage);
 			});
 	};
 
-	return (
+	return isLoading || user ? null : (
 		<>
 			<Button
 				style={{ top: "1.5rem", right: "1.5rem", position: "fixed" }}
@@ -139,12 +152,6 @@ const AdminSignup = ({ user }) => {
 							{loginError}{" "}
 						</Alert>
 					)}
-					{/* {!loginError && user && (
-					<Alert status="error">
-						<FiAlertCircle style={{ marginRight: "10px" }} />
-						{user.email}
-					</Alert>
-				)} */}
 				</Box>
 				<div
 					style={{
@@ -169,4 +176,4 @@ const AdminSignup = ({ user }) => {
 	);
 };
 
-export default withAuth(AdminSignup);
+export default AdminSignup;
