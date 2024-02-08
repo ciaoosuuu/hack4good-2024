@@ -9,8 +9,9 @@ import {
 	Input,
 	Flex,
 	Alert,
-	Link,
 } from "@chakra-ui/react";
+import { Link } from '@chakra-ui/next-js'
+import NextLink from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { FiAlertCircle } from "react-icons/fi";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -188,7 +189,7 @@ const VolunteerSignup = () => {
 				<Flex justify={"center"}>
 					<p>
 						Already have an account?{" "}
-						<Link color="red.500" href="/account/login">
+						<Link as={NextLink} color="red.500" href="/account/login">
 							Log in here.
 						</Link>
 					</p>
