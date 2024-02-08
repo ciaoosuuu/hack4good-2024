@@ -14,8 +14,8 @@ const getUserCountByMonth = async () => {
     usersData.forEach((user) => {
       if (user.role === "volunteer") {
         const userCreateDate = new Date(
-          user.datetime_joined.toDate().getFullYear(),
-          user.datetime_joined.toDate().getMonth(),
+          user.created_on.toDate().getFullYear(),
+          user.created_on.toDate().getMonth(),
           1
         );
 

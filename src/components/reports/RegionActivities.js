@@ -1,12 +1,12 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
@@ -16,7 +16,7 @@ import getActivityCountByRegion from "../../utils/reports/getActivityCountByRegi
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -40,10 +40,15 @@ const RegionActivities = () => {
           labels: ["North-East", "North", "Central", "West", "East"],
           datasets: [
             {
-              label: "Number",
+              label: "# Activities",
               data: activityCountByRegion,
-              borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4",
+              backgroundColor: [
+                "rgb(255, 99, 132, 0.4)",
+                "rgb(255, 159, 64, 0.4)",
+                "rgb(255, 205, 86, 0.4)",
+                "rgb(76, 193, 192, 0.4)",
+                "rgb(55, 162, 235, 0.4)",
+              ],
             },
           ],
         });
@@ -75,8 +80,8 @@ const RegionActivities = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }}>
-        <Bar data={chartData} options={chartOptions} />
+      <div style={{ backgroundColor: "white", height: "340px" }}>
+        <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>
   );

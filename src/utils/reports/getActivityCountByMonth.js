@@ -11,6 +11,10 @@ const getActivityCountByMonth = async () => {
 
     const activityCountByMonth = Array.from({ length: 12 }, () => 0);
 
+    const volunteeringCountByMonth = Array.from({ length: 12 }, () => 0);
+    const workshopCountByMonth = Array.from({ length: 12 }, () => 0);
+    const trainingCountByMonth = Array.from({ length: 12 }, () => 0);
+
     console.log(activitiesData);
 
     activitiesData.forEach((activity) => {
@@ -30,15 +34,28 @@ const getActivityCountByMonth = async () => {
           (11 - Math.abs(currentDate.getMonth() - activityDate.getMonth())) %
           12;
 
+        if (activity.activity_type === "Volunteering") {
+          volunteeringCountByMonth[monthIndex]++;
+        } else if (activity.activity_type === "Workshop") {
+          workshopCountByMonth[monthIndex]++;
+        } else if (activity.activity_type === "Training") {
+          trainingCountByMonth[monthIndex]++;
+        }
+
         activityCountByMonth[monthIndex]++;
       }
     });
 
     console.log(activityCountByMonth);
-    return activityCountByMonth;
+    return [
+      volunteeringCountByMonth,
+      workshopCountByMonth,
+      trainingCountByMonth,
+      activityCountByMonth,
+    ];
   } catch (error) {
     console.error("Error fetching activities:", error);
-    return [];
+    return [[], [], [], []];
   }
 };
 

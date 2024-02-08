@@ -1,29 +1,28 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import getPast12Months from "../../utils/reports/getPast12Months";
-import getUserCountByMonth from "../../utils/reports/getUserCountByMonth";
+import getAttendanceCountByType from "../../utils/reports/getAttendanceCountByType";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
 );
 
-const PastYearUsers = () => {
+const TypeActivities = () => {
   const [chartData, setChartData] = useState({
     datasets: [],
   });
@@ -33,16 +32,19 @@ const PastYearUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userCountByMonths = await getUserCountByMonth();
-        const months = getPast12Months();
+        const attendanceCountByType = await getAttendanceCountByType();
 
         setChartData({
-          labels: months,
+          labels: ["Volunteering", "Workshop", "Training"],
           datasets: [
             {
-              label: "# Volunteers",
-              data: userCountByMonths,
-              backgroundColor: "rgb(255, 99, 132, 0.4)",
+              label: "Number",
+              data: attendanceCountByType,
+              backgroundColor: [
+                "rgb(255, 99, 132, 0.4)",
+                "rgb(255, 159, 64, 0.4)",
+                "rgb(55, 162, 235, 0.4)",
+              ],
             },
           ],
         });
@@ -53,7 +55,7 @@ const PastYearUsers = () => {
             },
             title: {
               display: true,
-              text: "Total number of volunteers in the past 12 months",
+              text: "Number of volunteers attended by type",
             },
           },
           maintainAspectRatio: false,
@@ -74,11 +76,11 @@ const PastYearUsers = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white", height: "400px" }}>
-        <Bar data={chartData} options={chartOptions} />
+      <div style={{ backgroundColor: "white", height: "350px" }}>
+        <Doughnut data={chartData} options={chartOptions} />
       </div>
     </>
   );
 };
 
-export default PastYearUsers;
+export default TypeActivities;
