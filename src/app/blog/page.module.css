@@ -348,4 +348,19 @@
     margin-top: 15px;
     border-radius: 5px;
   }
+
+.read-more {
+  background-color: rgba(122, 32, 32, 0.233);
+  border-radius: 100px;
+  width: 100px;
+  font-weight: 700;
+  padding: 6px 0;
+  margin: 4px 0;
+  text-align: center;
+  z-index: 200;
+}
+
+.read-more:hover {
+  background-color: rgba(122, 32, 32, 0.7);
+}
   

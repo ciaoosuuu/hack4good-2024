@@ -181,6 +181,13 @@
   width: 100%;
 }
 
+.grid_list_horizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0;
+  gap: 10px;
+}
+
 .item {
   background-color: pink;
   display: flex;

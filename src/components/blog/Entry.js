@@ -7,6 +7,7 @@ import { getAuth } from "firebase/auth";
 import { db } from "../../firebase/config";
 import { useRouter } from "next/navigation";
 import classes from "../../app/blog/page.module.css";
+import ReadMoreReact from "read-more-react";
 
 const Entry = (entry, index) => {
 	const router = useRouter();
@@ -48,19 +49,38 @@ const Entry = (entry, index) => {
 						: "rgb(102, 40, 40," + randomOpacity() + ")"
 				} `,
 			}}
-			onClick={routeToActivity}
 		>
-			{entry.image && <img src={entry.image} alt="Reflection" />}
+			{entry.image && (
+				<img
+					src={entry.image}
+					alt="Reflection"
+					onClick={routeToActivity}
+				/>
+			)}
 			<p />
 			<Divider />
-			<div style={{ padding: "5px", fontWeight: 700 }}>
+			<div
+				style={{ padding: "5px", fontWeight: 700 }}
+				onClick={routeToActivity}
+			>
 				{entry.activity_name}
 			</div>
 			<Divider />
 			<p />
-			<p>{`${entry.content.split(" ").slice(0, 100).join(" ")}...`}</p>
+			<p>
+				<ReadMoreReact
+					text={entry.content}
+					min={100}
+					ideal={180}
+					max={200}
+					readMoreText={
+						<div className={classes["read-more"]}>Read more...</div>
+					}
+				/>
+			</p>
+			{/* <p>{`${entry.content.split(" ").slice(0, 100).join(" ")}...`}</p> */}
 			<p />
-			<div>
+			<div onClick={routeToActivity}>
 				{entry.isanonymous && (
 					<Flex align={"center"}>
 						<FaCircleUser
@@ -80,7 +100,7 @@ const Entry = (entry, index) => {
 								borderRadius: "30px",
 								objectFit: "cover",
 								marginRight: "8px",
-								marginLeft: "-3px",
+								//marginLeft: "-3px",
 							}}
 							src={userData.image}
 							alt={userData.name}

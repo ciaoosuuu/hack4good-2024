@@ -41,30 +41,51 @@ export default function NavBar() {
 	}, [user]);
 
 	useEffect(() => {
+		console.log("path", pathname);
+		if (pathname === "/profile/edit-settings") {
+			setActiveIndex(-1);
+			return;
+		}
 		const path = pathname.split("/")[1];
 		const items = [
 			{
 				key: "",
 				label: "Home",
+				index: 0,
 			},
 			{
 				key: "activities",
 				label: "Activities",
+				index: 1,
 			},
 			{
 				key: "blog",
 				label: "Blog",
+				index: 2,
 			},
 			{
 				key: "profile",
 				label: "Profile",
+				index: 3,
+			},
+			{
+				key: "reports",
+				label: "Reports",
+				index: 3,
+			},
+			{
+				key: "heroes",
+				label: "Heroes",
+				index: 4,
 			},
 		];
-		const activeIndex = items.findIndex((item) => item.key.includes(path));
+		const activeItem = items.find((item) => item.key === path);
 
 		// const activeIndex = 0;
-		if (activeIndex) {
-			console.log("matchingItem", activeIndex);
+		if (activeItem) {
+			console.log("matchingItem", activeItem);
+			const activeIndex = activeItem.index;
+
 			setActiveIndex(activeIndex);
 		} else {
 			setActiveIndex(0);
@@ -88,10 +109,6 @@ export default function NavBar() {
 		},
 		...(user && isAdmin
 			? [
-					{
-						key: "profile",
-						label: "Edit Profile",
-					},
 					{
 						key: "reports",
 						label: "Reports",
@@ -141,7 +158,7 @@ export default function NavBar() {
 				top: 0,
 				position: "sticky",
 				display: "flex",
-				zIndex: 1,
+				zIndex: 500,
 				width: "100%",
 				justifyContent: "space-between",
 				alignItems: "center",
@@ -188,7 +205,7 @@ export default function NavBar() {
 								{navItem.label}
 							</Tab>
 							<Spacer key={"spacer-" + navItem.key} />
-							</Fragment>
+						</Fragment>
 					))}
 				</Flex>
 			</Tabs>{" "}
@@ -219,12 +236,29 @@ export default function NavBar() {
 						<MenuList>
 							{user ? (
 								<>
-									<MenuItem
-										key={"profile/go"}
-										onClick={() => navigateTo("profile")}
-									>
-										Profile
-									</MenuItem>
+									{" "}
+									{user && !isAdmin && (
+										<MenuItem
+											key={"profile/go"}
+											onClick={() =>
+												navigateTo("profile")
+											}
+										>
+											Profile
+										</MenuItem>
+									)}
+									{user && isAdmin && (
+										<MenuItem
+											key={"profile/edit-settings"}
+											onClick={() =>
+												navigateTo(
+													"profile/edit-settings"
+												)
+											}
+										>
+											Edit Profile
+										</MenuItem>
+									)}
 									<MenuItem
 										key={"account/logout"}
 										onClick={handleLogout}

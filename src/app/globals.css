@@ -25,7 +25,13 @@ body {
     )
     rgb(var(--background-start-rgb)) !important;
   min-height: 100vh !important;
-  padding: 0rem 1rem
+  /* overflow-x: hidden; */
+  /* padding: 0rem 1rem */
+}
+
+.main-body {
+  padding: 0rem 1rem;
+  min-height: 100vh !important;
 }
 
 @layer utilities {
