@@ -226,7 +226,7 @@ const Profile = ({ user }) => {
 							<h1>Total EXP: {user.exp_points}</h1>
 						</Flex>
 						<br />
-						{user.exp_points && (
+						{user.exp_points !== "0"  && (
 							<UserBadges userExp={user.exp_points} />
 						)}
 					</Box>
