@@ -289,7 +289,7 @@ const Home = () => {
 				</Box>
 			</div>
 			<br />
-			<div style={{ width: "80%", margin: "0 auto" }}>
+			{user && user.role === "volunteer" && <div style={{ width: "80%", margin: "0 auto" }}>
 				<h1
 					style={{
 						fontSize: "40px",
@@ -310,7 +310,7 @@ const Home = () => {
 								/>
 							))}
 				</ul>
-			</div>
+			</div>}
 			<br />
 			<div style={{ width: "80%", margin: "0 auto" }}>
 				<h1
