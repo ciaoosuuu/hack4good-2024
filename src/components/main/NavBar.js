@@ -103,8 +103,8 @@ export default function NavBar() {
 						label: "Profile",
 					},
 					{
-						key: "heroes",
-						label: "Heroes",
+						key: "leaderboard",
+						label: "Leaderboard",
 					},
 			  ]),
 		,

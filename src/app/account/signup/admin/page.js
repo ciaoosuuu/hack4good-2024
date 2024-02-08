@@ -34,6 +34,7 @@ const addAdminToDb = async (userCredential, name) => {
 		role: "admin",
 		name: name,
 		created_on: Timestamp.fromDate(new Date()),
+		activities_created: [],
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);

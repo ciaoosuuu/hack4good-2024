@@ -6,7 +6,7 @@ import withAuth from "../../hoc/withAuth";
 import getUserLevel from "../../utils/gamify/getUserLevel";
 import badges from "../../utils/gamify/badges";
 
-const Heroes = () => {
+const Leaderboard = () => {
   const [topUsers, setTopUsers] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Heroes = () => {
         marginBottom: "2%",
       }}
     >
-      <h1 style={{ fontSize: "30px" }}>Heroes</h1>
+      <h1 style={{ fontSize: "30px" }}>Leaderboard</h1>
       <div style={{ display: "flex" }}>
         <div style={{ flex: "7%", display: "flex", justifyContent: "center" }}>
           Index
@@ -130,4 +130,4 @@ const Heroes = () => {
   );
 };
 
-export default withAuth(Heroes);
+export default withAuth(Leaderboard);

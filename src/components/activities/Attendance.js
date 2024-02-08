@@ -40,13 +40,7 @@ const Attendance = ({ userRole, classes, activity, activityId }) => {
 	const activityInformation = {
 		activity_id: activityId,
 		activity_name: activity.activity_name,
-		activity_hours: parseFloat(
-			(
-				(activity.datetime_end.toDate() -
-					activity.datetime_start.toDate()) /
-				(1000 * 60 * 60)
-			).toFixed(2)
-		),
+		activity_hours: activity.activity_hours,
 		activity_date: activity.datetime_start,
 		activity_type: activity.activity_type,
 	};
@@ -62,7 +56,6 @@ const Attendance = ({ userRole, classes, activity, activityId }) => {
 						.collection("Users")
 						.doc(userID)
 						.get();
-					console.log(userDoc);
 					if (userDoc.exists) {
 						// Access user details from the document data
 						return { id: userID, ...userDoc.data() };

@@ -71,8 +71,10 @@ const CreateActivity = ({ user }) => {
 		image: "",
 		location_address: "",
 		location_name: "",
+		location_postal: "",
 		activity_name: "",
 		activity_type: "",
+		activity_hours: 0,
 		organiser_id: "",
 		organiser_name: "",
 		participants_attended: [],
@@ -134,7 +136,7 @@ const CreateActivity = ({ user }) => {
 				[name]: newArray,
 			}));
 		} else {
-			const newValue = value;
+			const newValue = name === "vacancy_total" || name === "activity_hours" ? parseFloat(value) : value;
 
 			setFormData((prevData) => ({
 				...prevData,
@@ -173,7 +175,7 @@ const CreateActivity = ({ user }) => {
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
-			}).then(router.push("/"));
+			});
 			setTimeout(function () {
 				router.push("/");
 			}, 1000);
@@ -269,7 +271,18 @@ const CreateActivity = ({ user }) => {
 					/>
 				</FormControl>
 				<br />
-
+				<FormControl isRequired>
+					<FormLabel>Postal code:</FormLabel>
+					<Input
+						type="text"
+						name="location_postal"
+						value={formData.location_postal}
+						onChange={handleChange}
+						placeholder="Location Postal Code"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
 				<FormControl isRequired>
 					<FormLabel>Organiser Name:</FormLabel>
 					<Input
@@ -342,6 +355,18 @@ const CreateActivity = ({ user }) => {
 						name="datetime_end"
 						value={formatDateForInput(formData.datetime_end)}
 						onChange={handleChange}
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Total Activity Hours:</FormLabel>
+					<Input
+						type="number"
+						name="activity_hours"
+						value={formData.activity_hours}
+						onChange={handleChange}
+						placeholder="Activity Hours"
 						variant="filled"
 					/>
 				</FormControl>
