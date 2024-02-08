@@ -59,6 +59,14 @@ export default function NavBar() {
 			label: `Blog`,
 		},
 		{
+			key: "heroes",
+			label: `Heroes`,
+		},
+		{
+			key: "reports",
+			label: `Reports`,
+		},
+		{
 			key: "profile",
 			label: `Profile`,
 		},

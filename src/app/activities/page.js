@@ -148,14 +148,13 @@ const Activities = ({ user }) => {
 												activity.datetime_end.toDate() >=
 												currentTimestamp
 										)
-										.slice()
-										// .sort((activityA, activityB) => {
-										// 	const startTimeA =
-										// 		activityA.datetime_start.toDate();
-										// 	const startTimeB =
-										// 		activityB.datetime_start.toDate();
-										// 	return startTimeA - startTimeB;
-										// })
+										.sort((activityA, activityB) => {
+											const startTimeA =
+												activityA.datetime_start.toDate();
+											const startTimeB =
+												activityB.datetime_start.toDate();
+											return startTimeA - startTimeB;
+										})
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -173,14 +172,13 @@ const Activities = ({ user }) => {
 												activity.datetime_end.toDate() <
 												currentTimestamp
 										)
-										//   .slice()
-										// .sort((activityA, activityB) => {
-										// 	const startTimeA =
-										// 		activityA.datetime_start.toDate();
-										// 	const startTimeB =
-										// 		activityB.datetime_start.toDate();
-										// 	return startTimeB - startTimeA; // show newest first
-										// })
+										.sort((activityA, activityB) => {
+											const startTimeA =
+												activityA.datetime_start.toDate();
+											const startTimeB =
+												activityB.datetime_start.toDate();
+											return startTimeB - startTimeA; // show newest first
+										})
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -242,6 +240,10 @@ const Activities = ({ user }) => {
 								{upcomingActivities &&
 								upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
 									upcomingActivities //replace this with list of actual activities just for this user
+										.filter((activity) =>
+											activity.datetime_end.toDate() >=
+											currentTimestamp
+										)
 										.sort((activityA, activityB) => {
 											const startTimeA =
 												activityA.datetime_start.toDate();
@@ -249,6 +251,7 @@ const Activities = ({ user }) => {
 												activityB.datetime_start.toDate();
 											return startTimeA - startTimeB;
 										})
+										
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
