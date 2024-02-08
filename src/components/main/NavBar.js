@@ -18,6 +18,13 @@ import Image from "next/image";
 import theme from "../../theme.js";
 import { UserAuth } from "../../app/context/AuthContext.js";
 import { logOut } from "../../firebase/functions.js";
+import { Roboto_Slab } from "next/font/google";
+
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
 
 export default function NavBar() {
 	const { user } = UserAuth();
@@ -104,7 +111,7 @@ export default function NavBar() {
 						margin: "0 10px",
 					}}
 				/>
-				<p className="tracking-wider">hack4good</p>
+				<h1 className={roboto_slab.className}>hack4good</h1>
 			</Flex>
 			<Tabs
 				style={{

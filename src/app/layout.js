@@ -3,6 +3,7 @@ import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/main/NavBar";
+import Footer from "../components/main/Footer";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
 				<AuthContextProvider>
 					{showNavBar && <NavBar />}
 					<body className={inter.className}>{children}</body>
+					<Footer />
 				</AuthContextProvider>
 			</Providers>
 		</html>

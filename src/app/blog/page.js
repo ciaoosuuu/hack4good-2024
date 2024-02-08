@@ -21,7 +21,13 @@ const Blog = () => {
 					...doc.data(),
 				}));
 				console.log(postsData);
-				setPosts(postsData);
+
+				const postsSorted = postsData.sort((entryA, entryB) => {
+					const postTimeA = entryA.datetime_posted.toDate();
+					const postTimeB = entryB.datetime_posted.toDate();
+					return postTimeA - postTimeB;
+				});
+				setPosts(postsSorted);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
