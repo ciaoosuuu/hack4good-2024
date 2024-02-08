@@ -333,6 +333,7 @@ const Profile = ({ user }) => {
 														<ActivityCard
 															key={activity.id}
 															activity={activity}
+															inProfile={true}
 														/>
 													))}
 										</ul>
@@ -355,6 +356,7 @@ const Profile = ({ user }) => {
 														<ActivityCard
 															key={activity.id}
 															activity={activity}
+															allowReq={true}
 															inProfile={true}
 														/>
 													))}

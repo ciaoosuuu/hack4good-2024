@@ -143,3 +143,11 @@
   cursor: pointer;
   transition: color 0.3s ease;
 }
+
+.create-activities-shortcut {
+  cursor:pointer;
+}
+
+.create-activities-shortcut:hover {
+ opacity: 60%; 
+}
