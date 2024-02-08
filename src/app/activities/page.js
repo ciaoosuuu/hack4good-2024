@@ -10,12 +10,13 @@ import ActivityCard from "../../components/activities/ActivityCard";
 import withAuth from "../../hoc/withAuth";
 import classes from "./page.module.css";
 import Image from "next/image";
+import getTopActivities from "../../utils/matching/getTopActivities"
 
 const Activities = ({ user }) => {
 	const currentTimestamp = new Date();
 	const upcomingActivitiesIds = user.activities_signedup;
 	const [selectedView, setSelectedView] = useState("Upcoming");
-	const [activities, setActivities] = useState(null);
+	const [activities, setActivities] = useState([]);
 	const [upcomingActivities, setUpcomingActivities] = useState([]);
 
 	useEffect(() => {
@@ -91,6 +92,12 @@ const Activities = ({ user }) => {
 
 		fetchUpcomingActivities(upcomingActivitiesIds);
 	}, []);
+
+	useEffect(() => {
+		if (activities.length > 0) {
+			console.log(getTopActivities(user, activities));
+		}
+	}, [activities])
 
 	return (
 		<>
