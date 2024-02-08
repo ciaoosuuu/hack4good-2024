@@ -79,14 +79,13 @@ const Profile = ({ user }) => {
 		const fetchAttended = async () => {
 			if (!attendedDetails || !Array.isArray(attendedDetails)) {
 				return;
-			}
+			}	
 			const promises = attendedDetails.map(async (attended) => {
 				try {
 					const activityDoc = await db
 						.collection("Activities")
 						.doc(attended.activity_id)
 						.get();
-					console.log(activityDoc);
 					if (activityDoc.exists) {
 						return {
 							id: attended.activity_id,
@@ -146,7 +145,7 @@ const Profile = ({ user }) => {
 			});
 
 			const postResults = await Promise.all(promises);
-			const postsSorted = postsData
+			const postsSorted = postResults
 				.filter(Boolean)
 				.sort((entryA, entryB) => {
 					const postTimeA = entryA.datetime_posted.toDate();
@@ -326,6 +325,7 @@ const Profile = ({ user }) => {
 												<ActivityCard
 													key={activity.id}
 													activity={activity}
+													inProfile={true}
 												/>
 											))}
 								</ul>

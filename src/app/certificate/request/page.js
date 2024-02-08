@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { calcHrsGivenRange, generateCertificateByActivity, generateCertificateByTime } from './helper';
 import withAuth from '../../../hoc/withAuth';
+import { useSearchParams } from 'next/navigation';
 
 
 const RequestCertificatePage = ({user}) => {
-  const [selectedOption, setSelectedOption] = useState('');
-  const [selectedActivity, setSelectedActivity] = useState(null);
+  const reqActivityId = useSearchParams().get('reqActivityId');
+  const [selectedOption, setSelectedOption] = useState(reqActivityId ? 'byActivity' : '');
+  const [selectedActivity, setSelectedActivity] = useState(reqActivityId ? user.activities_attended.find(activity => activity.activity_id === reqActivityId) : null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
