@@ -46,24 +46,44 @@ export default function NavBar() {
 			{
 				key: "",
 				label: "Home",
+				index: 0,
 			},
 			{
 				key: "activities",
 				label: "Activities",
+				index: 1,
 			},
 			{
 				key: "blog",
 				label: "Blog",
+				index: 2,
 			},
 			{
 				key: "profile",
 				label: "Profile",
+				index: 3,
+			},
+			{
+				key: "profile/edit-settings",
+				label: "Edit Profile",
+				index: 3,
+			},
+			{
+				key: "reports",
+				label: "Reports",
+				index: 4,
+			},
+			{
+				key: "heroes",
+				label: "Heroes",
+				index: 4,
 			},
 		];
-		const activeIndex = items.findIndex((item) => item.key.includes(path));
+		const activeItem = items.find((item) => item.key.includes(path));
 
 		// const activeIndex = 0;
-		if (activeIndex) {
+		if (activeItem) {
+			const activeIndex = activeItem.index;
 			console.log("matchingItem", activeIndex);
 			setActiveIndex(activeIndex);
 		} else {
@@ -89,7 +109,7 @@ export default function NavBar() {
 		...(user && isAdmin
 			? [
 					{
-						key: "profile",
+						key: "profile/edit-settings",
 						label: "Edit Profile",
 					},
 					{
@@ -188,7 +208,7 @@ export default function NavBar() {
 								{navItem.label}
 							</Tab>
 							<Spacer key={"spacer-" + navItem.key} />
-							</Fragment>
+						</Fragment>
 					))}
 				</Flex>
 			</Tabs>{" "}
