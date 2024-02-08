@@ -16,24 +16,26 @@ const Entries = ({ entries, classes, numColsInput }) => {
 	const colsArr = Array.from({ length: numCols }, (item, index) => index);
 
 	return (
-		<div className={classes["four-column-container"]}>
-			{colsArr.map((columnIndex) => (
-				<div key={columnIndex} className={classes["column-four"]}>
-					{entries
-						// .slice()
-						// .sort((entryA, entryB) => {
-						// 	const postTimeA = entryA.datetime_posted.toDate();
-						// 	const postTimeB = entryB.datetime_posted.toDate();
-						// 	return postTimeA - postTimeB;
-						// })
-						.map(
-							(entry, index) =>
-								index % numCols === columnIndex &&
-								Entry(entry, index)
-						)}
+		<>
+			{entries.length > 0 ? (
+				<div className={classes["four-column-container"]}>
+					{colsArr.map((columnIndex) => (
+						<div
+							key={columnIndex}
+							className={classes["column-four"]}
+						>
+							{entries.map(
+								(entry, index) =>
+									index % numCols === columnIndex &&
+									Entry(entry, index)
+							)}
+						</div>
+					))}
 				</div>
-			))}
-		</div>
+			) : (
+				<div style={{ textAlign: "center" }}>No entries here!</div>
+			)}
+		</>
 	);
 };
 

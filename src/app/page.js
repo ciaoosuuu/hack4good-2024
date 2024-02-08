@@ -10,6 +10,7 @@ import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Entries from "../components/blog/Entries";
 import classes from "../app/blog/page.module.css";
+import { UserAuth } from "./context/AuthContext";
 
 export const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
@@ -78,10 +79,12 @@ const UpcomingActivities = () => (
 );
 
 const Home = () => {
+	const { user } = UserAuth();
 	const router = useRouter();
 	const [posts, setPosts] = useState();
 
 	useEffect(() => {
+		console.log("user", user);
 		const fetchData = async () => {
 			try {
 				const postsSnapshot = await db.collection("Posts").get();
@@ -204,14 +207,23 @@ const Home = () => {
 								Singapore. If you are keen to join, please click
 								below and be a part of our volunteer group.
 							</p>
-							<Box
-								className="give-button"
-								onClick={() =>
-									router.push("account/signup/volunteer")
-								}
-							>
-								Sign up now!
-							</Box>
+							{user ? (
+								<Box
+									className="give-button"
+									onClick={() => router.push("activities")}
+								>
+									Check out Activities!
+								</Box>
+							) : (
+								<Box
+									className="give-button"
+									onClick={() =>
+										router.push("account/signup/volunteer")
+									}
+								>
+									Sign up now!
+								</Box>
+							)}
 						</Stack>
 						<Spacer />
 						<Stack align={"center"}>
@@ -289,4 +301,4 @@ const Home = () => {
 	);
 };
 
-export default withAuth(Home);
+export default Home;

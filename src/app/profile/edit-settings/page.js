@@ -50,6 +50,7 @@ const formatDateForInput = (timestamp) => {
 };
 
 const ProfileSettings = ({ user }) => {
+	const isAdmin = user.role !== "volunteer";
 	const auth = getAuth();
 	const fileInput = useRef(null);
 	const router = useRouter();
@@ -261,14 +262,17 @@ const ProfileSettings = ({ user }) => {
 
 	return (
 		<div style={{ width: "80%", margin: "80px auto" }}>
-			<Box
-				style={{ width: "220px" }}
-				className={classes["profile-button-dark"]}
-				onClick={() => router.push("/profile")}
-			>
-				<FiArrowLeft style={{ marginRight: "16px" }} />
-				Return to Profile
-			</Box>
+			{!isAdmin && (
+				<Box
+					style={{ width: "220px" }}
+					className={classes["profile-button-dark"]}
+					onClick={() => router.push("/profile")}
+				>
+					<FiArrowLeft style={{ marginRight: "16px" }} />
+					Return to Profile
+				</Box>
+			)}
+
 			<br />
 			<Box style={{ maxWidth: "600px", margin: "0 auto" }}>
 				<h1 style={{ textAlign: "center" }}>Edit Profile</h1>

@@ -24,10 +24,16 @@ import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
+	const router = useRouter();
 	const userId = user.uid;
 	const userName = user.name;
 
-	const router = useRouter();
+	useEffect(() => {
+		if (user.role !== "volunteer") {
+			router.push("/profile/edit-settings");
+		}
+	}, [user]);
+
 	const currentTimestamp = new Date();
 	const [selectedMainView, setSelectedMainView] = useState("Activities");
 	const [selectedView, setSelectedView] = useState("Signed Up");

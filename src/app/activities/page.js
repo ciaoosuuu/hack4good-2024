@@ -46,7 +46,6 @@ const Activities = ({ user }) => {
 				);
 
 				setActivities(activitiesDataSorted);
-
 			} catch (error) {
 				console.error("Error fetching activities:", error);
 			}
