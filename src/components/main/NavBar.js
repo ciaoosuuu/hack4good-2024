@@ -28,9 +28,15 @@ const roboto_slab = Roboto_Slab({
 
 export default function NavBar() {
 	const { user } = UserAuth();
+	// const isAdmin = !user?.role === "volunteer";
 	const router = useRouter();
 	const pathname = usePathname();
 	const [activeIndex, setActiveIndex] = useState(0);
+	const [isAdmin, setIsAdmin] = useState(false);
+
+	useEffect(() => {
+		if (user) setIsAdmin(user.role === "admin");
+	}, [user]);
 
 	useEffect(() => {
 		const path = pathname.split("/")[1];
@@ -58,10 +64,21 @@ export default function NavBar() {
 			key: "blog",
 			label: `Blog`,
 		},
-		{
-			key: "profile",
-			label: `Profile`,
-		},
+
+		...(isAdmin
+			? [
+					{
+						key: "profile/edit-settings",
+						label: `Edit Profile`,
+					},
+			  ]
+			: [
+					{
+						key: "profile",
+						label: `Profile`,
+					},
+			  ]),
+		,
 	];
 
 	const navigateTo = (path) => {
