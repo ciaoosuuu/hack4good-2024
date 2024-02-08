@@ -47,7 +47,7 @@ const Login = () => {
 		emailPwSignIn(email, password)
 			.then(() => {
 				//successfully login
-				router.push("/activities");
+				router.push("/");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
