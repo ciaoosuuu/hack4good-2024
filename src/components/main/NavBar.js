@@ -158,7 +158,7 @@ export default function NavBar() {
 				top: 0,
 				position: "sticky",
 				display: "flex",
-				zIndex: 1,
+				zIndex: 500,
 				width: "100%",
 				justifyContent: "space-between",
 				alignItems: "center",

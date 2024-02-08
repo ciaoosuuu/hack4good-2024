@@ -259,7 +259,12 @@ const Profile = ({ user }) => {
 						</div>
 						<br />
 					</Box>
-					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
+					<Box
+						style={{
+							minWidth: "800px",
+							maxWidth: "1000px",
+						}}
+					>
 						<br />
 						<div className={classes["main-selection-bar"]}>
 							<div
@@ -321,6 +326,10 @@ const Profile = ({ user }) => {
 											className={
 												classes["grid_list_horizontal"]
 											}
+											style={{
+												maxHeight: "80vh",
+												overflowY: "auto",
+											}}
 										>
 											{signedUp &&
 												signedUp
@@ -344,6 +353,10 @@ const Profile = ({ user }) => {
 											className={
 												classes["grid_list_horizontal"]
 											}
+											style={{
+												maxHeight: "80vh",
+												overflowY: "auto",
+											}}
 										>
 											{attended &&
 												attended
@@ -365,7 +378,12 @@ const Profile = ({ user }) => {
 							</>
 						)}
 						{selectedMainView === "Blog" && (
-							<>
+							<div
+								style={{
+									maxHeight: "85vh",
+									overflowY: "auto",
+								}}
+							>
 								{posts && (
 									<Entries
 										entries={posts}
@@ -373,7 +391,7 @@ const Profile = ({ user }) => {
 										numColsInput={3}
 									/>
 								)}
-							</>
+							</div>
 						)}
 						{/* <Box
 				// style={{
