@@ -3,15 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { db } from "../../firebase/config";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
 import ActivityCard from "../../components/activities/ActivityCard";
 import withAuth from "../../hoc/withAuth";
 import classes from "./page.module.css";
 import Image from "next/image";
+import { FaCircleArrowRight } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 const Activities = ({ user }) => {
+	const router = useRouter();
 	const currentTimestamp = new Date();
 	const upcomingActivitiesIds = user.activities_signedup;
 	const [selectedView, setSelectedView] = useState("Upcoming");
@@ -71,7 +74,10 @@ const Activities = ({ user }) => {
 						.get();
 					if (activityDoc.exists) {
 						const activity_data = activityDoc.data();
-						if (activity_data.datetime_start.toDate() >= currentTimestamp) {
+						if (
+							activity_data.datetime_start.toDate() >=
+							currentTimestamp
+						) {
 							return { id: activityId, ...activityDoc.data() };
 						}
 					} else {
@@ -222,61 +228,90 @@ const Activities = ({ user }) => {
 							<br />
 						</div>
 						<br />
-						<div
-							style={{
-								// position: "absolute",
-								zIndex: -100,
-								backgroundColor: "#2e2a2a",
-								borderRadius: "20px",
-								padding: "20px 20px 20px 20px",
-								color: "#f7f2f2",
-							}}
-						>
-							<h1>My Activities</h1>
-							<br />
-
-							<ul
-								className={classes["grid_list_horizontal"]}
-								style={{ paddingLeft: "20px" }}
+						{user && user.role === "volunteer" && (
+							<div
+								style={{
+									// position: "absolute",
+									zIndex: -100,
+									backgroundColor: "#2e2a2a",
+									borderRadius: "20px",
+									padding: "20px 20px 20px 20px",
+									color: "#f7f2f2",
+								}}
 							>
-								{upcomingActivities &&
-								upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
-									upcomingActivities //replace this with list of actual activities just for this user
-										.filter((activity) =>
-											activity.datetime_end.toDate() >=
-											currentTimestamp
-										)
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeA - startTimeB;
-										})
-										
-										.map((activity) => (
-											<ActivityCard
-												key={activity.id}
-												activity={activity}
-												mini={true}
-											/>
-										))
-								) : (
-									<div
-										style={{
-											fontSize: "15px",
-											opacity: "60%",
-											textAlign: "center",
-										}}
-									>
-										Upcoming activities you've signed up for will
-										show up here!
-									</div>
-								)}
-							</ul>
+								<h1>My Activities</h1>
+								<br />
 
-							<br />
-						</div>
+								<ul
+									className={classes["grid_list_horizontal"]}
+									style={{ paddingLeft: "20px" }}
+								>
+									{upcomingActivities &&
+									upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
+										upcomingActivities //replace this with list of actual activities just for this user
+											.filter(
+												(activity) =>
+													activity.datetime_end.toDate() >=
+													currentTimestamp
+											)
+											.sort((activityA, activityB) => {
+												const startTimeA =
+													activityA.datetime_start.toDate();
+												const startTimeB =
+													activityB.datetime_start.toDate();
+												return startTimeA - startTimeB;
+											})
+
+											.map((activity) => (
+												<ActivityCard
+													key={activity.id}
+													activity={activity}
+													mini={true}
+												/>
+											))
+									) : (
+										<div
+											style={{
+												fontSize: "15px",
+												opacity: "60%",
+												textAlign: "center",
+											}}
+										>
+											Upcoming activities you've signed up
+											for will show up here!
+										</div>
+									)}
+								</ul>
+
+								<br />
+							</div>
+						)}
+						{user && user.role !== "volunteer" && (
+							<div
+								style={{
+									// position: "absolute",
+									zIndex: -100,
+									backgroundColor: "#2e2a2a",
+									borderRadius: "20px",
+									padding: "20px 20px 20px 20px",
+									color: "#f7f2f2",
+								}}
+								className={
+									classes["create-activities-shortcut"]
+								}
+								onClick={() =>
+									router.push("/activities/create")
+								}
+							>
+								<h1>
+									<Flex align={"center"}>
+										Post an Activity
+										<Spacer />
+										<FaCircleArrowRight size={27} />
+									</Flex>
+								</h1>
+							</div>
+						)}
 					</Box>
 				</div>
 			</div>

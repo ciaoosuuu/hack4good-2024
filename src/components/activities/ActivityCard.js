@@ -19,19 +19,24 @@ import {
 } from "@chakra-ui/react";
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
 import { LuUsers2 } from "react-icons/lu";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { MdOutlineVolunteerActivism, MdMenuBook } from "react-icons/md";
 import classes from "../../app/activities/page.module.css";
 import { useRouter } from "next/navigation";
 
-
-const ActivityCard = ({ activity, mini, inProfile }) => {
-	const allowReq = inProfile ? inProfile : false;
+const ActivityCard = ({
+	activity,
+	mini,
+	allowReq = false,
+	inProfile = false,
+}) => {
+	// const allowReq = allowRequest ? allowRequest : false;
 	const router = useRouter();
 
 	const handleCertReq = async (activity_id, event) => {
 		event.stopPropagation();
-		console.log("click cert")
-		console.log(activity_id)
+		console.log("click cert");
+		console.log(activity_id);
 		router.push(`/certificate/request?reqActivityId=${activity_id}`);
 	};
 	const ActivityTypeIcon = (activityType, marginTop, marginLeft) => {
@@ -49,14 +54,13 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 							textAlign: "center",
 							backgroundColor: "#68bbde",
 							borderRadius: "100px",
-							color: "rgb(235,234,228)",
+							color: "#fff",
 							boxShadow: "2px 2px 2px #00000020",
-							opacity: "90%",
 						}}
 						justify={"center"}
 						align={"center"}
 					>
-						<MdMenuBook size={27} />
+						<LiaChalkboardTeacherSolid size={27} />
 					</Flex>
 				</Tooltip>
 			);
@@ -72,11 +76,10 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 							width: "45px",
 							height: "45px",
 							textAlign: "center",
-							backgroundColor: "#68bbde",
+							backgroundColor: "#74ab8e",
 							borderRadius: "100px",
-							color: "rgb(235,234,228)",
+							color: "#fff",
 							boxShadow: "2px 2px 2px #00000020",
-							opacity: "90%",
 						}}
 						justify={"center"}
 						align={"center"}
@@ -99,9 +102,8 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 							textAlign: "center",
 							backgroundColor: "#de7268",
 							borderRadius: "100px",
-							color: "rgb(235,234,228)",
+							color: "#fff",
 							boxShadow: "2px 2px 2px #00000020",
-							opacity: "90%",
 						}}
 						justify={"center"}
 						align={"center"}
@@ -125,12 +127,37 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 						textAlign: "left",
 						minWidth: "700px",
 						borderRadius: "10px",
+						position: "relative",
 					}}
 					className={classes["item_horizontal"]}
 					onClick={() =>
 						router.push(`/activities/volunteer/${activity.id}`)
 					}
 				>
+					{allowReq && (
+						<Flex
+							style={{
+								width: "100%",
+								position: "absolute",
+								paddingRight: "25px",
+							}}
+						>
+							<Spacer />
+							<Button
+								onClick={(event) =>
+									handleCertReq(activity.id, event)
+								}
+								variant="outline"
+								colorScheme={"teal"}
+								style={{
+									borderRadius: "100px",
+									padding: "0 20px",
+								}}
+							>
+								Request Certificate
+							</Button>
+						</Flex>
+					)}
 					<Grid
 						h="175px"
 						templateRows="repeat(4, 1fr)"
@@ -142,7 +169,7 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 							colSpan={3}
 							style={{ minWidth: "250px" }}
 						>
-							{ActivityTypeIcon(activity.type)}
+							{ActivityTypeIcon(activity.activity_type)}
 							<Image
 								style={{
 									height: "100%",
@@ -154,7 +181,7 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 								alt={activity.activity_name}
 							/>
 						</GridItem>
-						<GridItem rowSpan={3} colSpan={7} >
+						<GridItem rowSpan={3} colSpan={7}>
 							<Stack spacing="2">
 								<Text fontWeight="bold">
 									{activity.activity_name}
@@ -206,9 +233,7 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 
 						<GridItem rowSpan={1} colSpan={2}></GridItem>
 
-						<GridItem rowSpan={1} colSpan={2}>
-						{allowReq && <Button onClick={(event) => handleCertReq(activity.id, event)}>Request Certificate</Button>}
-						</GridItem>
+						<GridItem rowSpan={1} colSpan={2}></GridItem>
 						{/* <GridItem rowSpan={2} colSpan={2}>
 							<Flex align={"center"}>
 								<LuUsers2 style={{ marginRight: "4px" }} />
@@ -232,32 +257,37 @@ const ActivityCard = ({ activity, mini, inProfile }) => {
 							</UnorderedList>
 						</GridItem>
 						<GridItem rowSpan={2} colSpan={2}>
-							
-							<div
-								style={{
-									opacity: "50%",
-									fontSize: "14px",
-									marginTop: "-7px",
-								}}
-							>
-								
-								<Flex align={"center"}>
-									<LuUsers2 style={{ marginRight: "5px" }} />
-									Vacancy:{" "}
-									{activity.vacancy_total
-										? activity.vacancy_total
-										: "TBA"}
-								</Flex>
-								<Flex align={"center"}>
-									<LuUsers2 style={{ marginRight: "5px" }} />
-									Slots left:{" "}
-									{activity.vacancy_total &&
-									activity.participants_signups
-										? activity.vacancy_total -
-										  activity.participants_signups.length
-										: "TBA"}
-								</Flex>
-							</div>
+							{!inProfile && (
+								<div
+									style={{
+										opacity: "50%",
+										fontSize: "14px",
+										marginTop: "-7px",
+									}}
+								>
+									<Flex align={"center"}>
+										<LuUsers2
+											style={{ marginRight: "5px" }}
+										/>
+										Vacancy:{" "}
+										{activity.vacancy_total
+											? activity.vacancy_total
+											: "TBA"}
+									</Flex>
+									<Flex align={"center"}>
+										<LuUsers2
+											style={{ marginRight: "5px" }}
+										/>
+										Slots left:{" "}
+										{activity.vacancy_total &&
+										activity.participants_signups
+											? activity.vacancy_total -
+											  activity.participants_signups
+													.length
+											: "TBA"}
+									</Flex>
+								</div>
+							)}
 						</GridItem>
 					</Grid>
 				</Box>

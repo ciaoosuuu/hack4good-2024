@@ -85,7 +85,7 @@ const Profile = ({ user }) => {
 		const fetchAttended = async () => {
 			if (!attendedDetails || !Array.isArray(attendedDetails)) {
 				return;
-			}	
+			}
 			const promises = attendedDetails.map(async (attended) => {
 				try {
 					const activityDoc = await db
@@ -167,189 +167,215 @@ const Profile = ({ user }) => {
 	}, []);
 
 	return (
-		<div className={classes["page_layout"]}>
-			<Box
-				style={{
-					padding: "0 0.5rem",
-					minWidth: "400px",
-				}}
-			>
-				<br />
-				<div>
-					<div>
-						<div
-							style={{
-								position: "absolute",
-								marginTop: "30px",
-								marginLeft: "-40px",
-							}}
-						>
-							<UserBadges userExp={user.exp_points} best={true} />
-						</div>
-						<ChakraImage
-							style={{
-								height: "400px",
-								width: "100%",
-								borderRadius: "30px",
-								objectFit: "cover",
-							}}
-							src={user.image}
-							alt={user.image}
-						/>
-					</div>
-					<br />
-					<h1
-						style={{
-							fontSize: "26px",
-							color: "maroon",
-						}}
-					>
-						{user.name}
-					</h1>
-					<p>{user.description}</p>
-					<br />
+		<>
+			{" "}
+			{user && user.role === "volunteer" && (
+				<div className={classes["page_layout"]}>
 					<Box
 						style={{
-							backgroundColor: "rgb(255,255,255,0.6",
-							padding: "1rem",
-							borderRadius: "20px",
+							padding: "0 0.5rem",
+							minWidth: "400px",
 						}}
 					>
-						<Flex align={"center"}>
-							<Image
-								src={require("../../resources/gem.png")}
-								width={30}
-								height={30}
-								alt="Big At Heart"
-								style={{ marginRight: "10px" }}
-							/>
-							<h1>Total EXP: {user.exp_points}</h1>
-						</Flex>
 						<br />
-						{user.exp_points && (
-							<UserBadges userExp={user.exp_points} />
-						)}
+						<div>
+							<div>
+								<div
+									style={{
+										position: "absolute",
+										marginTop: "30px",
+										marginLeft: "-40px",
+									}}
+								>
+									<UserBadges
+										userExp={user.exp_points}
+										best={true}
+									/>
+								</div>
+								<ChakraImage
+									style={{
+										height: "400px",
+										width: "100%",
+										borderRadius: "30px",
+										objectFit: "cover",
+									}}
+									src={user.image}
+									alt={user.image}
+								/>
+							</div>
+							<br />
+							<h1
+								style={{
+									fontSize: "26px",
+									color: "maroon",
+								}}
+							>
+								{user.name}
+							</h1>
+							<p>{user.description}</p>
+							<br />
+							<Box
+								style={{
+									backgroundColor: "rgb(255,255,255,0.6",
+									padding: "1rem",
+									borderRadius: "20px",
+								}}
+							>
+								<Flex align={"center"}>
+									<Image
+										src={require("../../resources/gem.png")}
+										width={30}
+										height={30}
+										alt="Big At Heart"
+										style={{ marginRight: "10px" }}
+									/>
+									<h1>Total EXP: {user.exp_points}</h1>
+								</Flex>
+								<br />
+								{user.exp_points && (
+									<UserBadges userExp={user.exp_points} />
+								)}
+							</Box>
+							<br />
+							<Box
+								style={{ marginBottom: "8px" }}
+								className={classes["profile-button-dark"]}
+								onClick={() =>
+									router.push("/profile/edit-settings")
+								}
+							>
+								Edit Settings
+							</Box>
+							<Box
+								className={classes["profile-button"]}
+								onClick={() =>
+									router.push(
+										"/profile/volunteer-preferences"
+									)
+								}
+							>
+								Edit Skills & Preferences
+							</Box>
+						</div>
+						<br />
 					</Box>
-					<br />
-					<Box
-						style={{ marginBottom: "8px" }}
-						className={classes["profile-button-dark"]}
-						onClick={() => router.push("/profile/edit-settings")}
-					>
-						Edit Settings
-					</Box>
-					<Box
-						className={classes["profile-button"]}
-						onClick={() =>
-							router.push("/profile/volunteer-preferences")
-						}
-					>
-						Edit Skills & Preferences
-					</Box>
-				</div>
-				<br />
-			</Box>
-			<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
-				<br />
-				<div className={classes["main-selection-bar"]}>
-					<div
-						className={
-							selectedMainView === "Activities"
-								? `${classes["main-option-selected"]}`
-								: `${classes["main-option-unselected"]}`
-						}
-						onClick={() => setSelectedMainView("Activities")}
-					>
-						Activities
-					</div>
-					<div
-						className={
-							selectedMainView === "Blog"
-								? `${classes["main-option-selected"]}`
-								: `${classes["main-option-unselected"]}`
-						}
-						onClick={() => setSelectedMainView("Blog")}
-					>
-						Blog Posts
-					</div>
-				</div>
-				<br />
-				{selectedMainView === "Activities" && (
-					<>
-						<div className={classes["selection-bar"]}>
+					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
+						<br />
+						<div className={classes["main-selection-bar"]}>
 							<div
 								className={
-									selectedView === "Signed Up"
-										? `${classes["option-selected"]}`
-										: `${classes["option-unselected"]}`
+									selectedMainView === "Activities"
+										? `${classes["main-option-selected"]}`
+										: `${classes["main-option-unselected"]}`
 								}
-								onClick={() => setSelectedView("Signed Up")}
+								onClick={() =>
+									setSelectedMainView("Activities")
+								}
 							>
-								Signed Up
+								Activities
 							</div>
 							<div
 								className={
-									selectedView === "Attended"
-										? `${classes["option-selected"]}`
-										: `${classes["option-unselected"]}`
+									selectedMainView === "Blog"
+										? `${classes["main-option-selected"]}`
+										: `${classes["main-option-unselected"]}`
 								}
-								onClick={() => setSelectedView("Attended")}
+								onClick={() => setSelectedMainView("Blog")}
 							>
-								Attended
+								Blog Posts
 							</div>
 						</div>
+						<br />
+						{selectedMainView === "Activities" && (
+							<>
+								<div className={classes["selection-bar"]}>
+									<div
+										className={
+											selectedView === "Signed Up"
+												? `${classes["option-selected"]}`
+												: `${classes["option-unselected"]}`
+										}
+										onClick={() =>
+											setSelectedView("Signed Up")
+										}
+									>
+										Signed Up
+									</div>
+									<div
+										className={
+											selectedView === "Attended"
+												? `${classes["option-selected"]}`
+												: `${classes["option-unselected"]}`
+										}
+										onClick={() =>
+											setSelectedView("Attended")
+										}
+									>
+										Attended
+									</div>
+								</div>
 
-						{selectedMainView === "Activities" &&
-							selectedView === "Signed Up" && (
-								<ul className={classes["grid_list_horizontal"]}>
-									{signedUp &&
-										signedUp
-											.filter(
-												(activity) =>
-													activity.datetime_end.toDate() >=
-													currentTimestamp
-											)
-											.map((activity) => (
-												<ActivityCard
-													key={activity.id}
-													activity={activity}
-												/>
-											))}
-								</ul>
-							)}
-						{selectedMainView === "Activities" &&
-							selectedView === "Attended" && (
-								<ul className={classes["grid_list_horizontal"]}>
-									{attended &&
-										attended
-											.filter(
-												(activity) =>
-													activity.datetime_end.toDate() <
-													currentTimestamp
-											)
-											.map((activity) => (
-												<ActivityCard
-													key={activity.id}
-													activity={activity}
-													inProfile={true}
-												/>
-											))}
-								</ul>
-							)}
-					</>
-				)}
-				{selectedMainView === "Blog" && (
-					<>
-						{posts && (
-							<Entries
-								entries={posts}
-								classes={classes}
-								numColsInput={3}
-							/>
+								{selectedMainView === "Activities" &&
+									selectedView === "Signed Up" && (
+										<ul
+											className={
+												classes["grid_list_horizontal"]
+											}
+										>
+											{signedUp &&
+												signedUp
+													.filter(
+														(activity) =>
+															activity.datetime_end.toDate() >=
+															currentTimestamp
+													)
+													.map((activity) => (
+														<ActivityCard
+															key={activity.id}
+															activity={activity}
+															inProfile={true}
+														/>
+													))}
+										</ul>
+									)}
+								{selectedMainView === "Activities" &&
+									selectedView === "Attended" && (
+										<ul
+											className={
+												classes["grid_list_horizontal"]
+											}
+										>
+											{attended &&
+												attended
+													.filter(
+														(activity) =>
+															activity.datetime_end.toDate() <
+															currentTimestamp
+													)
+													.map((activity) => (
+														<ActivityCard
+															key={activity.id}
+															activity={activity}
+															allowReq={true}
+															inProfile={true}
+														/>
+													))}
+										</ul>
+									)}
+							</>
 						)}
-					</>
-				)}
-				{/* <Box
+						{selectedMainView === "Blog" && (
+							<>
+								{posts && (
+									<Entries
+										entries={posts}
+										classes={classes}
+										numColsInput={3}
+									/>
+								)}
+							</>
+						)}
+						{/* <Box
 				// style={{
 				// 	// position: "absolute",
 				// 	zIndex: -100,
@@ -490,8 +516,10 @@ const Profile = ({ user }) => {
 						)}
 					</ul>
 				</Box> */}
-			</Box>
-		</div>
+					</Box>
+				</div>
+			)}
+		</>
 	);
 };
 
