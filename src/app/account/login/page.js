@@ -2,10 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserAuth } from "../../context/AuthContext";
-import {
-	emailPwSignIn,
-	googleSignIn,
-} from "../../../firebase/functions";
+import { emailPwSignIn, googleSignIn } from "../../../firebase/functions";
 import {
 	Box,
 	Button,
@@ -29,21 +26,21 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user) {
-		  Swal.fire({
-			title: "You have logged in.",
-			text: "Redirecting ...",
-			icon: "success",
-			timer: 1000,
-			timerProgressBar: true,
-			showConfirmButton: false,
-			allowOutsideClick: false,
-		  }).then(() => {
-			// setTimeout(() => {
-				router.push("/activities");
-			//   }, 500);
-		  });
+			Swal.fire({
+				title: "You have logged in.",
+				text: "Redirecting ...",
+				icon: "success",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			}).then(() => {
+				// setTimeout(() => {
+				router.push("/");
+				//   }, 500);
+			});
 		}
-	  }, [user]);
+	}, [user]);
 
 	const handleEmailLogin = async (e) => {
 		e.preventDefault();

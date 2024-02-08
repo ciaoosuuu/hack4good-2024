@@ -146,7 +146,7 @@ const Profile = ({ user }) => {
 			});
 
 			const postResults = await Promise.all(promises);
-			const postsSorted = postsData
+			const postsSorted = postResults
 				.filter(Boolean)
 				.sort((entryA, entryB) => {
 					const postTimeA = entryA.datetime_posted.toDate();

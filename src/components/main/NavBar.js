@@ -92,7 +92,7 @@ export default function NavBar() {
 				alignItems: "center",
 				backgroundColor: "rgb(247, 246, 240)",
 				padding: "0.5rem 1rem 0 1rem",
-
+				minWidth: "800px",
 				boxShadow: "1px 1px 5px #00000010",
 			}}
 		>
@@ -145,13 +145,22 @@ export default function NavBar() {
 							as={Button}
 							style={{
 								backgroundColor: "transparent",
-								width: "200px",
 							}}
 							leftIcon={<FaRegUser />}
 							rightIcon={<FaChevronDown />}
 						>
-							{user ? user.name : "Guest"}
+							<div
+								style={{
+									width: "150px",
+									overflow: "hidden",
+									whiteSpace: "nowrap",
+									textOverflow: "ellipsis",
+								}}
+							>
+								{user ? user.name : "Guest"}
+							</div>
 						</MenuButton>
+
 						<MenuList>
 							{user ? (
 								<>
