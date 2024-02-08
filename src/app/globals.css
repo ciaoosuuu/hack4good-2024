@@ -30,7 +30,8 @@ body {
 }
 
 .main-body {
-  padding: 0rem 1rem
+  padding: 0rem 1rem;
+  min-height: 100vh !important;
 }
 
 @layer utilities {

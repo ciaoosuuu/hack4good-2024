@@ -41,6 +41,11 @@ export default function NavBar() {
 	}, [user]);
 
 	useEffect(() => {
+		console.log("path", pathname);
+		if (pathname === "/profile/edit-settings") {
+			setActiveIndex(-1);
+			return;
+		}
 		const path = pathname.split("/")[1];
 		const items = [
 			{
@@ -64,14 +69,9 @@ export default function NavBar() {
 				index: 3,
 			},
 			{
-				key: "profile/edit-settings",
-				label: "Edit Profile",
-				index: 3,
-			},
-			{
 				key: "reports",
 				label: "Reports",
-				index: 4,
+				index: 3,
 			},
 			{
 				key: "heroes",
@@ -79,12 +79,13 @@ export default function NavBar() {
 				index: 4,
 			},
 		];
-		const activeItem = items.find((item) => item.key.includes(path));
+		const activeItem = items.find((item) => item.key === path);
 
 		// const activeIndex = 0;
 		if (activeItem) {
+			console.log("matchingItem", activeItem);
 			const activeIndex = activeItem.index;
-			console.log("matchingItem", activeIndex);
+
 			setActiveIndex(activeIndex);
 		} else {
 			setActiveIndex(0);
@@ -108,10 +109,6 @@ export default function NavBar() {
 		},
 		...(user && isAdmin
 			? [
-					{
-						key: "profile/edit-settings",
-						label: "Edit Profile",
-					},
 					{
 						key: "reports",
 						label: "Reports",
@@ -239,12 +236,29 @@ export default function NavBar() {
 						<MenuList>
 							{user ? (
 								<>
-									<MenuItem
-										key={"profile/go"}
-										onClick={() => navigateTo("profile")}
-									>
-										Profile
-									</MenuItem>
+									{" "}
+									{user && !isAdmin && (
+										<MenuItem
+											key={"profile/go"}
+											onClick={() =>
+												navigateTo("profile")
+											}
+										>
+											Profile
+										</MenuItem>
+									)}
+									{user && isAdmin && (
+										<MenuItem
+											key={"profile/edit-settings"}
+											onClick={() =>
+												navigateTo(
+													"profile/edit-settings"
+												)
+											}
+										>
+											Edit Profile
+										</MenuItem>
+									)}
 									<MenuItem
 										key={"account/logout"}
 										onClick={handleLogout}
