@@ -4,6 +4,9 @@ import { useState } from "react";
 import { arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import calculateUserExp from "../../utils/calculateUserExp";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import { projectStorage } from "../../firebase/config";
 
 import {
 	Box,
@@ -33,6 +36,7 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
 	}
 
 	const userId = user.uid;
+	const router = useRouter();
 	const [isAnonymous, setIsAnonymous] = useState(false);
 	const [postType, setPostType] = useState("reflection");
 	const [postText, setPostText] = useState("");
@@ -50,9 +54,31 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
 		setPostText(e.target.value);
 	};
 
-	const handleImageChange = (e) => {
-		const selectedImage = e.target.files[0];
-		setImage(selectedImage);
+	const handleImageChange = async (e) => {
+		const file = e.target.files[0];
+
+		if (file) {
+			// Check if there's a previously uploaded image
+			if (image) {
+				// Delete the previous image
+				try {
+					const previousImageRef = projectStorage.refFromURL(
+						image
+					);
+					await previousImageRef.delete();
+				} catch (error) {
+					console.error("Error deleting previous image:", error);
+				}
+			}
+
+			// Upload the new image
+			const storageRef = projectStorage.ref();
+			const imageRef = storageRef.child(`Posts/${file.name}`);
+			await imageRef.put(file);
+			const imageUrl = await imageRef.getDownloadURL();
+
+			setImage(imageUrl);
+		}
 	};
 
 	const handleSubmit = async (e) => {
@@ -67,7 +93,7 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
 				datetime_posted: currentDate,
 				isanonymous: isAnonymous,
 				type: postType,
-				image: "",
+				image: image,
 				user_id: userId,
 			});
 
@@ -84,8 +110,29 @@ const CreatePost = ({ activityId, activityName, user, classes }) => {
 						exp_points: newExp,
 					});
 				});
+			Swal.fire({
+				title: "Success!",
+				text: "Post successfully created!",
+				icon: "success",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			});
+			setTimeout(() => {
+				location.reload();
+			}, 1000);
 		} catch (error) {
 			console.error("Error updating field:", error);
+			Swal.fire({
+				title: "Error!",
+				text: error,
+				icon: "error",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			});
 		}
 	};
 

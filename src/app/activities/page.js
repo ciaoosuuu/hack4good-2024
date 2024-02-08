@@ -153,7 +153,7 @@ const Activities = ({ user }) => {
 									activities
 										.filter(
 											(activity) =>
-												activity.datetime_end.toDate() >=
+												activity.datetime_start.toDate() >=
 												currentTimestamp
 										)
 										.sort((activityA, activityB) => {
@@ -177,7 +177,7 @@ const Activities = ({ user }) => {
 									activities
 										.filter(
 											(activity) =>
-												activity.datetime_end.toDate() <
+												activity.datetime_start.toDate() <=
 												currentTimestamp
 										)
 										.sort((activityA, activityB) => {

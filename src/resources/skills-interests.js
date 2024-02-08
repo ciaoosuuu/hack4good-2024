@@ -52,6 +52,14 @@ export const interests = [
 	"women & girls",
 ];
 
+export const languages = [
+	"english",
+	"mandarin",
+	"malay",
+	"tamil",
+	"others",
+];
+
 export const capitalise = (input) => {
 	return input
 		.split(" ")
