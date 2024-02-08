@@ -79,14 +79,13 @@ const Profile = ({ user }) => {
 		const fetchAttended = async () => {
 			if (!attendedDetails || !Array.isArray(attendedDetails)) {
 				return;
-			}
+			}	
 			const promises = attendedDetails.map(async (attended) => {
 				try {
 					const activityDoc = await db
 						.collection("Activities")
 						.doc(attended.activity_id)
 						.get();
-					console.log(activityDoc);
 					if (activityDoc.exists) {
 						return {
 							id: attended.activity_id,
@@ -326,6 +325,7 @@ const Profile = ({ user }) => {
 												<ActivityCard
 													key={activity.id}
 													activity={activity}
+													inProfile={true}
 												/>
 											))}
 								</ul>
