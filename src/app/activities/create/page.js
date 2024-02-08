@@ -162,6 +162,7 @@ const CreateActivity = ({ user }) => {
     try {
       const updatedFormData = {
         ...formData,
+        vacancy_total: parseInt(formData.vacancy_total, 10),
         image: formData.image ? formData.image : defaultImageUrl,
         organiser_id: user.uid,
         created_on: Timestamp.fromDate(new Date()),
