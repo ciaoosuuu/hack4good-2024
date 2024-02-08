@@ -47,7 +47,6 @@ const Activities = ({ user }) => {
 
 				setActivities(activitiesDataSorted);
 
-				console.log(activitiesData);
 			} catch (error) {
 				console.error("Error fetching activities:", error);
 			}
@@ -71,7 +70,6 @@ const Activities = ({ user }) => {
 						.collection("Activities")
 						.doc(activityId)
 						.get();
-					console.log(activityDoc);
 					if (activityDoc.exists) {
 						return { id: activityId, ...activityDoc.data() };
 					} else {
