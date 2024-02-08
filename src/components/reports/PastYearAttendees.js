@@ -1,12 +1,13 @@
 "use client";
 
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
@@ -17,7 +18,8 @@ import getAttendanceCountByMonth from "../../utils/reports/getAttendanceCountByM
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
@@ -47,17 +49,20 @@ const PastYearAttendees = () => {
             {
               label: "# Volunteers (Volunteering)",
               data: attendanceCountByMonthVolunteer,
-              backgroundColor: "rgb(255, 99, 132, 0.4)",
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgb(255, 99, 132, 0.5)",
             },
             {
               label: "# Volunteers (Workshop)",
               data: attendanceCountByMonthWorkshop,
-              backgroundColor: "rgb(75, 192, 192, 0.4)",
+              borderColor: "rgb(75, 192, 192)",
+              backgroundColor: "rgb(75, 192, 192, 0.5)",
             },
             {
               label: "# Volunteers (Training)",
               data: attendanceCountByMonthTraining,
-              backgroundColor: "rgb(53, 162, 235, 0.4)",
+              borderColor: "rgb(53, 162, 235)",
+              backgroundColor: "rgb(53, 162, 235, 0.5)",
             },
           ],
         });
@@ -77,12 +82,6 @@ const PastYearAttendees = () => {
             ticks: {
               precision: 0,
             },
-            x: {
-              stacked: true,
-            },
-            y: {
-              stacked: true,
-            },
           },
         });
       } catch (error) {
@@ -96,7 +95,7 @@ const PastYearAttendees = () => {
   return (
     <>
       <div style={{ backgroundColor: "white", height: "400px" }}>
-        <Bar data={chartData} options={chartOptions} />
+        <Line data={chartData} options={chartOptions} />
       </div>
     </>
   );
