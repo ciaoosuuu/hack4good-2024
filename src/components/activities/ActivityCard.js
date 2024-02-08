@@ -23,8 +23,17 @@ import { MdOutlineVolunteerActivism, MdMenuBook } from "react-icons/md";
 import classes from "../../app/activities/page.module.css";
 import { useRouter } from "next/navigation";
 
-const ActivityCard = ({ activity, mini }) => {
+
+const ActivityCard = ({ activity, mini, inProfile }) => {
+	const allowReq = inProfile ? inProfile : false;
 	const router = useRouter();
+
+	const handleCertReq = async (activity_id, event) => {
+		event.stopPropagation();
+		console.log("click cert")
+		console.log(activity_id)
+		router.push(`/certificate/request?reqActivityId=${activity_id}`);
+	};
 	const ActivityTypeIcon = (activityType, marginTop, marginLeft) => {
 		if (activityType === "Training") {
 			return (
@@ -145,7 +154,7 @@ const ActivityCard = ({ activity, mini }) => {
 								alt={activity.activity_name}
 							/>
 						</GridItem>
-						<GridItem rowSpan={3} colSpan={7}>
+						<GridItem rowSpan={3} colSpan={7} >
 							<Stack spacing="2">
 								<Text fontWeight="bold">
 									{activity.activity_name}
@@ -197,7 +206,9 @@ const ActivityCard = ({ activity, mini }) => {
 
 						<GridItem rowSpan={1} colSpan={2}></GridItem>
 
-						<GridItem rowSpan={1} colSpan={2}></GridItem>
+						<GridItem rowSpan={1} colSpan={2}>
+						{allowReq && <Button onClick={(event) => handleCertReq(activity.id, event)}>Request Certificate</Button>}
+						</GridItem>
 						{/* <GridItem rowSpan={2} colSpan={2}>
 							<Flex align={"center"}>
 								<LuUsers2 style={{ marginRight: "4px" }} />
@@ -221,6 +232,7 @@ const ActivityCard = ({ activity, mini }) => {
 							</UnorderedList>
 						</GridItem>
 						<GridItem rowSpan={2} colSpan={2}>
+							
 							<div
 								style={{
 									opacity: "50%",
@@ -228,6 +240,7 @@ const ActivityCard = ({ activity, mini }) => {
 									marginTop: "-7px",
 								}}
 							>
+								
 								<Flex align={"center"}>
 									<LuUsers2 style={{ marginRight: "5px" }} />
 									Vacancy:{" "}

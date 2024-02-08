@@ -70,7 +70,10 @@ const Activities = ({ user }) => {
 						.doc(activityId)
 						.get();
 					if (activityDoc.exists) {
-						return { id: activityId, ...activityDoc.data() };
+						const activity_data = activityDoc.data();
+						if (activity_data.datetime_start.toDate() >= currentTimestamp) {
+							return { id: activityId, ...activityDoc.data() };
+						}
 					} else {
 						console.log(`Activity with ID ${activityId} not found`);
 						return null;
@@ -134,7 +137,7 @@ const Activities = ({ user }) => {
 								}
 								onClick={() => setSelectedView("Completed")}
 							>
-								Completed Activities
+								Past Activities
 							</div>
 						</div>
 						<br />
@@ -147,14 +150,13 @@ const Activities = ({ user }) => {
 												activity.datetime_end.toDate() >=
 												currentTimestamp
 										)
-										.slice()
-										// .sort((activityA, activityB) => {
-										// 	const startTimeA =
-										// 		activityA.datetime_start.toDate();
-										// 	const startTimeB =
-										// 		activityB.datetime_start.toDate();
-										// 	return startTimeA - startTimeB;
-										// })
+										.sort((activityA, activityB) => {
+											const startTimeA =
+												activityA.datetime_start.toDate();
+											const startTimeB =
+												activityB.datetime_start.toDate();
+											return startTimeA - startTimeB;
+										})
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -172,14 +174,13 @@ const Activities = ({ user }) => {
 												activity.datetime_end.toDate() <
 												currentTimestamp
 										)
-										//   .slice()
-										// .sort((activityA, activityB) => {
-										// 	const startTimeA =
-										// 		activityA.datetime_start.toDate();
-										// 	const startTimeB =
-										// 		activityB.datetime_start.toDate();
-										// 	return startTimeB - startTimeA; // show newest first
-										// })
+										.sort((activityA, activityB) => {
+											const startTimeA =
+												activityA.datetime_start.toDate();
+											const startTimeB =
+												activityB.datetime_start.toDate();
+											return startTimeB - startTimeA; // show newest first
+										})
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -241,6 +242,10 @@ const Activities = ({ user }) => {
 								{upcomingActivities &&
 								upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
 									upcomingActivities //replace this with list of actual activities just for this user
+										.filter((activity) =>
+											activity.datetime_end.toDate() >=
+											currentTimestamp
+										)
 										.sort((activityA, activityB) => {
 											const startTimeA =
 												activityA.datetime_start.toDate();
@@ -248,6 +253,7 @@ const Activities = ({ user }) => {
 												activityB.datetime_start.toDate();
 											return startTimeA - startTimeB;
 										})
+										
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -263,7 +269,7 @@ const Activities = ({ user }) => {
 											textAlign: "center",
 										}}
 									>
-										Activities you've signed up for will
+										Upcoming activities you've signed up for will
 										show up here!
 									</div>
 								)}

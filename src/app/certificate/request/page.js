@@ -1,16 +1,37 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { calcHrsGivenRange, generateCertificateByActivity, generateCertificateByTime } from './helper';
 import withAuth from '../../../hoc/withAuth';
-
+import { useRouter, useSearchParams } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const RequestCertificatePage = ({user}) => {
-  const [selectedOption, setSelectedOption] = useState('');
-  const [selectedActivity, setSelectedActivity] = useState(null);
+  const router = useRouter();
+  const reqActivityId = useSearchParams().get('reqActivityId');
+  const [selectedOption, setSelectedOption] = useState(reqActivityId ? 'byActivity' : '');
+  const [selectedActivity, setSelectedActivity] = useState(reqActivityId ? user.activities_attended.find(activity => activity.activity_id === reqActivityId) : null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
+
+  useEffect(() => {
+		if (user.role !== "volunteer") {
+		  Swal.fire({
+			title: "Unauthorized Access!",
+			text: "Redirecting ...",
+			icon: "warning",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		  }).then(() => {
+			setTimeout(() => {
+				router.push("/activities");
+			  }, 500);
+		  });
+		}
+	  }, [user.role]);
 
   const handleSubmitActivity = async (e) => {
     e.preventDefault();
@@ -43,7 +64,7 @@ const RequestCertificatePage = ({user}) => {
     return previewUrl;
   };
 
-  return (
+  return user.role === "volunteer" ? (
     <div style={styles.container}>
       <h1 style={styles.heading}>Request Certificate</h1>
 
@@ -136,7 +157,7 @@ const RequestCertificatePage = ({user}) => {
       {/* PDF Preview */}
       {pdfUrl && <embed src={pdfUrl} type="application/pdf" width="100%" height="600px" />}
     </div>
-  );
+  ) : null;
 };
 
 const styles = {
