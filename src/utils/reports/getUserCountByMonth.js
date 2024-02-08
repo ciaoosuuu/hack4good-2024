@@ -33,10 +33,7 @@ const getUserCountByMonth = async () => {
             (11 -
               Math.abs(currentDate.getMonth() - userCreateDate.getMonth())) %
             12;
-
-          for (let i = monthIndex; i < 12; i++) {
-            userCountByMonth[i]++;
-          }
+          userCountByMonth[monthIndex]++;
         }
       }
     });

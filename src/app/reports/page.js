@@ -11,11 +11,33 @@ import CauseAttendance from "../../components/reports/CauseAttendance";
 import TypeActivities from "../../components/reports/TypeActivities";
 import TypeAttendance from "../../components/reports/TypeAttendance";
 import PastYearUsers from "../../components/reports/PastYearUsers";
+import getTotalUserCount from "../../utils/reports/getTotalUserCount";
+import getTotalActivityCount from "../../utils/reports/getTotalActivityCount";
+import getTotalVolunteerHours from "../../utils/reports/getTotalVolunteerHours";
+
+import { Roboto_Slab } from "next/font/google";
 
 import classes from "./page.module.css";
 
+const roboto_slab = Roboto_Slab({
+  weight: ["700"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
 const Reports = () => {
   const [selectedView, setSelectedView] = useState("Volunteers");
+
+  const [totalUserCount, setTotalUserCount] = useState(0);
+  const [totalVolunteerHours, setTotalVolunteerHours] = useState(0);
+  const [totalActivityCount, setTotalActivityCount] = useState(0);
+
+  useEffect(() => {
+    setTotalUserCount(getTotalUserCount());
+    setTotalVolunteerHours(getTotalVolunteerHours());
+    setTotalActivityCount(getTotalActivityCount());
+  }, []);
+
   const chartStyleLeft = {
     marginTop: "10px",
     marginBottom: "10px",
@@ -40,6 +62,7 @@ const Reports = () => {
         marginRight: "10%",
         marginTop: "2%",
         marginBottom: "2%",
+        minWidth: "1000px",
       }}
     >
       <h1 style={{ fontSize: "30px" }}>Reports</h1>
@@ -88,7 +111,26 @@ const Reports = () => {
                 borderRadius: "10px",
                 height: "140px",
               }}
-            ></div>
+            >
+              <div>
+                <h1
+                  className={roboto_slab.className}
+                  style={{ fontSize: "xx-large", color: "maroon" }}
+                >
+                  {totalUserCount}
+                </h1>
+                <p> total users</p>
+              </div>
+              <div>
+                <h1
+                  className={roboto_slab.className}
+                  style={{ fontSize: "xx-large", color: "maroon" }}
+                >
+                  {totalVolunteerHours}
+                </h1>
+                <p> total volunteer hours</p>
+              </div>
+            </div>
             <div style={chartStyleRight}>
               <RegionAttendance />
               {/* change this to languages spoke demographic */}
@@ -122,7 +164,15 @@ const Reports = () => {
                 borderRadius: "10px",
                 height: "110px",
               }}
-            ></div>
+            >
+              <h1
+                className={roboto_slab.className}
+                style={{ fontSize: "xx-large", color: "maroon" }}
+              >
+                {totalActivityCount}
+              </h1>
+              <p> total activities</p>
+            </div>
             <div style={chartStyleRight}>
               <RegionActivities />
             </div>
