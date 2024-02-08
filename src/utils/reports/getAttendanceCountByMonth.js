@@ -32,11 +32,14 @@ const getAttendanceCountByMonth = async () => {
           12;
 
         if (activity.activity_type === "Volunteering") {
-          attendanceCountByMonthVolunteer[monthIndex]++;
+          attendanceCountByMonthVolunteer[monthIndex] +=
+            activity.participants_attended.length;
         } else if (activity.activity_type === "Workshop") {
-          attendanceCountByMonthWorkshop[monthIndex]++;
+          attendanceCountByMonthWorkshop[monthIndex] +=
+            activity.participants_attended.length;
         } else if (activity.activity_type === "Training") {
-          attendanceCountByMonthTraining[monthIndex]++;
+          attendanceCountByMonthTraining[monthIndex] +=
+            activity.participants_attended.length;
         }
 
         attendanceCountByMonth[monthIndex] +=
