@@ -9,8 +9,9 @@ import {
 	MenuButton,
 	MenuItem,
 	MenuList,
+	useToast,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
@@ -28,48 +29,85 @@ const roboto_slab = Roboto_Slab({
 
 export default function NavBar() {
 	const { user } = UserAuth();
+	// const isAdmin = !user?.role === "volunteer";
 	const router = useRouter();
 	const pathname = usePathname();
+	const toast = useToast();
 	const [activeIndex, setActiveIndex] = useState(0);
+	const [isAdmin, setIsAdmin] = useState(false);
+
+	useEffect(() => {
+		if (user) setIsAdmin(user.role === "admin");
+	}, [user]);
 
 	useEffect(() => {
 		const path = pathname.split("/")[1];
+		const items = [
+			{
+				key: "",
+				label: "Home",
+			},
+			{
+				key: "activities",
+				label: "Activities",
+			},
+			{
+				key: "blog",
+				label: "Blog",
+			},
+			{
+				key: "profile",
+				label: "Profile",
+			},
+		];
 		const activeIndex = items.findIndex((item) => item.key.includes(path));
+
+		// const activeIndex = 0;
 		if (activeIndex) {
 			console.log("matchingItem", activeIndex);
 			setActiveIndex(activeIndex);
 		} else {
 			setActiveIndex(0);
 		}
-	}, [pathname]);
+	}, [pathname, user]);
 
 	const [loginStatus, setLoginStatus] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
 			key: "",
-			label: `Home`,
+			label: "Home",
 		},
 		{
 			key: "activities",
-			label: `Activities`,
+			label: "Activities",
 		},
 		{
 			key: "blog",
-			label: `Blog`,
+			label: "Blog",
 		},
-		{
-			key: "heroes",
-			label: `Heroes`,
-		},
-		{
-			key: "reports",
-			label: `Reports`,
-		},
-		{
-			key: "profile",
-			label: `Profile`,
-		},
+		...(user && isAdmin
+			? [
+					{
+						key: "profile",
+						label: "Edit Profile",
+					},
+					{
+						key: "reports",
+						label: "Reports",
+					},
+			  ]
+			: [
+					{
+						key: "profile",
+						label: "Profile",
+					},
+					{
+						key: "heroes",
+						label: "Heroes",
+					},
+			  ]),
+		,
 	];
 
 	const navigateTo = (path) => {
@@ -77,17 +115,26 @@ export default function NavBar() {
 	};
 
 	const handleLogout = () => {
-		logOut();
-		console.log("you have been logout");
-		setLoginStatus((prevLoginStatus) => !prevLoginStatus);
-		console.log("New login status:", loginStatus);
-		navigateTo("");
+		try {
+			logOut();
+			console.log("you have been logout");
+			setLoginStatus((prevLoginStatus) => !prevLoginStatus);
+			console.log("New login status:", loginStatus);
+			toast({
+				title: "Logged out.",
+				description: "See you soon!",
+				status: "success",
+				duration: 3500,
+				isClosable: true,
+			});
+		} catch (error) {
+			console.log("Error logging out", error);
+		}
 	};
 
-	const handleLogin = () => {
-		navigateTo("account/login");
-	};
-
+	// const handleLogin = () => {
+	//   navigateTo("account/login");
+	// };
 	return (
 		<div
 			style={{
@@ -100,7 +147,7 @@ export default function NavBar() {
 				alignItems: "center",
 				backgroundColor: "rgb(247, 246, 240)",
 				padding: "0.5rem 1rem 0 1rem",
-
+				minWidth: "800px",
 				boxShadow: "1px 1px 5px #00000010",
 			}}
 		>
@@ -123,7 +170,7 @@ export default function NavBar() {
 			</Flex>
 			<Tabs
 				style={{
-					width: "30%",
+					width: "40%",
 					display: "flex",
 					justifyContent: "center",
 				}}
@@ -132,7 +179,7 @@ export default function NavBar() {
 			>
 				<Flex key={"tabs"} style={{ width: "100%" }}>
 					{items.map((navItem) => (
-						<>
+						<Fragment key={navItem.key}>
 							<Tab
 								key={navItem.key}
 								onClick={() => navigateTo(navItem.key)}
@@ -141,7 +188,7 @@ export default function NavBar() {
 								{navItem.label}
 							</Tab>
 							<Spacer key={"spacer-" + navItem.key} />
-						</>
+							</Fragment>
 					))}
 				</Flex>
 			</Tabs>{" "}
@@ -153,13 +200,22 @@ export default function NavBar() {
 							as={Button}
 							style={{
 								backgroundColor: "transparent",
-								width: "200px",
 							}}
 							leftIcon={<FaRegUser />}
 							rightIcon={<FaChevronDown />}
 						>
-							{user ? user.name : "Guest"}
+							<div
+								style={{
+									width: "150px",
+									overflow: "hidden",
+									whiteSpace: "nowrap",
+									textOverflow: "ellipsis",
+								}}
+							>
+								{user ? user.name : "Guest"}
+							</div>
 						</MenuButton>
+
 						<MenuList>
 							{user ? (
 								<>
@@ -179,7 +235,7 @@ export default function NavBar() {
 							) : (
 								<MenuItem
 									key={"account/login"}
-									onClick={handleLogin}
+									onClick={() => navigateTo("account/login")}
 								>
 									Log in
 								</MenuItem>

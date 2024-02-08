@@ -2,10 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UserAuth } from "../../context/AuthContext";
-import {
-	emailPwSignIn,
-	googleSignIn,
-} from "../../../firebase/functions";
+import { emailPwSignIn, googleSignIn } from "../../../firebase/functions";
 import {
 	Box,
 	Button,
@@ -14,8 +11,9 @@ import {
 	Input,
 	Flex,
 	Alert,
-	Link,
 } from "@chakra-ui/react";
+import { Link } from '@chakra-ui/next-js'
+import NextLink from 'next/link'
 import { FcGoogle } from "react-icons/fc";
 import { FiAlertCircle } from "react-icons/fi";
 import Swal from "sweetalert2";
@@ -29,28 +27,28 @@ const Login = () => {
 
 	useEffect(() => {
 		if (user) {
-		  Swal.fire({
-			title: "You have logged in.",
-			text: "Redirecting ...",
-			icon: "success",
-			timer: 1000,
-			timerProgressBar: true,
-			showConfirmButton: false,
-			allowOutsideClick: false,
-		  }).then(() => {
-			// setTimeout(() => {
-				router.push("/activities");
-			//   }, 500);
-		  });
+			Swal.fire({
+				title: "You have logged in.",
+				text: "Redirecting ...",
+				icon: "success",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			}).then(() => {
+				// setTimeout(() => {
+				router.push("/");
+				//   }, 500);
+			});
 		}
-	  }, [user]);
+	}, [user]);
 
 	const handleEmailLogin = async (e) => {
 		e.preventDefault();
 		emailPwSignIn(email, password)
 			.then(() => {
 				//successfully login
-				router.push("/activities");
+				router.push("/");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
@@ -151,9 +149,23 @@ const Login = () => {
 			<Flex justify={"center"}>
 				<p>
 					No Account?{" "}
-					<Link color="red.500" href="/account/signup/volunteer">
+					<Link as={NextLink} color="red.500" href="/account/signup/volunteer">
 						Sign up here.
 					</Link>
+				</p>
+			</Flex>
+
+			<br />
+			<Flex justify={"center"}>
+				<p>
+					<Button
+						onClick={() => router.push("/")}
+						colorScheme="red"
+						variant={"link"}
+					>
+						{" "}
+						Continue as guest...
+					</Button>
 				</p>
 			</Flex>
 		</Box>

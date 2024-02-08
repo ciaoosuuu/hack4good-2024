@@ -24,10 +24,16 @@ import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 
 const Profile = ({ user }) => {
+	const router = useRouter();
 	const userId = user.uid;
 	const userName = user.name;
 
-	const router = useRouter();
+	useEffect(() => {
+		if (user.role !== "volunteer") {
+			router.push("/profile/edit-settings");
+		}
+	}, [user]);
+
 	const currentTimestamp = new Date();
 	const [selectedMainView, setSelectedMainView] = useState("Activities");
 	const [selectedView, setSelectedView] = useState("Signed Up");
@@ -79,14 +85,13 @@ const Profile = ({ user }) => {
 		const fetchAttended = async () => {
 			if (!attendedDetails || !Array.isArray(attendedDetails)) {
 				return;
-			}
+			}	
 			const promises = attendedDetails.map(async (attended) => {
 				try {
 					const activityDoc = await db
 						.collection("Activities")
 						.doc(attended.activity_id)
 						.get();
-					console.log(activityDoc);
 					if (activityDoc.exists) {
 						return {
 							id: attended.activity_id,
@@ -326,6 +331,7 @@ const Profile = ({ user }) => {
 												<ActivityCard
 													key={activity.id}
 													activity={activity}
+													inProfile={true}
 												/>
 											))}
 								</ul>

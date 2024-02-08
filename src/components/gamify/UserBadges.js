@@ -45,8 +45,12 @@ const UserBadges = ({ userExp, best }) => {
 			<div>
 				<ul
 					style={{
-						display: "flex",
-						justifyContent: "center",
+						// display: "flex",
+						// justifyContent: "center",
+						display: "grid",
+						gridTemplateColumns: "1fr 1fr",
+						rowGap: "10px",
+						// backgroundColor: "blue",
 					}}
 				>
 					{userLevels &&
@@ -55,7 +59,7 @@ const UserBadges = ({ userExp, best }) => {
 								style={{
 									// marginLeft: "20px",
 									// marginRight: "20px",
-									width: "200px",
+									// width: "200px",
 									textAlign: "center",
 									listStyle: "none",
 								}}
@@ -64,9 +68,7 @@ const UserBadges = ({ userExp, best }) => {
 									src={level.badge}
 									alt={level.title}
 									style={{
-										marginLeft: "50px",
-										marginBottom: "8px",
-										// marginRight: "46px",
+										margin: "0 auto",
 										width: "100px",
 										height: "100px",
 										borderRadius: "50%",

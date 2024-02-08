@@ -10,6 +10,7 @@ import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Entries from "../components/blog/Entries";
 import classes from "../app/blog/page.module.css";
+import { UserAuth } from "./context/AuthContext";
 
 import ActivityCard from "../components/activities/ActivityCard";
 import getTopActivities from "../utils/matching/getTopActivities"
@@ -80,7 +81,8 @@ const UpcomingActivities = () => (
 	</div>
 );
 
-const Home = ({user}) => {
+const Home = () => {
+	const { user } = UserAuth();
 	const router = useRouter();
 	const [posts, setPosts] = useState();
 	const [activities, setActivities] = useState([]);
@@ -125,6 +127,7 @@ const Home = ({user}) => {
 
 
 	useEffect(() => {
+		console.log("user", user);
 		const fetchData = async () => {
 			try {
 				const postsSnapshot = await db.collection("Posts").get();
@@ -168,7 +171,7 @@ const Home = ({user}) => {
 						className={roboto_slab.className}
 					>
 						Welcome to <br />
-						<text style={{ fontSize: "45px" }}>Big At Heart</text>
+						<p style={{ fontSize: "45px" }}>Big At Heart</p>
 					</h1>
 					<br />
 					<p style={paragraphStyle}>
@@ -247,14 +250,23 @@ const Home = ({user}) => {
 								Singapore. If you are keen to join, please click
 								below and be a part of our volunteer group.
 							</p>
-							<Box
-								className="give-button"
-								onClick={() =>
-									router.push("account/signup/volunteer")
-								}
-							>
-								Sign up now!
-							</Box>
+							{user ? (
+								<Box
+									className="give-button"
+									onClick={() => router.push("activities")}
+								>
+									Check out Activities!
+								</Box>
+							) : (
+								<Box
+									className="give-button"
+									onClick={() =>
+										router.push("account/signup/volunteer")
+									}
+								>
+									Sign up now!
+								</Box>
+							)}
 						</Stack>
 						<Spacer />
 						<Stack align={"center"}>
@@ -309,9 +321,9 @@ const Home = ({user}) => {
 					}}
 					className={roboto_slab.className}
 				>
-					<text style={{ fontSize: "20px" }}>
+					<p style={{ fontSize: "20px" }}>
 						Something Inspirational, Something Informational
-					</text>
+					</p>
 					<br />
 					Blog Posts From Our Volunteers
 				</h1>
@@ -355,4 +367,4 @@ const Home = ({user}) => {
 	);
 };
 
-export default withAuth(Home);
+export default Home;

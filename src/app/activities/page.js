@@ -47,7 +47,6 @@ const Activities = ({ user }) => {
 				);
 
 				setActivities(activitiesDataSorted);
-
 			} catch (error) {
 				console.error("Error fetching activities:", error);
 			}
@@ -72,7 +71,10 @@ const Activities = ({ user }) => {
 						.doc(activityId)
 						.get();
 					if (activityDoc.exists) {
-						return { id: activityId, ...activityDoc.data() };
+						const activity_data = activityDoc.data();
+						if (activity_data.datetime_start.toDate() >= currentTimestamp) {
+							return { id: activityId, ...activityDoc.data() };
+						}
 					} else {
 						console.log(`Activity with ID ${activityId} not found`);
 						return null;
@@ -142,7 +144,7 @@ const Activities = ({ user }) => {
 								}
 								onClick={() => setSelectedView("Completed")}
 							>
-								Completed Activities
+								Past Activities
 							</div>
 						</div>
 						<br />
@@ -274,7 +276,7 @@ const Activities = ({ user }) => {
 											textAlign: "center",
 										}}
 									>
-										Activities you've signed up for will
+										Upcoming activities you've signed up for will
 										show up here!
 									</div>
 								)}
