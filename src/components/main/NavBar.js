@@ -9,6 +9,7 @@ import {
 	MenuButton,
 	MenuItem,
 	MenuList,
+	useToast,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -31,6 +32,7 @@ export default function NavBar() {
 	// const isAdmin = !user?.role === "volunteer";
 	const router = useRouter();
 	const pathname = usePathname();
+	const toast = useToast();
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [isAdmin, setIsAdmin] = useState(false);
 
@@ -40,42 +42,61 @@ export default function NavBar() {
 
 	useEffect(() => {
 		const path = pathname.split("/")[1];
+		const items = [
+			{
+				key: "",
+				label: "Home",
+			},
+			{
+				key: "activities",
+				label: "Activities",
+			},
+			{
+				key: "blog",
+				label: "Blog",
+			},
+			{
+				key: "profile",
+				label: "Profile",
+			},
+		];
 		const activeIndex = items.findIndex((item) => item.key.includes(path));
+
+		// const activeIndex = 0;
 		if (activeIndex) {
 			console.log("matchingItem", activeIndex);
 			setActiveIndex(activeIndex);
 		} else {
 			setActiveIndex(0);
 		}
-	}, [pathname]);
+	}, [pathname, user]);
 
 	const [loginStatus, setLoginStatus] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	const items = [
 		{
 			key: "",
-			label: `Home`,
+			label: "Home",
 		},
 		{
 			key: "activities",
-			label: `Activities`,
+			label: "Activities",
 		},
 		{
 			key: "blog",
-			label: `Blog`,
+			label: "Blog",
 		},
-
-		...(isAdmin
+		...(user && isAdmin
 			? [
 					{
-						key: "profile/edit-settings",
-						label: `Edit Profile`,
+						key: "profile",
+						label: "Edit Profile",
 					},
 			  ]
 			: [
 					{
 						key: "profile",
-						label: `Profile`,
+						label: "Profile",
 					},
 			  ]),
 		,
@@ -86,17 +107,26 @@ export default function NavBar() {
 	};
 
 	const handleLogout = () => {
-		logOut();
-		console.log("you have been logout");
-		setLoginStatus((prevLoginStatus) => !prevLoginStatus);
-		console.log("New login status:", loginStatus);
-		navigateTo("");
+		try {
+			logOut();
+			console.log("you have been logout");
+			setLoginStatus((prevLoginStatus) => !prevLoginStatus);
+			console.log("New login status:", loginStatus);
+			toast({
+				title: "Logged out.",
+				description: "See you soon!",
+				status: "success",
+				duration: 3500,
+				isClosable: true,
+			});
+		} catch (error) {
+			console.log("Error logging out", error);
+		}
 	};
 
-	const handleLogin = () => {
-		navigateTo("account/login");
-	};
-
+	// const handleLogin = () => {
+	//   navigateTo("account/login");
+	// };
 	return (
 		<div
 			style={{
@@ -197,7 +227,7 @@ export default function NavBar() {
 							) : (
 								<MenuItem
 									key={"account/login"}
-									onClick={handleLogin}
+									onClick={() => navigateTo("account/login")}
 								>
 									Log in
 								</MenuItem>

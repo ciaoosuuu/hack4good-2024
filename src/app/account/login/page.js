@@ -153,6 +153,20 @@ const Login = () => {
 					</Link>
 				</p>
 			</Flex>
+
+			<br />
+			<Flex justify={"center"}>
+				<p>
+					<Button
+						onClick={() => router.push("/")}
+						colorScheme="red"
+						variant={"link"}
+					>
+						{" "}
+						Continue as guest...
+					</Button>
+				</p>
+			</Flex>
 		</Box>
 	);
 };
