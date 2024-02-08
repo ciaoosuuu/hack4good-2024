@@ -63,7 +63,7 @@ const VolunteerSignup = () => {
 		  }).then(() => {
 			// setTimeout(() => {
 				if (!isJustSignedUp) {
-					router.push("/");
+					router.push("/activities");
 				}
 			//   }, 500);
 		  });
