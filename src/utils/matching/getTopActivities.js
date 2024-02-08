@@ -10,23 +10,27 @@ const getTopActivities = (user, activities) => {
   );
   const topActivities = [];
 
-  upcomingActivities.forEach((activity) => {
-    const activitySimilarity = user.preferences.interestAreas.reduce(
-      (total, interest) => {
-        return total + calculateSimilarity(activity.tags, [interest]);
-      },
-      0
-    );
+  if (user && user.preferences && user.preferences.interestAreas) {
+    upcomingActivities.forEach((activity) => {
+      const activitySimilarity = user.preferences.interestAreas.reduce(
+        (total, interest) => {
+          return total + calculateSimilarity(activity.tags, [interest]);
+        },
+        0
+      );
 
-    topActivities.push({ ...activity, similarity: activitySimilarity });
-  });
+      topActivities.push({ ...activity, similarity: activitySimilarity });
+    });
 
-  topActivities.sort((a, b) => b.similarity - a.similarity);
-  console.log(topActivities);
+    topActivities.sort((a, b) => b.similarity - a.similarity);
+    console.log(topActivities);
 
-  const top5Activities = topActivities.slice(0, 5);
+    const top5Activities = topActivities.slice(0, 5);
 
-  return top5Activities;
+    return top5Activities;
+  }
+
+  return upcomingActivities.slice(0.5);
 };
 
 export default getTopActivities;
