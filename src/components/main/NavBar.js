@@ -92,11 +92,19 @@ export default function NavBar() {
 						key: "profile",
 						label: "Edit Profile",
 					},
+					{
+						key: "reports",
+						label: "Reports",
+					},
 			  ]
 			: [
 					{
 						key: "profile",
 						label: "Profile",
+					},
+					{
+						key: "heroes",
+						label: "Heroes",
 					},
 			  ]),
 		,
@@ -162,7 +170,7 @@ export default function NavBar() {
 			</Flex>
 			<Tabs
 				style={{
-					width: "30%",
+					width: "40%",
 					display: "flex",
 					justifyContent: "center",
 				}}
