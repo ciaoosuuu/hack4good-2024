@@ -228,7 +228,7 @@ const Volunteer = ({ user, params }) => {
 											onClick={handleUnsignUp}
 											className={classes["signedup"]}
 										>
-											Remove Sign Up
+											Withdraw
 										</button>
 									) : (
 										<button

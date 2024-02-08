@@ -84,8 +84,10 @@ const CreateActivity = ({ user }) => {
     image: "",
     location_address: "",
     location_name: "",
+		location_postal: "",
     activity_name: "",
     activity_type: "",
+		activity_hours: 0,
     organiser_id: "",
     organiser_name: "",
     participants_attended: [],
@@ -138,12 +140,12 @@ const CreateActivity = ({ user }) => {
     } else if (Array.isArray(formData[name])) {
       const newArray = value.split(",").map((item) => item.trim());
 
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: newArray,
-      }));
-    } else {
-      const newValue = value;
+			setFormData((prevData) => ({
+				...prevData,
+				[name]: newArray,
+			}));
+		} else {
+			const newValue = name === "vacancy_total" || name === "activity_hours" ? parseFloat(value) : value;
 
       setFormData((prevData) => ({
         ...prevData,
@@ -168,39 +170,39 @@ const CreateActivity = ({ user }) => {
         created_on: Timestamp.fromDate(new Date()),
       };
 
-      setFormData(updatedFormData);
-      let res = await db.collection("Activities").add(updatedFormData);
-      console.log("Activity added successfully!");
-      console.log(res.id);
-      const userRef = db.collection("Users").doc(user.uid);
-      await userRef.update({
-        activities_created: arrayUnion(res.id),
-      });
-      Swal.fire({
-        title: "Success!",
-        text: "Activity successfully created!",
-        icon: "success",
-        timer: 1000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      }).then(router.push("/"));
-      setTimeout(function () {
-        router.push("/activities");
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-      Swal.fire({
-        title: "Error!",
-        text: error,
-        icon: "error",
-        timer: 1000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      });
-    }
-  };
+			setFormData(updatedFormData);
+			let res = await db.collection("Activities").add(updatedFormData);
+			console.log("Activity added successfully!");
+			console.log(res.id);
+			const userRef = db.collection("Users").doc(user.uid);
+			await userRef.update({
+				activities_created: arrayUnion(res.id),
+			});
+			Swal.fire({
+				title: "Success!",
+				text: "Activity successfully created!",
+				icon: "success",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			});
+			setTimeout(function () {
+				router.push("/");
+			}, 1000);
+		} catch (error) {
+			console.log(error);
+			Swal.fire({
+				title: "Error!",
+				text: error,
+				icon: "error",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			});
+		}
+	};
 
   return user.role === "admin" ? (
     <Box style={{ maxWidth: "600px", margin: "80px auto" }}>
@@ -218,81 +220,92 @@ const CreateActivity = ({ user }) => {
           />
         </FormControl>
 
-        <br />
-        <FormControl isRequired>
-          <FormLabel>Activity Type:</FormLabel>
-          {activityTypes && (
-            <Select
-              name="activity_type"
-              value={formData.activity_type}
-              onChange={handleChange}
-              placeholder="Activity Type"
-              variant="filled"
-            >
-              <option value="Volunteering">Volunteering</option>
-              <option value="Training">Training</option>
-              <option value="Workshop">Workshop</option>
-            </Select>
-          )}
-        </FormControl>
-        <br />
-        <FormControl isRequired>
-          <FormLabel>Description:</FormLabel>
-          <Textarea
-            variant={"filled"}
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          ></Textarea>
-        </FormControl>
-        <br />
-        <FormControl>
-          <FormLabel>Image:</FormLabel>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={styles.input}
-          />
-        </FormControl>
-        <br />
-        <FormControl isRequired>
-          <FormLabel>Location Name:</FormLabel>
-          <Input
-            type="text"
-            name="location_name"
-            value={formData.location_name}
-            onChange={handleChange}
-            placeholder="Location Name"
-            variant="filled"
-          />
-        </FormControl>
-        <br />
-        <FormControl isRequired>
-          <FormLabel>Location Address:</FormLabel>
-          <Input
-            type="text"
-            name="location_address"
-            value={formData.location_address}
-            onChange={handleChange}
-            placeholder="Location Address"
-            variant="filled"
-          />
-        </FormControl>
-        <br />
-
-        <FormControl isRequired>
-          <FormLabel>Organiser Name:</FormLabel>
-          <Input
-            type="text"
-            name="organiser_name"
-            value={formData.organiser_name}
-            onChange={handleChange}
-            placeholder="Organiser Name"
-            variant="filled"
-          />
-        </FormControl>
-        <br />
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Activity Type:</FormLabel>
+					{activityTypes && (
+						<Select
+							name="activity_type"
+							value={formData.activity_type}
+							onChange={handleChange}
+							placeholder="Activity Type"
+							variant="filled"
+						>
+							<option value="Volunteering">Volunteering</option>
+							<option value="Training">Training</option>
+							<option value="Workshop">Workshop</option>
+						</Select>
+					)}
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Description:</FormLabel>
+					<Textarea
+						variant={"filled"}
+						name="description"
+						value={formData.description}
+						onChange={handleChange}
+					></Textarea>
+				</FormControl>
+				<br />
+				<FormControl>
+					<FormLabel>Image:</FormLabel>
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleImageChange}
+						style={styles.input}
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Location Name:</FormLabel>
+					<Input
+						type="text"
+						name="location_name"
+						value={formData.location_name}
+						onChange={handleChange}
+						placeholder="Location Name"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Location Address:</FormLabel>
+					<Input
+						type="text"
+						name="location_address"
+						value={formData.location_address}
+						onChange={handleChange}
+						placeholder="Location Address"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Postal code:</FormLabel>
+					<Input
+						type="text"
+						name="location_postal"
+						value={formData.location_postal}
+						onChange={handleChange}
+						placeholder="Location Postal Code"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Organiser Name:</FormLabel>
+					<Input
+						type="text"
+						name="organiser_name"
+						value={formData.organiser_name}
+						onChange={handleChange}
+						placeholder="Organiser Name"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
 
         <FormControl>
           <FormLabel>Tags:</FormLabel>
@@ -335,50 +348,62 @@ const CreateActivity = ({ user }) => {
         </FormControl>
         <br />
 
-        <FormControl isRequired>
-          <FormLabel>Start Date and Time:</FormLabel>
-          <Input
-            type="datetime-local"
-            name="datetime_start"
-            value={formatDateForInput(formData.datetime_start)}
-            onChange={handleChange}
-            variant="filled"
-          />
-        </FormControl>
-        <br />
-        <FormControl isRequired>
-          <FormLabel>End Date and Time:</FormLabel>
-          <Input
-            type="datetime-local"
-            name="datetime_end"
-            value={formatDateForInput(formData.datetime_end)}
-            onChange={handleChange}
-            variant="filled"
-          />
-        </FormControl>
-        <br />
-        <FormControl isRequired>
-          <FormLabel>Sign Up Deadline:</FormLabel>
-          <Input
-            type="datetime-local"
-            name="signup_deadline"
-            value={formatDateForInput(formData.signup_deadline)}
-            onChange={handleChange}
-            variant="filled"
-          />
-        </FormControl>
-        <br />
-        <Button
-          type="submit"
-          colorScheme="red"
-          variant={"outline"}
-          style={{ width: "100%" }}
-        >
-          Submit
-        </Button>
-      </form>
-    </Box>
-  ) : null;
+				<FormControl isRequired>
+					<FormLabel>Start Date and Time:</FormLabel>
+					<Input
+						type="datetime-local"
+						name="datetime_start"
+						value={formatDateForInput(formData.datetime_start)}
+						onChange={handleChange}
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>End Date and Time:</FormLabel>
+					<Input
+						type="datetime-local"
+						name="datetime_end"
+						value={formatDateForInput(formData.datetime_end)}
+						onChange={handleChange}
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Total Activity Hours:</FormLabel>
+					<Input
+						type="number"
+						name="activity_hours"
+						value={formData.activity_hours}
+						onChange={handleChange}
+						placeholder="Activity Hours"
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<FormControl isRequired>
+					<FormLabel>Sign Up Deadline:</FormLabel>
+					<Input
+						type="datetime-local"
+						name="signup_deadline"
+						value={formatDateForInput(formData.signup_deadline)}
+						onChange={handleChange}
+						variant="filled"
+					/>
+				</FormControl>
+				<br />
+				<Button
+					type="submit"
+					colorScheme="red"
+					variant={"outline"}
+					style={{ width: "100%" }}
+				>
+					Submit
+				</Button>
+			</form>
+		</Box>
+		) : null;
 };
 
 const styles = {

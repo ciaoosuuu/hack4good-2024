@@ -8,6 +8,7 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userEdited, setUserEdited] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -15,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
             setIsLoading(true);
             if (currentUser) {
                 const ref = db.collection('Users').doc(currentUser.uid);
+                console.log("user data updated...")
                 const doc = await ref.get();
                 if (!doc.exists) {
                     console.log('No such user!');
@@ -28,10 +30,22 @@ export const AuthContextProvider = ({ children }) => {
             setIsLoading(false);
         });
         return () => unsubscribe();
-    }, [auth]);
+    }, [auth, userEdited]);
+
+    const callbackFunction = async () => {
+        const ref = db.collection('Users').doc(currentUser.uid);
+        console.log("user data updated...")
+        const doc = await ref.get();
+        if (!doc.exists) {
+            console.log('No such user!');
+        } else {
+            setUser(doc.data());
+            console.log('User data:', doc.data());
+        }
+    }
 
     return (
-        <AuthContext.Provider value={{ user, isLoading }}>
+        <AuthContext.Provider value={{ user, isLoading, setUserEdited, callbackFunction }}>
             {children}
         </AuthContext.Provider>
     );

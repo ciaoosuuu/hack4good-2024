@@ -32,6 +32,10 @@ const addVolunteerToDb = async (userCredential, name) => {
 		role: "volunteer",
 		name: name,
 		created_on: Timestamp.fromDate(new Date()),
+		exp_points: 0,
+		activities_attended: [],
+		activities_signedup: [],
+		posts: [],
 	};
 	try {
 		await db.collection("Users").doc(userCredential.user.uid).set(data);
@@ -52,31 +56,31 @@ const VolunteerSignup = () => {
 
 	useEffect(() => {
 		if (user) {
-		  Swal.fire({
-			title: "You have logged in.",
-			text: "Redirecting ...",
-			icon: "success",
-			timer: 1000,
-			timerProgressBar: true,
-			showConfirmButton: false,
-			allowOutsideClick: false,
-		  }).then(() => {
-			// setTimeout(() => {
-				if (!isJustSignedUp) {
+			Swal.fire({
+				title: "You have logged in.",
+				text: "Redirecting ...",
+				icon: "success",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			}).then(() => {
+				if (isJustSignedUp) {
+					router.push("/profile/volunteer-preferences");
+				} else {
 					router.push("/activities");
 				}
-			//   }, 500);
-		  });
+			});
 		}
-	  }, [user]);
+	}, [user, isJustSignedUp]);
 
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
 			.then(async (userCredential) => {
-				await addVolunteerToDb(userCredential, name);
 				setIsJustSignedUp(true);
-				router.push("/profile/volunteer-preferences");
+				await addVolunteerToDb(userCredential, name);
+				// router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
@@ -89,10 +93,9 @@ const VolunteerSignup = () => {
 		e.preventDefault();
 		googleSignIn()
 			.then(async(userCredential) => {
-				//successfully login
-				await addVolunteerToDb(userCredential, name);
 				setIsJustSignedUp(true);
-				router.push("/profile/volunteer-preferences");
+				await addVolunteerToDb(userCredential, name);
+				// router.push("/profile/volunteer-preferences");
 			})
 			.catch((error) => {
 				const errorMessage = error.message;

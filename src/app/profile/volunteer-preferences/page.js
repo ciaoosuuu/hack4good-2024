@@ -28,10 +28,12 @@ import Swal from "sweetalert2";
 import {
 	skills,
 	interests,
+	languages,
 	capitalise,
 } from "../../../resources/skills-interests";
 import classes from "../page.module.css";
 import { Timestamp } from "firebase/firestore";
+import { UserAuth } from "../../context/AuthContext";
 
 const formatDateForInput = (timestamp) => {
 	if (!timestamp) return "";
@@ -45,6 +47,7 @@ const formatDateForInput = (timestamp) => {
 
 const VolunteerPreferences = ({ stepIndex, user }) => {
 	const router = useRouter();
+	const { setUserEdited } = UserAuth();
 	const [interestAreas, setInterestAreas] = useState(
 		interests.map((interest) => {
 			return {
@@ -63,6 +66,15 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 			};
 		})
 	);
+	const [languageOptions, setLanguageOptions] = useState(
+		languages.map((language) => {
+			return {
+				key: language,
+				value: language,
+				label: capitalise(language),
+			};
+		})
+	);
 	const [step1ChangesMade, setStep1ChangesMade] = useState(false);
 	const [step2ChangesMade, setStep2ChangesMade] = useState(false);
 	const [form1Data, setForm1Data] = useState({
@@ -70,15 +82,17 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		description: user.description ? user.description : "",
 	});
 	const [form2Data, setForm2Data] = useState({
-		languages: user.preferences?.languages
-			? user.preferences.languages
-			: null,
 		experience: user.preferences?.experience
 			? user.preferences.experience
 			: null,
-		skills: user.preferences?.skills ? user.preferences.skills : [],
+		skills: user.preferences?.skills 
+			? user.preferences.skills 
+			: [],
 		interestAreas: user.preferences?.interestAreas
 			? user.preferences.interestAreas
+			: [],
+		languages: user.preferences?.languages
+			? user.preferences.languages
 			: [],
 	});
 
@@ -139,6 +153,8 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 					: "",
 			});
 			// Optionally, you can redirect the user or perform other actions after submission.
+			setUserEdited((prev) => !prev);
+		
 			Swal.fire({
 				title: "Success!",
 				text: "Submitted Volunteer information",
@@ -147,7 +163,10 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
-			}).then(setActiveStep(2));
+			})
+			setTimeout(function () {
+				setActiveStep(2);
+			}, 1000);
 		} catch (error) {
 			console.log("error", error);
 			Swal.fire({
@@ -180,16 +199,20 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 					skills: form2Data.skills ? form2Data.skills : null,
 				},
 			});
+			setUserEdited((prev) => !prev);
 			// Optionally, you can redirect the user or perform other actions after submission.
 			Swal.fire({
 				title: "Success!",
 				text: "Redirecting to Activities...",
 				icon: "success",
-				timer: 1000,
+				timer: 1500,
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
-			}).then(router.push("/activities"));
+			})
+			setTimeout(function () {
+				router.push("/activities");
+			}, 1000);
 		} catch (error) {
 			console.log("error", error);
 			Swal.fire({
@@ -388,6 +411,45 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 								/>
 							</FormControl>
 							<FormControl>
+									<FormLabel>
+										Languages:
+									</FormLabel>
+									{languageOptions && (
+											<Select
+												isMulti
+												value={form2Data.languages.map(
+													(language) => {
+														return {
+															value: language,
+															label: capitalise(
+																language
+															),
+														};
+													}
+												)}
+												options={languageOptions}
+												variant="filled"
+												tagVariant="solid"
+												onChange={(
+													selectedLanguageOptions
+												) => {
+													setStep2ChangesMade(true);
+													setForm2Data((form2Data) => {
+														const newLanguages =
+															selectedLanguageOptions.map(
+																(languageOption) =>
+																	languageOption.value
+															);
+														return {
+															...form2Data,
+															languages: newLanguages,
+														};
+													});
+												}}
+											/>
+										)}
+							</FormControl>
+							{/* <FormControl>
 								<FormLabel>Languages:</FormLabel>
 								<Input
 									type="text"
@@ -396,7 +458,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 									value={form2Data.languages}
 									onChange={handleChangeStep2}
 								></Input>
-							</FormControl>
+							</FormControl> */}
 						</>
 					)}
 				</>
