@@ -9,7 +9,7 @@ const withAuth = (Component) => {
 
     useEffect(() => {
       if (isLoading) {
-        return () => {}
+        return undefined;
       }
 
       if (!user) {
@@ -18,7 +18,7 @@ const withAuth = (Component) => {
     }, [user, isLoading, router]);
 
     if (isLoading || !user) {
-      return () => {};
+      return undefined;
     }
 
     return <Component user={user} {...props} />;

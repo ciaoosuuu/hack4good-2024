@@ -60,7 +60,7 @@ const Entry = (entry, index) => {
 			<p />
 			<p>{`${entry.content.split(" ").slice(0, 100).join(" ")}...`}</p>
 			<p />
-			<p>
+			<div>
 				{entry.isanonymous && (
 					<Flex align={"center"}>
 						<FaCircleUser
@@ -90,7 +90,7 @@ const Entry = (entry, index) => {
 						</text>
 					</Flex>
 				)}
-			</p>
+			</div>
 		</div>
 	);
 };

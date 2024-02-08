@@ -11,7 +11,7 @@ import {
 	MenuList,
 	useToast,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
@@ -179,7 +179,7 @@ export default function NavBar() {
 			>
 				<Flex key={"tabs"} style={{ width: "100%" }}>
 					{items.map((navItem) => (
-						<>
+						<Fragment key={navItem.key}>
 							<Tab
 								key={navItem.key}
 								onClick={() => navigateTo(navItem.key)}
@@ -188,7 +188,7 @@ export default function NavBar() {
 								{navItem.label}
 							</Tab>
 							<Spacer key={"spacer-" + navItem.key} />
-						</>
+							</Fragment>
 					))}
 				</Flex>
 			</Tabs>{" "}

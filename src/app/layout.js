@@ -32,13 +32,15 @@ export default function RootLayout({ children }) {
 
 	return (
 		<html lang="en">
+			<body className={inter.className}>
 			<Providers>
 				<AuthContextProvider>
 					{showNavBar && <NavBar />}
-					<body className={inter.className}>{children}</body>
+					{children}
 					{showNavBar && <Footer />}
 				</AuthContextProvider>
 			</Providers>
+			</body>
 		</html>
 	);
 }

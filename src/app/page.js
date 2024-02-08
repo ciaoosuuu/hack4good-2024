@@ -128,7 +128,7 @@ const Home = () => {
 						className={roboto_slab.className}
 					>
 						Welcome to <br />
-						<text style={{ fontSize: "45px" }}>Big At Heart</text>
+						<p style={{ fontSize: "45px" }}>Big At Heart</p>
 					</h1>
 					<br />
 					<p style={paragraphStyle}>
@@ -255,9 +255,9 @@ const Home = () => {
 					}}
 					className={roboto_slab.className}
 				>
-					<text style={{ fontSize: "20px" }}>
+					<p style={{ fontSize: "20px" }}>
 						Something Inspirational, Something Informational
-					</text>
+					</p>
 					<br />
 					Blog Posts From Our Volunteers
 				</h1>
