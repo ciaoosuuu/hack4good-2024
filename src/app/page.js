@@ -12,6 +12,9 @@ import Entries from "../components/blog/Entries";
 import classes from "../app/blog/page.module.css";
 import { UserAuth } from "./context/AuthContext";
 
+import ActivityCard from "../components/activities/ActivityCard";
+import getTopActivities from "../utils/matching/getTopActivities"
+
 export const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
 	subsets: ["latin"],
@@ -82,6 +85,46 @@ const Home = () => {
 	const { user } = UserAuth();
 	const router = useRouter();
 	const [posts, setPosts] = useState();
+	const [activities, setActivities] = useState([]);
+
+	useEffect(() => {
+		const fetchActivities = async () => {
+			try {
+				const activitiesSnapshot = await db
+					.collection("Activities")
+					.get();
+
+				if (activitiesSnapshot.empty) {
+					console.log("No activities found.");
+					setLoading(false);
+					return;
+				}
+
+				const activitiesData = activitiesSnapshot.docs.map((doc) => ({
+					id: doc.id,
+					datetime_start: doc.data().datetime_start,
+					...doc.data(),
+				}));
+
+				const activitiesDataSorted = activitiesData.sort(
+					(activityA, activityB) => {
+						const startTimeA = activityA.datetime_start.toDate();
+						const startTimeB = activityB.datetime_start.toDate();
+						return startTimeA - startTimeB;
+					}
+				);
+
+				setActivities(activitiesDataSorted);
+
+			} catch (error) {
+				console.error("Error fetching activities:", error);
+			}
+		};
+
+		// Call the fetch functions
+		fetchActivities();
+	}, []);
+
 
 	useEffect(() => {
 		console.log("user", user);
@@ -244,6 +287,29 @@ const Home = () => {
 						<br />
 					</Flex>
 				</Box>
+			</div>
+			<br />
+			<div style={{ width: "80%", margin: "0 auto" }}>
+				<h1
+					style={{
+						fontSize: "40px",
+						color: "#333",
+						textAlign: "center",
+					}}
+					className={roboto_slab.className}
+				>
+						Recommended Activities For You
+				</h1>
+				<ul className={classes["grid_list_horizontal"]}>
+					{activities &&
+						getTopActivities(user, activities)
+							.map((activity) => (
+								<ActivityCard
+									key={activity.id}
+									activity={activity}
+								/>
+							))}
+				</ul>
 			</div>
 			<br />
 			<div style={{ width: "80%", margin: "0 auto" }}>
