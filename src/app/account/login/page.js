@@ -18,24 +18,41 @@ import {
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { FiAlertCircle } from "react-icons/fi";
+import Swal from "sweetalert2";
 
 const Login = () => {
 	const router = useRouter();
-	const { user } = UserAuth();
+	const { user, isLoading } = UserAuth();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
+
+	useEffect(() => {
+		if (user) {
+		  Swal.fire({
+			title: "You have logged in.",
+			text: "Redirecting ...",
+			icon: "success",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		  }).then(() => {
+			// setTimeout(() => {
+				router.push("/activities");
+			//   }, 500);
+		  });
+		}
+	  }, [user]);
 
 	const handleEmailLogin = async (e) => {
 		e.preventDefault();
 		emailPwSignIn(email, password)
 			.then(() => {
 				//successfully login
-				router.push("/");
-				console.log("Log in.");
+				router.push("/activities");
 			})
 			.catch((error) => {
-				const errorCode = error.code;
 				const errorMessage = error.message;
 				console.log(`Email login error: ${errorMessage}`);
 				setLoginError(errorMessage);
@@ -47,18 +64,16 @@ const Login = () => {
 		googleSignIn()
 			.then(() => {
 				//successfully login
-				router.push("/");
-				console.log("Log in.");
+				router.push("/activities");
 			})
 			.catch((error) => {
-				const errorCode = error.code;
 				const errorMessage = error.message;
-				console.log(`Email login error: ${errorMessage}`);
+				console.log(`Google login error: ${errorMessage}`);
 				setLoginError(errorMessage);
 			});
 	};
 
-	return (
+	return isLoading || user ? null : (
 		<Box style={{ maxWidth: "600px", margin: "80px auto" }}>
 			<h1 style={{ textAlign: "center" }}>Log In</h1>
 			<br />

@@ -31,39 +31,19 @@ import {
 	capitalise,
 } from "../../../resources/skills-interests";
 import classes from "../page.module.css";
+import { Timestamp } from "firebase/firestore";
+
+const formatDateForInput = (timestamp) => {
+	if (!timestamp) return "";
+
+	const date = timestamp.toDate();
+	const year = date.getFullYear();
+	const month = `0${date.getMonth() + 1}`.slice(-2);
+	const day = `0${date.getDate()}`.slice(-2);
+	return `${year}-${month}-${day}`;
+};
 
 const VolunteerPreferences = ({ stepIndex, user }) => {
-	// const interestAreasItems = {
-	// 	["migrantWorkers"]: {
-	// 		index: "migrantWorkers",
-	// 		value: "migrantWorkers",
-	// 		label: "Migrant Workers",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["elderly"]: {
-	// 		index: "elderly",
-	// 		value: "elderly",
-	// 		label: "Elderly",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["children"]: {
-	// 		index: "children",
-	// 		value: "children",
-	// 		label: "Children/Youth",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// 	["lowIncome"]: {
-	// 		index: "lowIncome",
-	// 		value: "lowIncome",
-	// 		label: "Low Income Communities",
-	// 		description: "",
-	// 		checked: false,
-	// 	},
-	// };
-
 	const router = useRouter();
 	const [interestAreas, setInterestAreas] = useState(
 		interests.map((interest) => {
@@ -121,11 +101,20 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 	const handleChangeStep1 = (e) => {
 		setStep1ChangesMade(true);
 		const { name, value } = e.target;
-		setForm1Data((prevData) => ({
-			...prevData,
-			[name]: value,
-		}));
-		// }
+		if (name.includes("dateOfBirth")) {
+			const timestampDate = value
+				? Timestamp.fromDate(new Date(value))
+				: null;
+			setForm1Data((prevData) => ({
+				...prevData,
+				[name]: timestampDate,
+			}));
+		} else {
+			setForm1Data((prevData) => ({
+				...prevData,
+				[name]: value,
+			}));
+		}
 	};
 	const handleChangeStep2 = (e) => {
 		setStep2ChangesMade(true);
@@ -142,7 +131,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		try {
 			const userRef = db.collection("Users").doc(user.uid);
 			await userRef.update({
-				dateOfBirth: form1Data.dateOfBirth
+				date_of_birth: form1Data.dateOfBirth
 					? form1Data.dateOfBirth
 					: null,
 				description: form1Data.description
@@ -272,7 +261,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 									type="date"
 									variant={"filled"}
 									name="dateOfBirth"
-									value={form1Data.dateOfBirth}
+									value={formatDateForInput(form1Data.dateOfBirth)}
 									onChange={handleChangeStep1}
 								></Input>
 							</FormControl>
@@ -432,7 +421,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 							>
 								Skip
 							</Button>
-							{user.dateOfBirth || user.description ? (
+							{user.date_of_birth || user.description ? (
 								<Button
 									colorScheme={"red"}
 									onClick={handleSubmitStep1}

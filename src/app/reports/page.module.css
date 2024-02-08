@@ -1,0 +1,25 @@
+.selection-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.option-unselected {
+  font-size: small;
+  font-weight: bold;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.option-selected {
+  font-size: small;
+  font-weight: bold;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-bottom: 2px solid maroon;
+  color: maroon;
+}
