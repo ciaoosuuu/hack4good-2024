@@ -169,29 +169,6 @@ const Activities = ({ user }) => {
 				<div className={classes["page_layout"]}>
 					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
 						<h1 style={{ fontSize: "30px" }}>Activities</h1>
-						{/* <div style={{ height: "180px" }}>
-							<div
-								style={{
-									display: "flex",
-									justifyContent: "flex-end",
-									backgroundColor: "red",
-								}}
-							>
-								<Image
-									src={require("../../resources/vector-building-2.png")}
-									width={551}
-									alt="Big At Heart"
-									style={{ position: "absolute" }}
-								/>
-							</div>
-							<br />
-							{/* <ChakraImage
-								src={
-									"https://static.wixstatic.com/media/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg/v1/fill/w_980,h_463,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg"
-								}
-								className={classes["promo_slideshow"]}
-							/> 
-						</div> */}
 						<br />
 
 						<div className={classes["selection-bar"]}>
@@ -249,7 +226,11 @@ const Activities = ({ user }) => {
 													newInterestAreaKeys
 												);
 											}}
-											style={{ zIndex: 70 }}
+											colorScheme={"red"}
+											style={{
+												zIndex: 70,
+												backgroundColor: "red",
+											}}
 										/>
 									)}
 								</Box>
