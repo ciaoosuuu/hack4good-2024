@@ -25,11 +25,19 @@ import classes from "../../app/activities/page.module.css";
 import { useRouter } from "next/navigation";
 
 const datesAreEqual = (date1, date2) => {
-    const dateOnly1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const dateOnly2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+	const dateOnly1 = new Date(
+		date1.getFullYear(),
+		date1.getMonth(),
+		date1.getDate()
+	);
+	const dateOnly2 = new Date(
+		date2.getFullYear(),
+		date2.getMonth(),
+		date2.getDate()
+	);
 
-    return dateOnly1.getTime() === dateOnly2.getTime();
-}
+	return dateOnly1.getTime() === dateOnly2.getTime();
+};
 const ActivityCard = ({
 	activity,
 	mini,
@@ -52,7 +60,7 @@ const ActivityCard = ({
 					<Flex
 						style={{
 							position: "absolute",
-							zIndex: 10,
+							// zIndex: 1,
 							marginTop: `${marginTop ? marginTop : "-10px"}`,
 							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
 							width: "45px",
@@ -76,7 +84,7 @@ const ActivityCard = ({
 					<Flex
 						style={{
 							position: "absolute",
-							zIndex: 10,
+							// zIndex: 1,
 							marginTop: `${marginTop ? marginTop : "-10px"}`,
 							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
 							width: "45px",
@@ -100,7 +108,7 @@ const ActivityCard = ({
 					<Flex
 						style={{
 							position: "absolute",
-							zIndex: 10,
+							// zIndex: 1,
 							marginTop: `${marginTop ? marginTop : "-10px"}`,
 							marginLeft: `${marginLeft ? marginLeft : "-10px"}`,
 							width: "45px",
@@ -197,39 +205,44 @@ const ActivityCard = ({
 								>
 									<Text>
 										<Icon as={FaRegCalendarAlt} mr="2" />
-										{
-											activity.datetime_start
-												.toDate()
-												.toLocaleString("en-EN", {
-													year: "numeric",
-													month: "long",
-													day: "numeric",
-												}) +
+										{activity.datetime_start
+											.toDate()
+											.toLocaleString("en-EN", {
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+											}) +
 											", " +
 											activity.datetime_start
 												.toDate()
 												.toLocaleString("en-EN", {
 													weekday: "long",
 												}) +
-											(datesAreEqual(activity.datetime_start.toDate(), activity.datetime_end.toDate()) 
-											? "" 
-											:
-											" - " +
-											activity.datetime_end
-												.toDate()
-												.toLocaleString("en-EN", {
-													year: "numeric",
-													month: "long",
-													day: "numeric",
-												}) +
-											", " +
-											activity.datetime_end
-												.toDate()
-												.toLocaleString("en-EN", {
-													weekday: "long",
-												})
+											(datesAreEqual(
+												activity.datetime_start.toDate(),
+												activity.datetime_end.toDate()
 											)
-										}
+												? ""
+												: " - " +
+												  activity.datetime_end
+														.toDate()
+														.toLocaleString(
+															"en-EN",
+															{
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															}
+														) +
+												  ", " +
+												  activity.datetime_end
+														.toDate()
+														.toLocaleString(
+															"en-EN",
+															{
+																weekday: "long",
+															}
+														))}
 									</Text>
 									<Text>
 										<Icon as={FaRegClock} mr="2" />
@@ -385,39 +398,44 @@ const ActivityCard = ({
 								>
 									<Text>
 										<Icon as={FaRegCalendarAlt} mr="2" />
-										{
-											activity.datetime_start
-												.toDate()
-												.toLocaleString("en-EN", {
-													year: "numeric",
-													month: "long",
-													day: "numeric",
-												}) +
+										{activity.datetime_start
+											.toDate()
+											.toLocaleString("en-EN", {
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+											}) +
 											", " +
 											activity.datetime_start
 												.toDate()
 												.toLocaleString("en-EN", {
 													weekday: "long",
 												}) +
-											(datesAreEqual(activity.datetime_start.toDate(), activity.datetime_end.toDate()) 
-											? "" 
-											:
-											" - " +
-											activity.datetime_end
-												.toDate()
-												.toLocaleString("en-EN", {
-													year: "numeric",
-													month: "long",
-													day: "numeric",
-												}) +
-											", " +
-											activity.datetime_end
-												.toDate()
-												.toLocaleString("en-EN", {
-													weekday: "long",
-												})
+											(datesAreEqual(
+												activity.datetime_start.toDate(),
+												activity.datetime_end.toDate()
 											)
-										}
+												? ""
+												: " - " +
+												  activity.datetime_end
+														.toDate()
+														.toLocaleString(
+															"en-EN",
+															{
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															}
+														) +
+												  ", " +
+												  activity.datetime_end
+														.toDate()
+														.toLocaleString(
+															"en-EN",
+															{
+																weekday: "long",
+															}
+														))}
 									</Text>
 
 									<Text>
