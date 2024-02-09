@@ -63,9 +63,17 @@ Open your web browser and navigate to http://localhost:3000 to access the locall
 
 **Use Cases**
 
-<img src="src/resources/diagrams/UseCaseDiagram.png" width="600"/>
+<img src="src/resources/diagrams/UseCaseDiagram.png" width="800"/>
 
 **User Flow**
+
+Volunteer:
+
+<img src="src/resources/diagrams/VolunteerFlow.png" width="800"/>
+
+Admin:
+
+<img src="src/resources/diagrams/AdminFlow.png" width="800"/>
 
 ### Features
 
@@ -106,6 +114,7 @@ Open your web browser and navigate to http://localhost:3000 to access the locall
 
 ### Architecture
 
+<img src="src/resources/diagrams/ArchitectureDiagram.png" width="800"/>
 
 ### Credits
 - [Micaella](https://github.com/micaellaa)
