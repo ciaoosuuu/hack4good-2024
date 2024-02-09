@@ -36,6 +36,13 @@ import {
 	EmailAuthProvider,
 } from "firebase/auth";
 
+import { Roboto_Slab } from "next/font/google";
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
+
 const formatDateForInput = (timestamp) => {
 	if (!timestamp) return "";
 
@@ -275,7 +282,13 @@ const ProfileSettings = ({ user }) => {
 
 			<br />
 			<Box style={{ maxWidth: "600px", margin: "0 auto" }}>
-				<h1 style={{ textAlign: "center" }}>Edit Profile</h1>
+				<h1
+					style={{ textAlign: "center" }}
+					className={roboto_slab.className}
+				>
+					Edit Profile
+				</h1>
+				<br />
 				<button
 					className={classes["image_input"]}
 					onClick={handleClick}

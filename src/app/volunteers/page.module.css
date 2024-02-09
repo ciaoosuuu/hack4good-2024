@@ -373,12 +373,13 @@
 }
   
 .volunteer-card {
-  background-color: white;
+  background-color: rgb(255,255,255,0.9);
+  border-color:rgba(122, 32, 32, 0.7);
   cursor:pointer;
 }
 
 .volunteer-card:hover {
-  background-color: #ffffff90;
+  background-color: rgb(255,255,255,0.5);
 }
 
 .volunteer-report-button {

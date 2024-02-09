@@ -302,6 +302,7 @@ const ActivityCard = ({
 										opacity: "50%",
 										fontSize: "14px",
 										marginTop: "-7px",
+										minWidth: "250px",
 									}}
 								>
 									<Flex align={"center"}>

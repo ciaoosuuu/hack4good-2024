@@ -19,6 +19,13 @@ import {
 	capitalise,
 } from "../../resources/skills-interests";
 
+import { Roboto_Slab } from "next/font/google";
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
+
 const Activities = ({ user }) => {
 	const router = useRouter();
 	const currentTimestamp = new Date();
@@ -168,7 +175,12 @@ const Activities = ({ user }) => {
 				<br />
 				<div className={classes["page_layout"]}>
 					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
-						<h1 style={{ fontSize: "30px" }}>Activities</h1>
+						<h1
+							style={{ fontSize: "30px" }}
+							className={roboto_slab.className}
+						>
+							Activities
+						</h1>
 						<br />
 
 						<div className={classes["selection-bar"]}>
@@ -201,9 +213,10 @@ const Activities = ({ user }) => {
 									{interestAreas && (
 										<Select
 											isMulti
+											colorScheme="red"
 											placeholder="Find by volunteering areas..."
 											options={interestAreas}
-											variant="filled"
+											variant="outline"
 											tagVariant="solid"
 											value={interestAreaKeys.map(
 												(interestAreaKey) => {
@@ -226,7 +239,6 @@ const Activities = ({ user }) => {
 													newInterestAreaKeys
 												);
 											}}
-											colorScheme={"red"}
 											style={{
 												zIndex: 70,
 												backgroundColor: "red",
@@ -239,9 +251,9 @@ const Activities = ({ user }) => {
 									{skillsOptions && (
 										<Select
 											isMulti
-											placeholder="Find by skills.."
+											placeholder="Find by skills..."
 											options={skillsOptions}
-											variant="filled"
+											variant="outline"
 											tagVariant="solid"
 											value={skillsKeys.map((key) => {
 												return {
@@ -264,6 +276,7 @@ const Activities = ({ user }) => {
 									)}
 								</Box>
 								{/* </Flex> */}
+								<br />
 
 								<ul className={classes["grid_list_horizontal"]}>
 									{filteredUpcomingActivities &&
@@ -330,7 +343,9 @@ const Activities = ({ user }) => {
 								padding: "20px",
 							}}
 						>
-							<h1>Announcements</h1>
+							<h1 className={roboto_slab.className}>
+								Announcements
+							</h1>
 							<br />
 
 							<div
@@ -357,7 +372,9 @@ const Activities = ({ user }) => {
 									color: "#f7f2f2",
 								}}
 							>
-								<h1>My Activities</h1>
+								<h1 className={roboto_slab.className}>
+									My Activities
+								</h1>
 								<br />
 
 								<ul
