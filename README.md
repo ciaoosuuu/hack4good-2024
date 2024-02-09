@@ -1,31 +1,36 @@
-# [Project Title]
+# Big Hearts Hub
 
 ### Overview
-In response to the pressing need for streamlined and cost-effective volunteer management within the nonprofit sector, our team has developed a comprehensive solution – [Your App Name] – to revolutionize volunteer management. Tailored for the unique needs of "Big at Heart", our application serves as a user-friendly platform that facilitates the entire volunteer lifecycle,  allowing volunteers to enroll, manage activities, request certificates, and administrators to efficiently handle forms, attendance, and generate detailed reports.
+
+Big Hearts Hub is a comprehensive volunteer management solution tailored for "Big at Heart." Streamlining the entire volunteer lifecycle, our user-friendly platform simplifies enrollment, activity management, certificate requests, and real-time attendance tracking. Beyond the essentials, we enhance engagement and motivation through gamification, offering a fun and rewarding experience for volunteers. Additionally, Big Hearts Hub curates activities and recommends personalized opportunities, making each volunteer's experience more tailored and meaningful. The platform optimizes form handling, attendance records, and report generation, providing a holistic solution for efficient volunteer coordination within the "Big at Heart" community.
 
 ### Team Name
+
 **MVC**: Make Volunteering Count
 
 ### Table of Contents
+
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Features](#features)
-4. [Technologies Used](#technologies-used)
-5. [Credits](#credits)
-6. [Future Developments](#future-developments)
+4. [Future Developments](#future-developments)
+5. [Technologies Used](#technologies-used)
+6. [Architecture](#architecture)
+7. [Credits](#credits)
 
 ### Installation
+
 **Online Deployment**
 
-To access the deployed version of [Your App Name], simply visit [Your App Name]().
+To access the deployed version of Big Hearts Hub, simply visit [Big Hearts Hub]().
 
 **Local Setup**
 
-Follow these steps to set up [Your App Name] locally on your machine:
+Follow these steps to set up Big Hearts Hub locally on your machine:
 1. Clone the Repository:
 
 ```
-git clone https://github.com/micaellaa/hack4good-2024.git
+git clone https://github.com/ciaoosuuu/hack4good-2024.git
 ```
 
 2. Navigate to the Project Directory:
@@ -42,53 +47,67 @@ yarn install
 
 4. Configure Environment Variables:
 
-Create a `.env` file in the root directory and configure the necessary environment variables, such as API keys or database connection strings. Refer to the provided `.env.example` for guidance.
+Create a `.env` file in the root directory and configure the necessary environment variables as per provided `.env` in Devpost.
 
 5. Run the Application:
 
 ```
-yarn start
+yarn dev
 ```
 
-6. Access [Your App Name]:
+6. Access Big Hearts Hub:
 
-Open your web browser and navigate to http://localhost:3000 to access the locally deployed instance of [Your App Name].
+Open your web browser and navigate to http://localhost:3000 to access the locally deployed instance of Big Hearts Hub.
 
 ### Usage
-[Provide instructions on how to use the app.]
+
+**Use Cases**
+
+<img src="src/resources/diagrams/UseCaseDiagram.png" width="600"/>
+
+**User Flow**
 
 ### Features
-Volunteer Enrollment: [Your App Name] simplifies the enrollment process for volunteers associated with "Big at Heart," fostering inclusivity and accessibility to a diverse range of potential contributors.
 
-Activity Management: Volunteers can seamlessly browse, select, and manage their participation in various activities, while organizers within "Big at Heart" can efficiently plan and coordinate events, optimizing the overall volunteer experience.
+**Volunteer Enrollment**: Big Hearts Hub simplifies the enrollment process for volunteers associated with "Big at Heart," fostering inclusivity and accessibility to a diverse range of potential contributors.
 
-Certificate Requests: Our platform empowers volunteers affiliated with "Big at Heart" to request certificates effortlessly, acknowledging their contributions and reinforcing a sense of accomplishment.
+**Activity Management**: Volunteers can seamlessly browse, select, and manage their participation in various activities, while organizers within "Big at Heart" can efficiently plan and coordinate events, optimizing the overall volunteer experience.
 
-Attendance Tracking: [Your App Name] ensures real-time signups and attendance tracking, providing administrators at "Big at Heart" with a clear overview of volunteer participation, enhancing event management and resource allocation.
+**Certificate Requests**: Our platform empowers volunteers affiliated with "Big at Heart" to request certificates effortlessly, acknowledging their contributions and reinforcing a sense of accomplishment.
 
-Detailed Reports: The application equips administrators of "Big at Heart" with a powerful reporting tool, enabling them to generate detailed reports on volunteer activities, demographics, and attendance, fostering informed decision-making.
+**Attendance Tracking**: Big Hearts Hub ensures real-time signups and attendance tracking, providing administrators at "Big at Heart" with a clear overview of volunteer participation, enhancing event management and resource allocation.
 
-Reflections Gallery: Volunteers can share their heartfelt thoughts, experiences, and reflections with the community through the "Blog" or “Reflections” feature. This addition fosters a sense of community and encourages knowledge-sharing among volunteers, enhancing the overall volunteering journey.
+**Detailed Reports**: The application equips administrators of "Big at Heart" with a powerful reporting tool, enabling them to generate detailed reports on volunteer activities, demographics, and attendance, fostering informed decision-making.
 
-Volunteer Portfolio: Track and showcase one’s volunteer journey through the "Volunteer Portfolio." Keep a comprehensive record of each volunteer’s activities, posts, reflections, feedback, and hours volunteered. This feature allows volunteers to celebrate their impact and remember their inspiring journey.
+**Reflections Gallery**: Volunteers can share their heartfelt thoughts, experiences, and reflections with the community through the "Blog" or “Reflections” feature. This addition fosters a sense of community and encourages knowledge-sharing among volunteers, enhancing the overall volunteering journey.
 
-Gamified Experience: Our platform recognizes and rewards volunteers with points, badges, or virtual rewards based on their commitment and consistency in volunteering. This gamified approach adds a fun element to the volunteering experience, encouraging sustained engagement.
+**Volunteer Portfolio**: Track and showcase one’s volunteer journey through the "Volunteer Portfolio." Keep a comprehensive record of each volunteer’s activities, posts, reflections, feedback, and hours volunteered. This feature allows volunteers to celebrate their impact and remember their inspiring journey.
 
-Activities Curation: [Your App Name] intelligently matches volunteers with activities aligned with their interests and skills. By considering user preferences, the platform ensures a personalized volunteering experience, connecting volunteers with opportunities that resonate with their passions.
+**Gamified Experience**: Our platform recognizes and rewards volunteers with points, badges, or virtual rewards based on their commitment and consistency in volunteering. This gamified approach adds a fun element to the volunteering experience, encouraging sustained engagement.
+
+**Activities Curation**: Big Hearts Hub intelligently matches volunteers with activities aligned with their interests and skills. By considering user preferences, the platform ensures a personalized volunteering experience, connecting volunteers with opportunities that resonate with their passions.
+
+### Future Developments
+
+**Recurring Activities Support**: Big Hearts Hub will be enhance support for recurring activities, ensuring a streamlined experience for volunteers participating in ongoing events within "Big at Heart."
+
+**Giving Activities Integration**: Big Hearts Hub will introduce support for "giving" activities like donation drives. This feature empowers volunteers to contribute meaningfully to fundraising efforts, fostering a culture of generosity in the "Big at Heart" community.
+
+**Announcements Feature**: Big Hearts Hub is introducing an announcements feature, providing administrators with a dedicated space to share important updates, event details, and community news directly with volunteers, enhancing communication within the "Big at Heart" community.
+
+**Missions for Gamified Experience**: Big Hearts Hub is introducing missions to elevate the gamified experience. Volunteers can embark on exciting missions tied to their journey, achievements, and participation milestones, adding a new layer of fun and accomplishment to the volunteering adventure in the "Big at Heart" community.
 
 ### Technologies Used
+
 - [Next.js](https://nextjs.org/)
 - [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore)
 - [Firebase Cloud Storage](https://firebase.google.com/docs/storage)
+- [Chart.js](https://www.chartjs.org/)
+
+### Architecture
+
 
 ### Credits
 - [Micaella](https://github.com/micaellaa)
 - [Vivien](https://github.com/vivienherq)
 - [Chen Shun](https://github.com/ciaoosuuu)
-
-### Future Developments
-[Development 1: Brief description]
-
-[Development 2: Brief description]
-
-[Development 3: Brief description]
