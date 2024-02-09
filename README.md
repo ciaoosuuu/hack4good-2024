@@ -59,6 +59,19 @@ yarn dev
 
 Open your web browser and navigate to http://localhost:3000 to access the locally deployed instance of Big Hearts Hub.
 
+**Demo User Accounts**
+
+For demonstration purposes, two user accounts have been provided. You can opt to either create a new account or use the following login credentials:
+
+- **Volunteer Account:**
+  - **Email:** volunteer1@gmail.com
+  - **Password:** 123456
+
+- **Admin Account:**
+  - **Email:** admin@gmail1.com
+  - **Password:** 123456
+
+
 ### Usage
 
 **Use Cases**
