@@ -1,4 +1,4 @@
-.selection-bar {
+/* .selection-bar {
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -22,4 +22,50 @@
   transition: background-color 0.3s ease;
   border-bottom: 2px solid maroon;
   color: maroon;
+} */
+
+.selection-bar {
+  height:42px;
+  width: 100%;
+  display: flex;
+  /* justify-content: space-around; */
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 100px;
+  box-shadow: 2px 2px 5px #00000020;
+  transition: background-color 1.3s ease;
+}
+
+.option-unselected {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height:100%;
+  border-radius: 100px;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgba(152, 66, 66, 0.513);
+  transition: background-color 0.3s ease;
+}
+
+.option-selected {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height:100%;
+  border-radius: 100px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  color: white;
+  background-color: rgb(152, 66, 66);
+}
+
+.option-unselected:hover{
+  color: white;
+  background-color: rgba(152, 66, 66, 0.513);
 }

@@ -161,10 +161,10 @@ const Volunteers = ({ user }) => {
 							</Accordion>
 						</Grid>
 						<br />
-						{usersPerPage && pageNum && (
+						{usersPerPage && pageNum && filteredUsers && (
 							<Pagination
 								usersPerPage={usersPerPage}
-								length={2}
+								length={filteredUsers.length}
 								handlePagination={handlePagination}
 								currentPage={pageNum}
 							/>

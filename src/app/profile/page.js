@@ -1,20 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-	Box,
-	Image as ChakraImage,
-	Tabs,
-	TabList,
-	Tab,
-	TabPanels,
-	TabPanel,
-	Flex,
-} from "@chakra-ui/react";
+import { Box, Image as ChakraImage, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
 import { useRouter } from "next/navigation";
+import { FaCertificate } from "react-icons/fa6";
 import Link from "next/link";
 import calculateUserExp from "../../utils/calculateUserExp";
 
@@ -206,8 +198,12 @@ const Profile = ({ user }) => {
 										borderRadius: "30px",
 										objectFit: "cover",
 									}}
-									src={user.image}
-									alt={user.image}
+									src={
+										user.image
+											? user.image
+											: "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fnoprofile.png?alt=media&token=e2fc8953-a256-423a-a720-24e3c8a729a1"
+									}
+									alt={"Big at Heart volunteer image."}
 								/>
 							</div>
 							<br />
@@ -245,6 +241,23 @@ const Profile = ({ user }) => {
 								)}
 							</Box>
 							<br />
+							<Button
+								style={{
+									marginBottom: "8px",
+									width: "100%",
+									borderRadius: "100px",
+									padding: "21px 0",
+								}}
+								variant="outline"
+								colorScheme={"teal"}
+								//className={classes["profile-button-dark"]}
+								onClick={() =>
+									router.push("/certificate/request")
+								}
+							>
+								<FaCertificate style={{ marginRight: "8px" }} />
+								Request for Certificate
+							</Button>
 							<Box
 								style={{ marginBottom: "8px" }}
 								className={classes["profile-button-dark"]}

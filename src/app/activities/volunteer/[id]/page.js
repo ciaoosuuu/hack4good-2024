@@ -24,10 +24,8 @@ import withAuth from "../../../../hoc/withAuth";
 import Entries from "../../../../components/blog/Entries";
 
 import classes from "./page.module.css";
-import { UserAuth } from "../../../context/AuthContext";
 
 const Volunteer = ({ user, params }) => {
-	const { setUserEdited } = UserAuth();
 	const { id } = params;
 	const userId = user.uid;
 	const userRole = user.role;
@@ -36,7 +34,7 @@ const Volunteer = ({ user, params }) => {
 	console.log(userRole);
 
 	const [activity, setActivity] = useState(); // the page
-	const [isSignedUp, setIsSignedUp] = useState(false); // if current user signed up
+	const [isSignedUp, setIsSignedUp] = useState(); // if current user signed up
 	const [vacancyRemaining, setVacancyRemaining] = useState(0);
 
 	const [signups, setSignups] = useState([]); // users who have signed up for this activity -> ids
@@ -57,6 +55,16 @@ const Volunteer = ({ user, params }) => {
 						setActivity(activityData);
 						setIsSignedUp(
 							activityData.participants_signups.includes(userId)
+						);
+						console.log(
+							"activityData.participants_signups",
+							activityData.participants_signups
+						);
+						console.log("userId", userId);
+						console.log(
+							activityData.participants_signups.some(
+								(id) => (id = userId)
+							)
 						);
 						setSignups(activityData.participants_signups);
 						setMarked(activityData.participants_attended);
@@ -126,7 +134,6 @@ const Volunteer = ({ user, params }) => {
 			} else {
 				console.log("Already signed up.");
 			}
-			setUserEdited((prev) => !prev);
 		} catch (error) {
 			console.error("Error updating field:", error);
 		}
@@ -157,7 +164,6 @@ const Volunteer = ({ user, params }) => {
 			} else {
 				console.log("Not signed up.");
 			}
-			setUserEdited((prev) => !prev);
 		} catch (error) {
 			console.error("Error updating field:", error);
 		}
@@ -226,8 +232,8 @@ const Volunteer = ({ user, params }) => {
 										})}
 								</p>
 								<p>{vacancyRemaining} slots left</p>
-								{userRole === "volunteer" ? (
-									isSignedUp ? (
+								{userRole === "volunteer" && signups ? (
+									signups.some((id) => id === userId) ? (
 										<button
 											onClick={handleUnsignUp}
 											className={classes["signedup"]}
