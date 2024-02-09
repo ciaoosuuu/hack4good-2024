@@ -33,7 +33,8 @@ const Pagination = ({
 	}, []);
 	useEffect(() => {
 		const newPaginationNumbers = [];
-		console.log("pushing pag num");
+		console.log("length", length);
+		console.log("usersPerPage", usersPerPage);
 		for (let i = 1; i <= Math.ceil(length / usersPerPage); i++) {
 			newPaginationNumbers.push(i);
 			console.log("pushing pag num", i);
