@@ -123,14 +123,6 @@ export default function Footer() {
 							>
 								<FaYoutubeSquare size={30} />
 							</Link>
-							<Link
-								as={NextLink}
-								href={"//facebook.com"}
-								prefetch={false}
-								className="foot-icon"
-							>
-								<SiGmail size={30} />
-							</Link>
 						</HStack>
 					</Stack>
 					<Spacer />

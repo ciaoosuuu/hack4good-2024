@@ -24,8 +24,10 @@ import withAuth from "../../../../hoc/withAuth";
 import Entries from "../../../../components/blog/Entries";
 
 import classes from "./page.module.css";
+import { UserAuth } from "../../../context/AuthContext";
 
 const Volunteer = ({ user, params }) => {
+	const { setUserEdited } = UserAuth();
 	const { id } = params;
 	const userId = user.uid;
 	const userRole = user.role;
@@ -124,6 +126,7 @@ const Volunteer = ({ user, params }) => {
 			} else {
 				console.log("Already signed up.");
 			}
+			setUserEdited((prev) => !prev);
 		} catch (error) {
 			console.error("Error updating field:", error);
 		}
@@ -154,6 +157,7 @@ const Volunteer = ({ user, params }) => {
 			} else {
 				console.log("Not signed up.");
 			}
+			setUserEdited((prev) => !prev);
 		} catch (error) {
 			console.error("Error updating field:", error);
 		}

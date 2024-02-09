@@ -35,8 +35,10 @@ import {
 	reauthenticateWithCredential,
 	EmailAuthProvider,
 } from "firebase/auth";
+import { UserAuth } from "../../context/AuthContext";
 
 import { Roboto_Slab } from "next/font/google";
+
 const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
 	subsets: ["latin"],
@@ -57,6 +59,7 @@ const formatDateForInput = (timestamp) => {
 };
 
 const ProfileSettings = ({ user }) => {
+	const { setUserEdited } = UserAuth();
 	const isAdmin = user.role !== "volunteer";
 	const auth = getAuth();
 	const fileInput = useRef(null);
@@ -80,12 +83,28 @@ const ProfileSettings = ({ user }) => {
 		password2: null,
 	});
 
+	const [defaultImageUrl, setDefaultImageUrl] = useState("");
+
+	useEffect(() => {
+		const fetchDefaultPic = async () => {
+			try {
+				const imageRef = projectStorage.ref(
+					"General/default_user_profile.png"
+				);
+				const defaultImage = await imageRef.getDownloadURL();
+				setDefaultImageUrl(defaultImage);
+			} catch (error) {
+				console.error("Error fetching activities:", error);
+			}
+		};
+		fetchDefaultPic();
+	}, []);
+
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
-
 		if (file) {
 			// Check if there's a previously uploaded image
-			if (formData.image) {
+			if (formData.image && formData.image != defaultImageUrl) {
 				// Delete the previous image
 				try {
 					const previousImageRef = projectStorage.refFromURL(
@@ -112,6 +131,7 @@ const ProfileSettings = ({ user }) => {
 				image: imageUrl,
 			});
 		}
+		setUserEdited((prev) => !prev);
 	};
 
 	const handleChange = (e) => {

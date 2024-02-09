@@ -20,16 +20,17 @@ import {
 } from "../../resources/skills-interests";
 
 import { Roboto_Slab } from "next/font/google";
+import { UserAuth } from "../context/AuthContext";
 const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
 	subsets: ["latin"],
 	display: "swap",
 });
 
-const Activities = ({ user }) => {
+const Activities = () => {
+	const { user, isLoading} = UserAuth();
 	const router = useRouter();
 	const currentTimestamp = new Date();
-	const myActivitiesIds = user.activities_signedup;
 	const [selectedView, setSelectedView] = useState("Upcoming");
 	const [activities, setActivities] = useState([]);
 	const [myActivities, setMyActivities] = useState([]);
@@ -105,6 +106,8 @@ const Activities = ({ user }) => {
 	}, []);
 
 	useEffect(() => {
+		const myActivitiesIds = user?.activities_signedup;
+
 		const fetchMyActivities = async () => {
 			if (!myActivitiesIds || !Array.isArray(myActivitiesIds)) {
 				return;
@@ -420,7 +423,7 @@ const Activities = ({ user }) => {
 								<br />
 							</div>
 						)}
-						{user && user.role !== "volunteer" && (
+						{user && user.role == "admin" && (
 							<div
 								style={{
 									// position: "absolute",
@@ -459,4 +462,4 @@ const Activities = ({ user }) => {
 	);
 };
 
-export default withAuth(Activities);
+export default Activities;

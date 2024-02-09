@@ -91,7 +91,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 	const [form2Data, setForm2Data] = useState({
 		experience: user.preferences?.experience
 			? user.preferences.experience
-			: null,
+			: "",
 		skills: user.preferences?.skills ? user.preferences.skills : [],
 		interestAreas: user.preferences?.interestAreas
 			? user.preferences.interestAreas
@@ -167,9 +167,11 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 				showConfirmButton: false,
 				allowOutsideClick: false,
 			});
+
 			setTimeout(function () {
 				setActiveStep(2);
-			}, 1000);
+			}, 1500);
+
 		} catch (error) {
 			console.log("error", error);
 			Swal.fire({
@@ -482,7 +484,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 								style={{ marginRight: "8px" }}
 								onClick={() => setActiveStep(2)}
 							>
-								Skip
+								Next
 							</Button>
 							{user.date_of_birth || user.description ? (
 								<Button
