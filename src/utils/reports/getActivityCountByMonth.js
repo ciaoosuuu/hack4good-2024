@@ -30,9 +30,11 @@ const getActivityCountByMonth = async () => {
         activityDate <=
           new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
       ) {
-        const monthIndex =
-          (11 - Math.abs(currentDate.getMonth() - activityDate.getMonth())) %
-          12;
+        const monthsApart =
+          (currentDate.getFullYear() - activityDate.getFullYear()) * 12 +
+          currentDate.getMonth() -
+          activityDate.getMonth();
+        const monthIndex = 11 - monthsApart;
 
         if (activity.activity_type === "Volunteering") {
           volunteeringCountByMonth[monthIndex]++;

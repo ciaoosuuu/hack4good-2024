@@ -22,7 +22,7 @@ Big Hearts Hub is a comprehensive volunteer management solution tailored for "Bi
 
 **Online Deployment**
 
-To access the deployed version of Big Hearts Hub, simply visit [Big Hearts Hub]().
+To access the deployed version of Big Hearts Hub, simply visit [Big Hearts Hub](https://bigheartshub.vercel.app).
 
 **Local Setup**
 
