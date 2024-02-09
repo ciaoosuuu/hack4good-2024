@@ -344,13 +344,14 @@ const ProfileSettings = ({ user }) => {
 
 					<br />
 
-					<FormControl isRequired>
+					<FormControl>
 						<FormLabel>Email:</FormLabel>
 						<Input
+							isDisabled={true}
 							type="text"
 							name="email"
 							value={formData.email}
-							onChange={handleChange}
+							//onChange={handleChange}
 							placeholder="Email"
 							variant="filled"
 						/>

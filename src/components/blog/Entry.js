@@ -102,7 +102,11 @@ const Entry = (entry, index) => {
 								marginRight: "8px",
 								//marginLeft: "-3px",
 							}}
-							src={userData.image}
+							src={
+								userData.image
+									? userData.image
+									: "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fnoprofile.png?alt=media&token=e2fc8953-a256-423a-a720-24e3c8a729a1"
+							}
 							alt={userData.name}
 						/>
 						<text style={{ fontWeight: 700 }}>

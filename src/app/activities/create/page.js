@@ -155,6 +155,12 @@ const CreateActivity = ({ user }) => {
 				...prevData,
 				[name]: newArray,
 			}));
+		} else if (name === "location_postal") {
+			const newValue = value.replace(/\D/g, "").slice(0, 6);
+			setFormData((prevData) => ({
+				...prevData,
+				location_postal: newValue,
+			}));
 		} else {
 			const newValue =
 				name === "vacancy_total" || name === "activity_hours"

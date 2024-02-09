@@ -206,8 +206,12 @@ const Profile = ({ user }) => {
 										borderRadius: "30px",
 										objectFit: "cover",
 									}}
-									src={user.image}
-									alt={user.image}
+									src={
+										user.image
+											? user.image
+											: "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fnoprofile.png?alt=media&token=e2fc8953-a256-423a-a720-24e3c8a729a1"
+									}
+									alt={"Big at Heart volunteer image."}
 								/>
 							</div>
 							<br />

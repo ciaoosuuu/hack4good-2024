@@ -16,6 +16,8 @@ import {
 	Tooltip,
 	HStack,
 	Spacer,
+	Wrap,
+	WrapItem,
 } from "@chakra-ui/react";
 import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
 import { LuUsers2 } from "react-icons/lu";
@@ -23,6 +25,7 @@ import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { MdOutlineVolunteerActivism, MdMenuBook } from "react-icons/md";
 import classes from "../../app/activities/page.module.css";
 import { useRouter } from "next/navigation";
+import { activityTypes } from "../../resources/skills-interests";
 
 const datesAreEqual = (date1, date2) => {
 	const dateOnly1 = new Date(
@@ -136,8 +139,9 @@ const ActivityCard = ({
 					overflow="hidden"
 					boxShadow="md"
 					p={3}
+					//h="190px"
 					style={{
-						height: "190px",
+						//height: "190px",
 						textAlign: "left",
 						minWidth: "700px",
 						borderRadius: "10px",
@@ -147,6 +151,8 @@ const ActivityCard = ({
 					onClick={() =>
 						router.push(`/activities/volunteer/${activity.id}`)
 					}
+					//maxH="190px"
+					_hover={{ maxh: "500px" }}
 				>
 					{allowReq && (
 						<Flex
@@ -177,6 +183,7 @@ const ActivityCard = ({
 						templateRows="repeat(4, 1fr)"
 						templateColumns="repeat(12, 1fr)"
 						gap={3}
+						_hover={{ maxh: "20px" }}
 					>
 						<GridItem
 							rowSpan={4}
@@ -200,111 +207,145 @@ const ActivityCard = ({
 								<Text fontWeight="bold">
 									{activity.activity_name}
 								</Text>
-								<div
-									style={{ opacity: "80%", fontSize: "14px" }}
-								>
-									<Text>
-										<Icon as={FaRegCalendarAlt} mr="2" />
-										{activity.datetime_start
-											.toDate()
-											.toLocaleString("en-EN", {
-												year: "numeric",
-												month: "long",
-												day: "numeric",
-											}) +
-											", " +
-											activity.datetime_start
+								{datesAreEqual(
+									activity.datetime_start.toDate(),
+									activity.datetime_end.toDate()
+								) ? (
+									<div
+										style={{
+											opacity: "80%",
+											fontSize: "14px",
+										}}
+									>
+										<Text>
+											<Icon
+												as={FaRegCalendarAlt}
+												mr="2"
+											/>
+											{activity.datetime_start
 												.toDate()
 												.toLocaleString("en-EN", {
-													weekday: "long",
+													year: "numeric",
+													month: "long",
+													day: "numeric",
 												}) +
-											(datesAreEqual(
-												activity.datetime_start.toDate(),
-												activity.datetime_end.toDate()
-											)
-												? ""
-												: " - " +
-												  activity.datetime_end
-														.toDate()
-														.toLocaleString(
-															"en-EN",
-															{
-																year: "numeric",
-																month: "long",
-																day: "numeric",
-															}
-														) +
-												  ", " +
-												  activity.datetime_end
-														.toDate()
-														.toLocaleString(
-															"en-EN",
-															{
-																weekday: "long",
-															}
-														))}
-									</Text>
-									<Text>
-										<Icon as={FaRegClock} mr="2" />
-										{activity.datetime_start
-											.toDate()
-											.toLocaleString("en-EN", {
-												hour: "numeric",
-												minute: "numeric",
-												hour12: true,
-											}) +
-											" to " +
-											activity.datetime_end
+												", " +
+												activity.datetime_start
+													.toDate()
+													.toLocaleString("en-EN", {
+														weekday: "long",
+													})}
+										</Text>
+										<Text>
+											<Icon as={FaRegClock} mr="2" />
+											Duration:{" "}
+											{activity.datetime_start
 												.toDate()
 												.toLocaleString("en-EN", {
 													hour: "numeric",
 													minute: "numeric",
 													hour12: true,
-												})}
-									</Text>
-									<Text>
-										<Icon as={FaMapPin} mr="2" />
-										{activity.location_name}
-									</Text>
-								</div>
+												}) +
+												" to " +
+												activity.datetime_end
+													.toDate()
+													.toLocaleString("en-EN", {
+														hour: "numeric",
+														minute: "numeric",
+														hour12: true,
+													})}
+										</Text>
+										<Text>
+											<Icon as={FaMapPin} mr="2" />
+											{activity.location_name}
+										</Text>
+									</div>
+								) : (
+									<div
+										style={{
+											opacity: "80%",
+											fontSize: "14px",
+										}}
+									>
+										<Text>
+											<Icon
+												as={FaRegCalendarAlt}
+												mr="2"
+											/>
+											Start:{" "}
+											{activity.datetime_start
+												.toDate()
+												.toLocaleString("en-EN", {
+													year: "numeric",
+													month: "long",
+													day: "numeric",
+												}) +
+												", " +
+												activity.datetime_start
+													.toDate()
+													.toLocaleString("en-EN", {
+														weekday: "long",
+													}) +
+												", " +
+												activity.datetime_start
+													.toDate()
+													.toLocaleString("en-EN", {
+														hour: "numeric",
+														minute: "numeric",
+														hour12: true,
+													})}
+										</Text>
+										<Text>
+											<Icon
+												as={FaRegCalendarAlt}
+												mr="2"
+											/>
+											End:{" "}
+											{activity.datetime_end
+												.toDate()
+												.toLocaleString("en-EN", {
+													year: "numeric",
+													month: "long",
+													day: "numeric",
+												}) +
+												", " +
+												activity.datetime_end
+													.toDate()
+													.toLocaleString("en-EN", {
+														weekday: "long",
+													}) +
+												", " +
+												activity.datetime_end
+													.toDate()
+													.toLocaleString("en-EN", {
+														hour: "numeric",
+														minute: "numeric",
+														hour12: true,
+													})}
+										</Text>
+										<Text>
+											<Icon as={FaMapPin} mr="2" />
+											{activity.location_name}
+										</Text>
+									</div>
+								)}
 							</Stack>
 						</GridItem>
 
-						<GridItem rowSpan={1} colSpan={2}></GridItem>
-
-						<GridItem rowSpan={1} colSpan={2}></GridItem>
-						{/* <GridItem rowSpan={2} colSpan={2}>
-							<Flex align={"center"}>
-								<LuUsers2 style={{ marginRight: "4px" }} />
-								Vacancy:{" "}
-								{activity.vacancy_total
-									? activity.vacancy_total
-									: "TBA"}
-							</Flex>
-						</GridItem> */}
-						<GridItem rowSpan={1} colSpan={7}>
-							<UnorderedList styleType="none" ml="0">
-								<HStack>
-									{activity.tags.map((tag, index) => (
-										<ListItem key={index}>
-											<Badge colorScheme="green">
-												{tag}
-											</Badge>
-										</ListItem>
-									))}
-								</HStack>
-							</UnorderedList>
-						</GridItem>
-						<GridItem rowSpan={2} colSpan={2}>
+						<GridItem
+							rowSpan={4}
+							colSpan={2}
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "flex-end",
+								opacity: "50%",
+								fontSize: "14px",
+								minWidth: "120px",
+							}}
+						>
 							{!inProfile && (
-								<div
-									style={{
-										opacity: "50%",
-										fontSize: "14px",
-										marginTop: "-7px",
-										minWidth: "250px",
-									}}
-								>
+								<div>
 									<Flex align={"center"}>
 										<LuUsers2
 											style={{ marginRight: "5px" }}
@@ -329,6 +370,41 @@ const ActivityCard = ({
 								</div>
 							)}
 						</GridItem>
+						{/* 
+						<GridItem
+							rowSpan={1}
+							colSpan={2}
+							bg="papayawhip"
+						></GridItem> */}
+
+						<GridItem rowSpan={1} colSpan={7}>
+							<UnorderedList styleType="none" ml="0">
+								<Wrap
+									spacing="2px"
+									maxH="40px"
+									// overflow="hidden"
+									// _hover={{ maxH: "100px" }}
+								>
+									{activity.tags
+										.slice(0, 4)
+										.map((tag, index) => (
+											<WrapItem key={index}>
+												<Badge colorScheme="green">
+													{tag}
+												</Badge>
+											</WrapItem>
+										))}
+									{activity.tags.length > 4 && (
+										<WrapItem key={"ellipsis-for-badges"}>
+											<p>...</p>
+										</WrapItem>
+									)}
+								</Wrap>
+							</UnorderedList>
+						</GridItem>
+						{/* <GridItem rowSpan={2} colSpan={2} bg="papayawhip">
+							
+						</GridItem> */}
 					</Grid>
 				</Box>
 			) : (

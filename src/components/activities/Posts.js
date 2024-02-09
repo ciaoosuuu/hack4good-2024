@@ -47,7 +47,7 @@ const Posts = ({ reflections, classes }) => {
 				}}
 			>
 				<TabList mb="1em">
-					<Tab onClick={() => setSelectedView("reflection")}>All</Tab>
+					<Tab onClick={() => setSelectedView("all")}>All</Tab>
 					<Tab onClick={() => setSelectedView("reflection")}>
 						Reflections
 					</Tab>
