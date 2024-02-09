@@ -29,19 +29,21 @@ const VolunteerReport = ({ user, params }) => {
   const [selectedView, setSelectedView] = useState("Signed Up");
   const [signedUpIds, setSignedUpIds] = useState([]);
   const [signedUp, setSignedUp] = useState([]);
-  const attendedDetails = user.activities_attended;
+  const [attendedDetails, setAttendedDetails] = useState([]);
   const [attended, setAttended] = useState([]);
-  const postIds = user.posts;
-  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchVolunteer = async () => {
       try {
-        const userData = await db.collection("Users").doc(id).get();
-        setVolunteer(userData);
-        // setSignedUpIds(userData)
+        const userDoc = await db.collection("Users").doc(id).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          setVolunteer(userData);
+          setSignedUpIds(userData.activities_signedup);
+          setAttendedDetails(userData.activities_attended);
+        }
       } catch (error) {
-        console.error("Error fetching activities:", error);
+        console.error("Error fetching volunteer:", error);
       }
     };
     fetchVolunteer();
@@ -77,6 +79,9 @@ const VolunteerReport = ({ user, params }) => {
       const activityResults = await Promise.all(promises);
       const activitySorted = activityResults
         .filter(Boolean)
+        .filter(
+          (activity) => activity.datetime_end.toDate() >= currentTimestamp
+        )
         .sort((activityA, activityB) => {
           const startTimeA = activityA.datetime_start.toDate();
           const startTimeB = activityB.datetime_start.toDate();
@@ -252,17 +257,9 @@ const VolunteerReport = ({ user, params }) => {
                   selectedView === "Signed Up" && (
                     <ul className={classes["grid_list_horizontal"]}>
                       {signedUp &&
-                        signedUp
-                          .filter(
-                            (activity) =>
-                              activity.datetime_end.toDate() >= currentTimestamp
-                          )
-                          .map((activity) => (
-                            <ActivityCard
-                              key={activity.id}
-                              activity={activity}
-                            />
-                          ))}
+                        signedUp.map((activity) => (
+                          <ActivityCard key={activity.id} activity={activity} />
+                        ))}
                     </ul>
                   )}
                 {selectedMainView === "Activities" &&
@@ -285,7 +282,7 @@ const VolunteerReport = ({ user, params }) => {
                   )}
               </>
             )}
-            {selectedMainView === "Blog" && (
+            {selectedMainView === "Attendance" && (
               <VolunteerPastYearAttendance volunteerId={id} />
             )}
           </Box>
