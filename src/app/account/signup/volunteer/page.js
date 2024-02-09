@@ -24,26 +24,7 @@ import {
 } from "../../../../firebase/functions";
 import { db } from "../../../../firebase/config";
 import { Timestamp } from "firebase/firestore";
-
-const addVolunteerToDb = async (userCredential, name) => {
-	const data = {
-		uid: userCredential.user.uid,
-		email: userCredential.user.email,
-		role: "volunteer",
-		name: name,
-		created_on: Timestamp.fromDate(new Date()),
-		exp_points: 0,
-		activities_attended: [],
-		activities_signedup: [],
-		posts: [],
-	};
-	try {
-		await db.collection("Users").doc(userCredential.user.uid).set(data);
-	} catch (error) {
-		console.log(error);
-		throw error;
-	}
-};
+import { projectStorage } from "../../../../firebase/config";
 
 const VolunteerSignup = () => {
 	const router = useRouter();
@@ -53,6 +34,24 @@ const VolunteerSignup = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
+
+	const [defaultImageUrl, setDefaultImageUrl] = useState("");
+
+	useEffect(() => {
+		const fetchDefaultPic = async () => {
+			try {
+				const imageRef = projectStorage.ref(
+					"General/default_user_profile.png"
+				);
+				const defaultImage = await imageRef.getDownloadURL();
+				setDefaultImageUrl(defaultImage);
+			} catch (error) {
+				console.error("Error fetching activities:", error);
+			}
+		};
+		fetchDefaultPic();
+	}, []);
+
 
 	useEffect(() => {
 		if (user) {
@@ -73,6 +72,27 @@ const VolunteerSignup = () => {
 			});
 		}
 	}, [user, isJustSignedUp]);
+
+	const addVolunteerToDb = async (userCredential, name) => {
+		try {
+			const data = {
+				uid: userCredential.user.uid,
+				email: userCredential.user.email,
+				role: "volunteer",
+				name: name,
+				created_on: Timestamp.fromDate(new Date()),
+				exp_points: 0,
+				activities_attended: [],
+				activities_signedup: [],
+				posts: [],
+				image: defaultImageUrl,
+			};
+			await db.collection("Users").doc(userCredential.user.uid).set(data);
+		} catch (error) {
+			console.log(error);
+			throw error;
+		}
+	};
 
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();

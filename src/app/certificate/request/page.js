@@ -236,7 +236,7 @@ const RequestCertificatePage = ({ user }) => {
 							<FormControl isRequired>
 								<FormLabel>Start Date:</FormLabel>
 								<Input
-									type="date"
+									type="month"
 									value={startDate}
 									onChange={(e) =>
 										setStartDate(e.target.value)
@@ -249,7 +249,7 @@ const RequestCertificatePage = ({ user }) => {
 							<FormControl isRequired>
 								<FormLabel>End Date:</FormLabel>
 								<Input
-									type="date"
+									type="month"
 									alue={endDate}
 									onChange={(e) => setEndDate(e.target.value)}
 									style={styles.input}

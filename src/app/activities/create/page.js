@@ -53,7 +53,7 @@ const CreateActivity = ({ user }) => {
 		const fetchActivities = async () => {
 			try {
 				const imageRef = projectStorage.ref(
-					"Activities/volunteers.png"
+					"General/default_activity_pic.png"
 				);
 				const defaultImage = await imageRef.getDownloadURL();
 				setDefaultImageUrl(defaultImage);

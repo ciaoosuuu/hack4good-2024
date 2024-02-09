@@ -26,23 +26,8 @@ import {
 import { UserAuth } from "../../../context/AuthContext";
 import { db } from "../../../../firebase/config";
 import { Timestamp } from "firebase/firestore";
+import { projectStorage } from "../../../../firebase/config";
 
-const addAdminToDb = async (userCredential, name) => {
-	const data = {
-		uid: userCredential.user.uid,
-		email: userCredential.user.email,
-		role: "admin",
-		name: name,
-		created_on: Timestamp.fromDate(new Date()),
-		activities_created: [],
-	};
-	try {
-		await db.collection("Users").doc(userCredential.user.uid).set(data);
-	} catch (error) {
-		console.log(error);
-		throw error;
-	}
-};
 
 const AdminSignup = () => {
 	const router = useRouter();
@@ -52,6 +37,23 @@ const AdminSignup = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
+
+	const [defaultImageUrl, setDefaultImageUrl] = useState("");
+
+	useEffect(() => {
+		const fetchDefaultPic = async () => {
+			try {
+				const imageRef = projectStorage.ref(
+					"General/default_user_profile.png"
+				);
+				const defaultImage = await imageRef.getDownloadURL();
+				setDefaultImageUrl(defaultImage);
+			} catch (error) {
+				console.error("Error fetching activities:", error);
+			}
+		};
+		fetchDefaultPic();
+	}, []);
 
 	useEffect(() => {
 		if (user) {
@@ -73,12 +75,32 @@ const AdminSignup = () => {
 		}
 	  }, [user]);
 
+	const addAdminToDb = async (userCredential, name) => {
+
+		try {
+			const profileUrl = defaultImageUrl;
+			const data = {
+				uid: userCredential.user.uid,
+				email: userCredential.user.email,
+				role: "admin",
+				name: name,
+				created_on: Timestamp.fromDate(new Date()),
+				activities_created: [],
+				image: profileUrl
+			};
+			await db.collection("Users").doc(userCredential.user.uid).set(data);
+		} catch (error) {
+			console.log(error);
+			throw error;
+		}
+	};
+
 	const handleEmailSignUp = async (e) => {
 		e.preventDefault();
 		emailPwSignUp(email, password)
 			.then(async (userCredential) => {
-				await addAdminToDb(userCredential, name);
 				setIsJustSignedUp(true);
+				await addAdminToDb(userCredential, name);
 				// here can push to somewhere else to configure admin settings
 				router.push("/activities");
 			})
@@ -93,8 +115,8 @@ const AdminSignup = () => {
 		e.preventDefault();
 		googleSignIn()
 			.then(async (userCredential) => {
-				await addAdminToDb(userCredential, name);
 				setIsJustSignedUp(true);
+				await addAdminToDb(userCredential, name);
 				// here can push to somewhere else to configure admin settings
 				router.push("/activities");
 			})
