@@ -74,3 +74,12 @@ h1 {
   color: rgb(255,255,255);
 
 }
+
+.foot-icon {
+ cursor:pointer;
+}
+
+.foot-icon:hover {
+  opacity: 60%;
+  color: #00000090;
+}
