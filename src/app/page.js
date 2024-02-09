@@ -15,7 +15,7 @@ import { UserAuth } from "./context/AuthContext";
 import ActivityCard from "../components/activities/ActivityCard";
 import getTopActivities from "../utils/matching/getTopActivities"
 
-export const roboto_slab = Roboto_Slab({
+const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
 	subsets: ["latin"],
 	display: "swap",
