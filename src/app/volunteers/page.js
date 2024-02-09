@@ -86,7 +86,7 @@ const Volunteers = ({ user }) => {
 			const filtered = users.filter((user) => {
 				return (
 					user.name.toLowerCase().includes(searchValue) ||
-					user.emailyou.toLowerCase().includes(searchValue)
+					user.email.toLowerCase().includes(searchValue)
 				);
 			});
 			setFilteredUsers(filtered);
