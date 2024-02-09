@@ -15,22 +15,44 @@ import {
 	InputRightElement,
 	Accordion,
 } from "@chakra-ui/react";
+import Swal from "sweetalert2";
 import { db } from "../../firebase/config";
+import withAuth from "../../hoc/withAuth";
 import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 import { FaSearch } from "react-icons/fa";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import VolunteerCard from "../../components/volunteers/VolunteerCard";
 import Pagination from "../../components/volunteers/Pagination";
 
-const Volunteers = () => {
+const Volunteers = ({ user }) => {
+	const router = useRouter();
 	const [users, setUsers] = useState(null);
 	const [filteredUsers, setFilteredUsers] = useState([]);
 	const [pageNum, setPageNum] = useState(1);
 	const [usersPerPage, setUsersPerPage] = useState(10);
 	const [pageFilteredUsers, setPageFilteredUsers] = useState([]);
 	const [search, setSearch] = useState("");
+
+	useEffect(() => {
+		if (user.role !== "admin") {
+			Swal.fire({
+				title: "Unauthorized Access!",
+				text: "Redirecting ...",
+				icon: "warning",
+				timer: 1000,
+				timerProgressBar: true,
+				showConfirmButton: false,
+				allowOutsideClick: false,
+			}).then(() => {
+				setTimeout(() => {
+					router.push("/activities");
+				}, 500);
+			});
+		}
+	}, [user.role]);
 
 	useEffect(() => {
 		if (users) return;
@@ -87,6 +109,9 @@ const Volunteers = () => {
 		setPageNum(pageNum);
 	};
 
+	if (user.role !== "admin") {
+		return null;
+	}
 	return (
 		<>
 			<div style={{ zIndex: 30 }}>
@@ -140,4 +165,4 @@ const Volunteers = () => {
 	);
 };
 
-export default Volunteers;
+export default withAuth(Volunteers);

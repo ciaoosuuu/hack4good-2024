@@ -1,22 +1,16 @@
+import { useRouter } from "next/navigation";
 import {
 	Button,
 	Box,
 	Grid,
 	GridItem,
 	Image,
-	Text,
-	Stack,
 	Badge,
 	Flex,
-	Icon,
-	ListItem,
 	UnorderedList,
-	Tooltip,
-	HStack,
 	Spacer,
 	Wrap,
 	WrapItem,
-	Accordion,
 	AccordionIcon,
 	AccordionItem,
 	AccordionButton,
@@ -27,6 +21,7 @@ import { BsFillFileBarGraphFill } from "react-icons/bs";
 import classes from "../../app/volunteers/page.module.css";
 
 const VolunteerCard = ({ volunteer }) => {
+	const router = useRouter();
 	return (
 		<AccordionItem>
 			<Box
@@ -151,7 +146,15 @@ const VolunteerCard = ({ volunteer }) => {
 					</AccordionButton>
 					{/* <Tooltip label={"Go to Volunteer Report"} placement="top"> */}
 					<Box style={{ margin: "auto 0", color: "#333" }}>
-						<BsFillFileBarGraphFill size={27} />
+						<BsFillFileBarGraphFill
+							size={27}
+							className={classes["volunteer-report-button"]}
+							onClick={() =>
+								router.push(
+									`/reports/volunteer/${volunteer.uid}`
+								)
+							}
+						/>
 					</Box>
 					{/* </Tooltip> */}
 					<Box style={{ margin: "auto 0" }}>

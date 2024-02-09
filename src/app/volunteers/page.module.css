@@ -380,3 +380,12 @@
 .volunteer-card:hover {
   background-color: #ffffff90;
 }
+
+.volunteer-report-button {
+  cursor:pointer;
+}
+
+.volunteer-report-button:hover {
+  background-color: #ffffff90;
+  color: #33333360
+}
