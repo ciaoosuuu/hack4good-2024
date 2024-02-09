@@ -13,7 +13,7 @@ import {
   Legend,
 } from "chart.js";
 import getPast12Months from "../../utils/reports/getPast12Months";
-import getAttendanceCountByMonth from "../../utils/reports/getAttendanceCountByMonth";
+import getVolunteerAttendanceByMonth from "../../utils/reports/getVolunteerAttendanceByMonth";
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +25,9 @@ ChartJS.register(
   Legend
 );
 
-const PastYearAttendees = () => {
+const VolunteerPastYearAttendance = ({ volunteerId }) => {
+  console.log(volunteerId);
+  //   const volunteerId = volunteerId;
   const [chartData, setChartData] = useState({
     datasets: [],
   });
@@ -36,33 +38,39 @@ const PastYearAttendees = () => {
     const fetchData = async () => {
       try {
         const [
-          attendanceCountByMonthVolunteer,
-          attendanceCountByMonthWorkshop,
-          attendanceCountByMonthTraining,
-          attendanceCountByMonth,
-        ] = await getAttendanceCountByMonth();
+          volunteerAttendanceCountByMonthVolunteer,
+          volunteerAttendanceCountByMonthWorkshop,
+          volunteerAttendanceCountByMonthTraining,
+          volunteerAttendanceCountByMonth,
+        ] = await getVolunteerAttendanceByMonth(volunteerId);
         const months = getPast12Months();
 
         setChartData({
           labels: months,
           datasets: [
             {
-              label: "# Volunteers (Volunteering)",
-              data: attendanceCountByMonthVolunteer,
-              borderColor: "rgb(255, 99, 132)",
+              label: "# Volunteering",
+              data: volunteerAttendanceCountByMonthVolunteer,
+              borderColor: "rgb(255, 99, 132, 0.5)",
               backgroundColor: "rgb(255, 99, 132, 0.5)",
             },
             {
-              label: "# Volunteers (Workshop)",
-              data: attendanceCountByMonthWorkshop,
-              borderColor: "rgb(75, 192, 192)",
+              label: "# Workshops",
+              data: volunteerAttendanceCountByMonthWorkshop,
+              borderColor: "rgb(75, 192, 192, 0.5)",
               backgroundColor: "rgb(75, 192, 192, 0.5)",
             },
             {
-              label: "# Volunteers (Training)",
-              data: attendanceCountByMonthTraining,
-              borderColor: "rgb(53, 162, 235)",
+              label: "# Training",
+              data: volunteerAttendanceCountByMonthTraining,
+              borderColor: "rgb(53, 162, 235, 0.5)",
               backgroundColor: "rgb(53, 162, 235, 0.5)",
+            },
+            {
+              label: "# Total",
+              data: volunteerAttendanceCountByMonth,
+              borderColor: "rgb(168, 168, 168, 0.5)",
+              backgroundColor: "rgb(168, 168, 168, 0.5)",
             },
           ],
         });
@@ -73,7 +81,7 @@ const PastYearAttendees = () => {
             },
             title: {
               display: true,
-              text: "Number of volunteers who attended activities in the past 12 months",
+              text: "Number of activities attended in the past 12 months",
             },
           },
           maintainAspectRatio: false,
@@ -101,4 +109,4 @@ const PastYearAttendees = () => {
   );
 };
 
-export default PastYearAttendees;
+export default VolunteerPastYearAttendance;
