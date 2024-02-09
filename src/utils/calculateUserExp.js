@@ -14,16 +14,6 @@ const calculateUserExp = async (user) => {
     return exp + 10;
   }, 0);
 
-  //   const missionsRef = firestore.collection("userMissions").doc(userId);
-  //   const missionsSnapshot = await missionsRef.get();
-  //   const missionsData = missionsSnapshot.data();
-
-  //   const missionsExp = missionsData
-  //     ? Object.values(missionsData).reduce((totalExp, missionExp) => {
-  //         return totalExp + missionExp;
-  //       }, 0)
-  //     : 0;
-
   return activitiesExp + postsExp;
 };
 

@@ -105,6 +105,12 @@ Admin:
 
 **Missions for Gamified Experience**: Big Hearts Hub is introducing missions to elevate the gamified experience. Volunteers can embark on exciting missions tied to their journey, achievements, and participation milestones, adding a new layer of fun and accomplishment to the volunteering adventure in the "Big at Heart" community.
 
+**Enhanced Recommendations**: Big Hearts Hub will sport more advanced machine learning algorithms to refine our activities recommendation system. This enhancement aims to provide volunteers with even more personalized and meaningful opportunities based on their interests and skills.
+
+**On-the-Go Management for Administrators**: Our next phase involves optimizing the Big Hearts Hub web app for responsiveness, ensuring administrators and organizing teams can efficiently manage activity logistics from the convenience of their phones.
+
+**Enhanced Report Customizability**: The customizability of our reports will be expanded to offer more detailed analysis options. This future development enables administrators to tailor reports to their specific needs, facilitating strategic decision-making and fostering a data-driven approach to volunteer management within "Big at Heart."
+
 ### Technologies Used
 
 - [Next.js](https://nextjs.org/)
