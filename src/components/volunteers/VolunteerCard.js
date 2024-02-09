@@ -30,7 +30,6 @@ const VolunteerCard = ({ volunteer }) => {
 				style={{
 					//backgroundColor: "white",
 					minHeight: "90px",
-					borderColor: "#00000020",
 				}}
 			>
 				<Flex gap={2} style={{ width: "100%" }}>

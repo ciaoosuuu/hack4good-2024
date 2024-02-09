@@ -135,6 +135,7 @@ const Volunteers = ({ user }) => {
 								<Input
 									variant="filled"
 									style={{
+										padding: "6px 40px 6px 20px",
 										backgroundColor: "white",
 										boxShadow: "2px 2px 4px #00000020",
 									}}

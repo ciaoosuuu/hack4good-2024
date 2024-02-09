@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 
+import { Flex, Spacer, Box } from "@chakra-ui/react";
 import PastYearActivities from "../../components/reports/PastYearActivities";
 import PastYearAttendees from "../../components/reports/PastYearAttendees";
 import RegionActivities from "../../components/reports/RegionActivities";
@@ -108,36 +109,51 @@ const Reports = () => {
 							style={{
 								marginTop: "10px",
 								marginBottom: "10px",
-								padding: "10px",
+								padding: "20px 10px 10px 10px",
 								backgroundColor: "white",
 								borderRadius: "10px",
 								height: "140px",
 							}}
 						>
-							<div>
-								<h1
-									className={roboto_slab.className}
+							<Flex>
+								<Spacer />
+								<Box
 									style={{
-										fontSize: "xx-large",
-										color: "maroon",
+										textAlign: "center",
+										width: "40%",
 									}}
 								>
-									{totalUserCount}
-								</h1>
-								<p> total users</p>
-							</div>
-							<div>
-								<h1
-									className={roboto_slab.className}
+									<h1
+										className={roboto_slab.className}
+										style={{
+											fontSize: "xx-large",
+											color: "maroon",
+										}}
+									>
+										{totalUserCount}
+									</h1>
+									<h1> Total Volunteers</h1>
+								</Box>
+								<Spacer />
+								<Box
 									style={{
-										fontSize: "xx-large",
-										color: "maroon",
+										textAlign: "center",
+										width: "40%",
 									}}
 								>
-									{totalVolunteerHours}
-								</h1>
-								<p> total volunteer hours</p>
-							</div>
+									<h1
+										className={roboto_slab.className}
+										style={{
+											fontSize: "xx-large",
+											color: "maroon",
+										}}
+									>
+										{totalVolunteerHours}
+									</h1>
+									<h1> Total Volunteer Hours</h1>
+								</Box>
+								<Spacer />
+							</Flex>
 						</div>
 						<div style={chartStyleRight}>
 							<RegionAttendance />
@@ -173,16 +189,26 @@ const Reports = () => {
 								height: "110px",
 							}}
 						>
-							<h1
-								className={roboto_slab.className}
-								style={{
-									fontSize: "xx-large",
-									color: "maroon",
-								}}
-							>
-								{totalActivityCount}
-							</h1>
-							<p> total activities</p>
+							<Flex>
+								<Spacer />
+								<Box
+									style={{
+										textAlign: "center",
+									}}
+								>
+									<h1
+										className={roboto_slab.className}
+										style={{
+											fontSize: "xx-large",
+											color: "maroon",
+										}}
+									>
+										{totalActivityCount}
+									</h1>
+									<h1> Total Number of Activities</h1>
+								</Box>
+								<Spacer />
+							</Flex>
 						</div>
 						<div style={chartStyleRight}>
 							<RegionActivities />
