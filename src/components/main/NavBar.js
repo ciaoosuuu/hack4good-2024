@@ -74,8 +74,13 @@ export default function NavBar() {
 				index: 3,
 			},
 			{
-				key: "heroes",
-				label: "Heroes",
+				key: "leaderboard",
+				label: "Leaderboard",
+				index: 4,
+			},
+			{
+				key: "volunteers",
+				label: "All Volunteers",
 				index: 4,
 			},
 		];
@@ -113,8 +118,15 @@ export default function NavBar() {
 						key: "reports",
 						label: "Reports",
 					},
+					{
+						key: "volunteers",
+						label: "All Volunteers",
+					},
 			  ]
-			: [
+			: []),
+		,
+		...(user && !isAdmin
+			? [
 					{
 						key: "profile",
 						label: "Profile",
@@ -123,7 +135,8 @@ export default function NavBar() {
 						key: "leaderboard",
 						label: "Leaderboard",
 					},
-			  ]),
+			  ]
+			: []),
 		,
 	];
 

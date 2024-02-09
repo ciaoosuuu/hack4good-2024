@@ -4,7 +4,7 @@ import {
 	Box,
 	Grid,
 	GridItem,
-	Image,
+	Image as ChakraImage,
 	Badge,
 	Flex,
 	UnorderedList,
@@ -16,6 +16,7 @@ import {
 	AccordionButton,
 	AccordionPanel,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { BsFillFileBarGraphFill } from "react-icons/bs";
 
 import classes from "../../app/volunteers/page.module.css";
@@ -47,11 +48,17 @@ const VolunteerCard = ({ volunteer }) => {
 						// 	padding: "1rem ",
 						// }}
 					>
-						<Image
+						<ChakraImage
 							className={classes["profilepicimg"]}
-							src={volunteer?.image}
+							style={{ marginRight: "20px" }}
+							src={
+								volunteer?.image
+									? volunteer.image
+									: "https://firebasestorage.googleapis.com/v0/b/hackforgood-mvc.appspot.com/o/Users%2Fnoprofile.png?alt=media&token=e2fc8953-a256-423a-a720-24e3c8a729a1"
+							}
 							alt={volunteer?.image ? "volunteer" : ""}
 						/>
+
 						<div>
 							<h1
 								style={{
