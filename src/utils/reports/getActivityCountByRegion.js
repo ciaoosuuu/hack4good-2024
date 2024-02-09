@@ -15,17 +15,19 @@ const getActivityCountByRegion = async () => {
     activitiesData.forEach((activity) => {
       if (activity.location_postal) {
         const region = getRegionFromPostal(activity.location_postal);
-        console.log(region);
-        if (region === "North-East") {
-          activityCountByRegion[0]++;
-        } else if (region === "North") {
-          activityCountByRegion[1]++;
-        } else if (region === "Central") {
-          activityCountByRegion[2]++;
-        } else if (region === "West") {
-          activityCountByRegion[3]++;
-        } else if (region === "East") {
-          activityCountByRegion[4]++;
+        if (region !== "NA") {
+          console.log(region);
+          if (region === "North-East") {
+            activityCountByRegion[0]++;
+          } else if (region === "North") {
+            activityCountByRegion[1]++;
+          } else if (region === "Central") {
+            activityCountByRegion[2]++;
+          } else if (region === "West") {
+            activityCountByRegion[3]++;
+          } else if (region === "East") {
+            activityCountByRegion[4]++;
+          }
         }
       }
     });
