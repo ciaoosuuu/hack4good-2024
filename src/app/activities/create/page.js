@@ -14,6 +14,8 @@ import {
 	Input,
 	Select,
 	Textarea,
+	FormHelperText,
+	FormErrorMessage,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import {
@@ -105,6 +107,11 @@ const CreateActivity = ({ user }) => {
 		vacancy_total: 0,
 		created_on: null,
 	});
+	const [formErrors, setFormErrors] = useState({
+		datetime_end: false,
+		signup_deadline: false,
+		//set deadline error here
+	});
 
 	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
@@ -180,6 +187,25 @@ const CreateActivity = ({ user }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (formData.datetime_start >= formData.datetime_end) {
+			setFormErrors((formErrors) => {
+				return {
+					...formErrors,
+					datetime_end: true,
+				};
+			});
+			return;
+		}
+		if (formData.signup_deadline < new Date().toISOString().split("T")[0]) {
+			setFormErrors((formErrors) => {
+				return {
+					...formErrors,
+					signup_deadline: true,
+				};
+			});
+			return;
+		}
 
 		try {
 			const updatedFormData = {
@@ -374,7 +400,7 @@ const CreateActivity = ({ user }) => {
 				</FormControl>
 				<br />
 
-				<FormControl isRequired>
+				<FormControl isRequired isInvalid={formErrors.datetime_end}>
 					<FormLabel>Start Date and Time:</FormLabel>
 					<Input
 						type="datetime-local"
@@ -385,7 +411,7 @@ const CreateActivity = ({ user }) => {
 					/>
 				</FormControl>
 				<br />
-				<FormControl isRequired>
+				<FormControl isRequired isInvalid={formErrors.datetime_end}>
 					<FormLabel>End Date and Time:</FormLabel>
 					<Input
 						type="datetime-local"
@@ -394,6 +420,17 @@ const CreateActivity = ({ user }) => {
 						onChange={handleChange}
 						variant="filled"
 					/>
+					{formErrors.datetime_end ? (
+						<FormErrorMessage>
+							End date and time must be after the start date and
+							time.
+						</FormErrorMessage>
+					) : (
+						<FormHelperText>
+							End date and time must be after the start date and
+							time.
+						</FormHelperText>
+					)}
 				</FormControl>
 				<br />
 				<FormControl isRequired>
@@ -408,7 +445,7 @@ const CreateActivity = ({ user }) => {
 					/>
 				</FormControl>
 				<br />
-				<FormControl isRequired>
+				<FormControl isRequired isInvalid={formErrors.signup_deadline}>
 					<FormLabel>Sign Up Deadline:</FormLabel>
 					<Input
 						type="datetime-local"
@@ -416,7 +453,17 @@ const CreateActivity = ({ user }) => {
 						value={formatDateForInput(formData.signup_deadline)}
 						onChange={handleChange}
 						variant="filled"
+						// min={new Date().toISOString().split("T")[0]}
 					/>
+					{formErrors.signup_deadline ? (
+						<FormErrorMessage>
+							Deadline must be after today.
+						</FormErrorMessage>
+					) : (
+						<FormHelperText>
+							Deadline must be after today.
+						</FormHelperText>
+					)}
 				</FormControl>
 				<br />
 				<Button
