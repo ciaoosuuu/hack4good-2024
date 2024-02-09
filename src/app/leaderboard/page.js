@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
-import { Box, Flex, Stack, Spacer, Divider } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import getUserLevel from "../../utils/gamify/getUserLevel";
 import badges from "../../utils/gamify/badges";
 import { RiVipCrown2Fill } from "react-icons/ri";
 import Image from "next/image";
 import classes from "./page.module.css";
+import ExpModal from "../../components/gamify/ExpModal";
 
 import { Roboto_Slab } from "next/font/google";
 const roboto_slab = Roboto_Slab({
@@ -50,6 +51,7 @@ const Leaderboard = () => {
 			}}
 		>
 			<Flex justifyContent={"center"}>
+				<Spacer />
 				<h1
 					style={{
 						display: "flex",
@@ -65,9 +67,13 @@ const Leaderboard = () => {
 					width={40}
 					height={30}
 				/>
+				<Spacer />
+			</Flex>
+			<Flex justifyContent={"center"}>
+				<Spacer />
+				<ExpModal />
 			</Flex>
 
-			<br />
 			<div style={{ display: "flex", marginBottom: "10px" }}>
 				<h1
 					style={{
