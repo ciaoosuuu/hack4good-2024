@@ -1,0 +1,8 @@
+.rank-card {
+    background-color: rgb(255,255,255);
+}
+
+.rank-card:hover {
+    background-color: rgb(255,255,255,0.6);
+    box-shadow: 2px 2px 4px #00000010;
+}

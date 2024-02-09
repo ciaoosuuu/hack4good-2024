@@ -6,7 +6,6 @@ import withAuth from "../hoc/withAuth";
 import { Box, Flex, Stack, Spacer, Divider } from "@chakra-ui/react";
 import Link from "next/link";
 import Image from "next/image";
-import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Entries from "../components/blog/Entries";
 import classes from "../app/blog/page.module.css";
@@ -15,6 +14,7 @@ import { UserAuth } from "./context/AuthContext";
 import ActivityCard from "../components/activities/ActivityCard";
 import getTopActivities from "../utils/matching/getTopActivities";
 
+import { Roboto_Slab } from "next/font/google";
 const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
 	subsets: ["latin"],
