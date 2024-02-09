@@ -18,14 +18,19 @@ import {
 import Swal from "sweetalert2";
 import { db } from "../../firebase/config";
 import withAuth from "../../hoc/withAuth";
-import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 import { FaSearch } from "react-icons/fa";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import VolunteerCard from "../../components/volunteers/VolunteerCard";
 import Pagination from "../../components/volunteers/Pagination";
+
+import { Roboto_Slab } from "next/font/google";
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
 
 const Volunteers = ({ user }) => {
 	const router = useRouter();
@@ -118,7 +123,12 @@ const Volunteers = ({ user }) => {
 				<div className={classes["page_layout"]}>
 					<div style={{ width: "80%", margin: "0 auto" }}>
 						<br />
-						<h1 style={{ fontSize: "24px" }}>Volunteers</h1>
+						<h1
+							style={{ fontSize: "30px" }}
+							className={roboto_slab.className}
+						>
+							Volunteers
+						</h1>
 						<br />
 						<Stack>
 							<InputGroup>

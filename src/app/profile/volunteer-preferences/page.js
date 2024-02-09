@@ -35,6 +35,13 @@ import classes from "../page.module.css";
 import { Timestamp } from "firebase/firestore";
 import { UserAuth } from "../../context/AuthContext";
 
+import { Roboto_Slab } from "next/font/google";
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
+
 const formatDateForInput = (timestamp) => {
 	if (!timestamp) return "";
 
@@ -85,9 +92,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 		experience: user.preferences?.experience
 			? user.preferences.experience
 			: null,
-		skills: user.preferences?.skills 
-			? user.preferences.skills 
-			: [],
+		skills: user.preferences?.skills ? user.preferences.skills : [],
 		interestAreas: user.preferences?.interestAreas
 			? user.preferences.interestAreas
 			: [],
@@ -148,13 +153,11 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 				date_of_birth: form1Data.dateOfBirth
 					? form1Data.dateOfBirth
 					: null,
-				description: form1Data.description
-					? form1Data.description
-					: "",
+				description: form1Data.description ? form1Data.description : "",
 			});
 			// Optionally, you can redirect the user or perform other actions after submission.
 			setUserEdited((prev) => !prev);
-		
+
 			Swal.fire({
 				title: "Success!",
 				text: "Submitted Volunteer information",
@@ -163,7 +166,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
-			})
+			});
 			setTimeout(function () {
 				setActiveStep(2);
 			}, 1000);
@@ -209,7 +212,7 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 				timerProgressBar: true,
 				showConfirmButton: false,
 				allowOutsideClick: false,
-			})
+			});
 			setTimeout(function () {
 				router.push("/activities");
 			}, 1000);
@@ -244,7 +247,9 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 			</Box>
 			<br />
 			<br />
-			<h1 style={{ fontSize: "24px" }}>Volunteer Preferences</h1>
+			<h1 style={{ fontSize: "24px" }} className={roboto_slab.className}>
+				Volunteer Preferences
+			</h1>
 			<br />
 			{activeStep !== null && (
 				<>
@@ -284,7 +289,9 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 									type="date"
 									variant={"filled"}
 									name="dateOfBirth"
-									value={formatDateForInput(form1Data.dateOfBirth)}
+									value={formatDateForInput(
+										form1Data.dateOfBirth
+									)}
 									onChange={handleChangeStep1}
 								></Input>
 							</FormControl>
@@ -411,43 +418,37 @@ const VolunteerPreferences = ({ stepIndex, user }) => {
 								/>
 							</FormControl>
 							<FormControl>
-									<FormLabel>
-										Languages:
-									</FormLabel>
-									{languageOptions && (
-											<Select
-												isMulti
-												value={form2Data.languages.map(
-													(language) => {
-														return {
-															value: language,
-															label: capitalise(
-																language
-															),
-														};
-													}
-												)}
-												options={languageOptions}
-												variant="filled"
-												tagVariant="solid"
-												onChange={(
-													selectedLanguageOptions
-												) => {
-													setStep2ChangesMade(true);
-													setForm2Data((form2Data) => {
-														const newLanguages =
-															selectedLanguageOptions.map(
-																(languageOption) =>
-																	languageOption.value
-															);
-														return {
-															...form2Data,
-															languages: newLanguages,
-														};
-													});
-												}}
-											/>
+								<FormLabel>Languages:</FormLabel>
+								{languageOptions && (
+									<Select
+										isMulti
+										value={form2Data.languages.map(
+											(language) => {
+												return {
+													value: language,
+													label: capitalise(language),
+												};
+											}
 										)}
+										options={languageOptions}
+										variant="filled"
+										tagVariant="solid"
+										onChange={(selectedLanguageOptions) => {
+											setStep2ChangesMade(true);
+											setForm2Data((form2Data) => {
+												const newLanguages =
+													selectedLanguageOptions.map(
+														(languageOption) =>
+															languageOption.value
+													);
+												return {
+													...form2Data,
+													languages: newLanguages,
+												};
+											});
+										}}
+									/>
+								)}
 							</FormControl>
 							{/* <FormControl>
 								<FormLabel>Languages:</FormLabel>

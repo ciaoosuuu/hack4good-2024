@@ -7,6 +7,13 @@ import Entries from "../../components/blog/Entries";
 import classes from "./page.module.css";
 import Image from "next/image";
 
+import { Roboto_Slab } from "next/font/google";
+const roboto_slab = Roboto_Slab({
+	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
+});
+
 const Blog = () => {
 	const [posts, setPosts] = useState();
 	const [selectedView, setSelectedView] = useState("all");
@@ -63,6 +70,7 @@ const Blog = () => {
 									fontSize: "30px",
 									textAlign: "center",
 								}}
+								className={roboto_slab.className}
 							>
 								Our Stories and Experiences
 							</h1>
