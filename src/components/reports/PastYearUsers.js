@@ -53,7 +53,7 @@ const PastYearUsers = () => {
             },
             title: {
               display: true,
-              text: "Total number of volunteers in the past 12 months",
+              text: "Number of new volunteers in the past 12 months",
             },
           },
           maintainAspectRatio: false,
