@@ -158,6 +158,7 @@ const Home = () => {
 					gridTemplateColumns: "3fr 2fr",
 					height: "40vh",
 					margin: "0 10%",
+					minHeight: "320px",
 				}}
 			>
 				<div style={{ margin: "auto" }}>
