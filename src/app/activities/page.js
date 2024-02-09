@@ -201,9 +201,10 @@ const Activities = ({ user }) => {
 									{interestAreas && (
 										<Select
 											isMulti
+											colorScheme="red"
 											placeholder="Find by volunteering areas..."
 											options={interestAreas}
-											variant="filled"
+											variant="outline"
 											tagVariant="solid"
 											value={interestAreaKeys.map(
 												(interestAreaKey) => {
@@ -226,7 +227,6 @@ const Activities = ({ user }) => {
 													newInterestAreaKeys
 												);
 											}}
-											colorScheme={"red"}
 											style={{
 												zIndex: 70,
 												backgroundColor: "red",
@@ -239,9 +239,9 @@ const Activities = ({ user }) => {
 									{skillsOptions && (
 										<Select
 											isMulti
-											placeholder="Find by skills.."
+											placeholder="Find by skills..."
 											options={skillsOptions}
-											variant="filled"
+											variant="outline"
 											tagVariant="solid"
 											value={skillsKeys.map((key) => {
 												return {
@@ -264,6 +264,7 @@ const Activities = ({ user }) => {
 									)}
 								</Box>
 								{/* </Flex> */}
+								<br />
 
 								<ul className={classes["grid_list_horizontal"]}>
 									{filteredUpcomingActivities &&
