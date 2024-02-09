@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import withAuth from "../hoc/withAuth";
-import { Box, Flex, Stack, Spacer, Button } from "@chakra-ui/react";
+import { Box, Flex, Stack, Spacer, Divider } from "@chakra-ui/react";
 import Link from "next/link";
 import Image from "next/image";
 import { Roboto_Slab } from "next/font/google";
@@ -13,7 +13,7 @@ import classes from "../app/blog/page.module.css";
 import { UserAuth } from "./context/AuthContext";
 
 import ActivityCard from "../components/activities/ActivityCard";
-import getTopActivities from "../utils/matching/getTopActivities"
+import getTopActivities from "../utils/matching/getTopActivities";
 
 const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
@@ -115,7 +115,6 @@ const Home = () => {
 				);
 
 				setActivities(activitiesDataSorted);
-
 			} catch (error) {
 				console.error("Error fetching activities:", error);
 			}
@@ -124,7 +123,6 @@ const Home = () => {
 		// Call the fetch functions
 		fetchActivities();
 	}, []);
-
 
 	useEffect(() => {
 		console.log("user", user);
@@ -289,28 +287,47 @@ const Home = () => {
 				</Box>
 			</div>
 			<br />
-			{user && user.role === "volunteer" && <div style={{ width: "80%", margin: "0 auto" }}>
-				<h1
-					style={{
-						fontSize: "40px",
-						color: "#333",
-						textAlign: "center",
-					}}
-					className={roboto_slab.className}
-				>
+			<br />
+			{user && user.role === "volunteer" && (
+				<div style={{ width: "80%", margin: "0 auto" }}>
+					<h1
+						style={{
+							fontSize: "40px",
+							color: "#333",
+							textAlign: "center",
+						}}
+						className={roboto_slab.className}
+					>
 						Recommended Activities For You
-				</h1>
-				<ul className={classes["grid_list_horizontal"]}>
-					{activities &&
-						getTopActivities(user, activities)
-							.map((activity) => (
-								<ActivityCard
-									key={activity.id}
-									activity={activity}
-								/>
-							))}
-				</ul>
-			</div>}
+						<p style={{ fontSize: "20px" }}>
+							Activities based on your skills and interests
+						</p>
+					</h1>
+					<br />
+					<ul className={classes["grid_list_horizontal"]}>
+						{activities &&
+							getTopActivities(user, activities).map(
+								(activity) => (
+									<ActivityCard
+										key={activity.id}
+										activity={activity}
+									/>
+								)
+							)}
+					</ul>
+				</div>
+			)}
+			<br />
+			<br />
+			<Divider
+				style={{
+					borderColor: "rgb(102, 40, 40, 60)",
+					width: "80%",
+					margin: "0 10%",
+				}}
+				colorScheme={"red"}
+			/>
+			<br />
 			<br />
 			<div style={{ width: "80%", margin: "0 auto" }}>
 				<h1
@@ -324,7 +341,6 @@ const Home = () => {
 					<p style={{ fontSize: "20px" }}>
 						Something Inspirational, Something Informational
 					</p>
-					<br />
 					Blog Posts From Our Volunteers
 				</h1>
 				<br />

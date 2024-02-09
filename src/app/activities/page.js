@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { db } from "../../firebase/config";
-import { Box, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Stack } from "@chakra-ui/react";
 import { Image as ChakraImage } from "@chakra-ui/react";
-import { FaRegCalendarAlt, FaRegClock, FaMapPin } from "react-icons/fa";
+import { Select } from "chakra-react-select";
 import ActivityCard from "../../components/activities/ActivityCard";
 import withAuth from "../../hoc/withAuth";
 import classes from "./page.module.css";
@@ -13,13 +12,46 @@ import Image from "next/image";
 import { FaCircleArrowRight } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
+import {
+	skills,
+	interests,
+	languages,
+	capitalise,
+} from "../../resources/skills-interests";
+
 const Activities = ({ user }) => {
 	const router = useRouter();
 	const currentTimestamp = new Date();
-	const upcomingActivitiesIds = user.activities_signedup;
+	const myActivitiesIds = user.activities_signedup;
 	const [selectedView, setSelectedView] = useState("Upcoming");
 	const [activities, setActivities] = useState([]);
+	const [myActivities, setMyActivities] = useState([]);
 	const [upcomingActivities, setUpcomingActivities] = useState([]);
+	const [filteredUpcomingActivities, setFilteredUpcomingActivities] =
+		useState([]);
+
+	// Filter keys
+	const [interestAreaKeys, setInterestAreaKeys] = useState([]);
+	const [skillsKeys, setSkillsKeys] = useState([]);
+
+	const [interestAreas, setInterestAreas] = useState(
+		interests.map((interest) => {
+			return {
+				key: interest,
+				value: interest,
+				label: capitalise(interest),
+			};
+		})
+	);
+	const [skillsOptions, setSkillsOptions] = useState(
+		skills.map((skill) => {
+			return {
+				key: skill,
+				value: skill,
+				label: capitalise(skill),
+			};
+		})
+	);
 
 	useEffect(() => {
 		const fetchActivities = async () => {
@@ -48,7 +80,14 @@ const Activities = ({ user }) => {
 					}
 				);
 
+				const upcomingActivitiesData = activitiesDataSorted.filter(
+					(activity) =>
+						activity.datetime_start.toDate() >= currentTimestamp
+				);
+
 				setActivities(activitiesDataSorted);
+				setUpcomingActivities(upcomingActivitiesData);
+				setFilteredUpcomingActivities(upcomingActivitiesData);
 			} catch (error) {
 				console.error("Error fetching activities:", error);
 			}
@@ -59,14 +98,11 @@ const Activities = ({ user }) => {
 	}, []);
 
 	useEffect(() => {
-		const fetchUpcomingActivities = async () => {
-			if (
-				!upcomingActivitiesIds ||
-				!Array.isArray(upcomingActivitiesIds)
-			) {
+		const fetchMyActivities = async () => {
+			if (!myActivitiesIds || !Array.isArray(myActivitiesIds)) {
 				return;
 			}
-			const promises = upcomingActivitiesIds.map(async (activityId) => {
+			const promises = myActivitiesIds.map(async (activityId) => {
 				try {
 					const activityDoc = await db
 						.collection("Activities")
@@ -94,11 +130,37 @@ const Activities = ({ user }) => {
 			});
 
 			const activityResults = await Promise.all(promises);
-			setUpcomingActivities(activityResults.filter(Boolean));
+			setMyActivities(activityResults.filter(Boolean));
 		};
 
-		fetchUpcomingActivities(upcomingActivitiesIds);
+		fetchMyActivities(myActivitiesIds);
 	}, []);
+
+	useEffect(() => {
+		let filtered = filteredUpcomingActivities;
+		if (interestAreaKeys.length === 0 && skillsKeys.length === 0) {
+			filtered = upcomingActivities;
+		} else {
+			filtered = upcomingActivities.filter((activity) => {
+				if (!activity.tags) return false;
+				return activity.tags.some(
+					(tag) =>
+						interestAreaKeys.some((key) => key === tag) ||
+						skillsKeys.some((key) => key === tag)
+				);
+			});
+		}
+		// if (skillsKeys.length === 0) {
+		// } else {
+		// 	filtered = upcomingActivities.filter((activity) => {
+		// 		if (!activity.tags) return false;
+		// 		return activity.tags.some((tag) =>
+		// 			skillsKeys.some((key) => key === tag)
+		// 		);
+		// 	});
+		// }
+		setFilteredUpcomingActivities(filtered);
+	}, [interestAreaKeys, skillsKeys]);
 
 	return (
 		<>
@@ -107,23 +169,8 @@ const Activities = ({ user }) => {
 				<div className={classes["page_layout"]}>
 					<Box style={{ minWidth: "800px", maxWidth: "1000px" }}>
 						<h1 style={{ fontSize: "30px" }}>Activities</h1>
-						<div style={{ height: "380px" }}>
-							<Image
-								src={require("../../resources/vector-building-2.png")}
-								width={831}
-								height={50}
-								alt="Big At Heart"
-								style={{ position: "absolute" }}
-							/>
-							<br />
-							<ChakraImage
-								src={
-									"https://static.wixstatic.com/media/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg/v1/fill/w_980,h_463,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/11062b_905e23bb8e0b45a8ba27309aef66f3a9~mv2.jpeg"
-								}
-								className={classes["promo_slideshow"]}
-							/>
-						</div>
 						<br />
+
 						<div className={classes["selection-bar"]}>
 							<div
 								className={
@@ -146,30 +193,101 @@ const Activities = ({ user }) => {
 								Past Activities
 							</div>
 						</div>
-						<br />
+
 						{selectedView === "Upcoming" && (
-							<ul className={classes["grid_list_horizontal"]}>
-								{activities &&
-									activities
-										.filter(
-											(activity) =>
-												activity.datetime_start.toDate() >=
-												currentTimestamp
-										)
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeA - startTimeB;
-										})
-										.map((activity) => (
-											<ActivityCard
-												key={activity.id}
-												activity={activity}
-											/>
-										))}
-							</ul>
+							<Stack gap={3}>
+								<Box>
+									<h1>Find by Volunteering Areas:</h1>
+									{interestAreas && (
+										<Select
+											isMulti
+											placeholder="Find by volunteering areas..."
+											options={interestAreas}
+											variant="filled"
+											tagVariant="solid"
+											value={interestAreaKeys.map(
+												(interestAreaKey) => {
+													return {
+														value: interestAreaKey,
+														label: capitalise(
+															interestAreaKey
+														),
+													};
+												}
+											)}
+											onChange={(
+												selectedInterestAreaKeys
+											) => {
+												const newInterestAreaKeys =
+													selectedInterestAreaKeys.map(
+														(key) => key.value
+													);
+												setInterestAreaKeys(
+													newInterestAreaKeys
+												);
+											}}
+											colorScheme={"red"}
+											style={{
+												zIndex: 70,
+												backgroundColor: "red",
+											}}
+										/>
+									)}
+								</Box>
+								<Box>
+									<h1>Find by Skills:</h1>
+									{skillsOptions && (
+										<Select
+											isMulti
+											placeholder="Find by skills.."
+											options={skillsOptions}
+											variant="filled"
+											tagVariant="solid"
+											value={skillsKeys.map((key) => {
+												return {
+													value: key,
+													label: capitalise(key),
+												};
+											})}
+											onChange={(
+												selectedInterestAreaKeys
+											) => {
+												const newInterestAreaKeys =
+													selectedInterestAreaKeys.map(
+														(key) => key.value
+													);
+												setSkillsKeys(
+													newInterestAreaKeys
+												);
+											}}
+										/>
+									)}
+								</Box>
+								{/* </Flex> */}
+
+								<ul className={classes["grid_list_horizontal"]}>
+									{filteredUpcomingActivities &&
+										filteredUpcomingActivities
+											// .filter(
+											// 	(activity) =>
+											// 		activity.datetime_start.toDate() >=
+											// 		currentTimestamp
+											// )
+											// .sort((activityA, activityB) => {
+											// 	const startTimeA =
+											// 		activityA.datetime_start.toDate();
+											// 	const startTimeB =
+											// 		activityB.datetime_start.toDate();
+											// 	return startTimeA - startTimeB;
+											// })
+											.map((activity) => (
+												<ActivityCard
+													key={activity.id}
+													activity={activity}
+												/>
+											))}
+								</ul>
+							</Stack>
 						)}
 						{selectedView === "Completed" && (
 							<ul className={classes["grid_list_horizontal"]}>
@@ -180,13 +298,13 @@ const Activities = ({ user }) => {
 												activity.datetime_start.toDate() <=
 												currentTimestamp
 										)
-										.sort((activityA, activityB) => {
-											const startTimeA =
-												activityA.datetime_start.toDate();
-											const startTimeB =
-												activityB.datetime_start.toDate();
-											return startTimeB - startTimeA; // show newest first
-										})
+										// .sort((activityA, activityB) => {
+										// 	const startTimeA =
+										// 		activityA.datetime_start.toDate();
+										// 	const startTimeB =
+										// 		activityB.datetime_start.toDate();
+										// 	return startTimeB - startTimeA; // show newest first
+										// })
 										.map((activity) => (
 											<ActivityCard
 												key={activity.id}
@@ -246,9 +364,8 @@ const Activities = ({ user }) => {
 									className={classes["grid_list_horizontal"]}
 									style={{ paddingLeft: "20px" }}
 								>
-									{upcomingActivities &&
-									upcomingActivities.length > 0 ? ( //replace this with list of actual activities just for this user
-										upcomingActivities //replace this with list of actual activities just for this user
+									{myActivities && myActivities.length > 0 ? ( //replace this with list of actual activities just for this user
+										myActivities //replace this with list of actual activities just for this user
 											.filter(
 												(activity) =>
 													activity.datetime_end.toDate() >=
@@ -312,6 +429,12 @@ const Activities = ({ user }) => {
 								</h1>
 							</div>
 						)}
+						<Image
+							src={require("../../resources/vector-building-2.png")}
+							width={551}
+							alt="Big At Heart"
+							style={{ position: "absolute" }}
+						/>
 					</Box>
 				</div>
 			</div>
