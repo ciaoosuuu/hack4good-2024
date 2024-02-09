@@ -97,7 +97,7 @@ Admin:
 
 ### Future Developments
 
-**Recurring Activities Support**: Big Hearts Hub will be enhance support for recurring activities, ensuring a streamlined experience for volunteers participating in ongoing events within "Big at Heart."
+**Recurring Activities Support**: Big Hearts Hub will enhance support for recurring activities, ensuring a streamlined experience for volunteers participating in ongoing events within "Big at Heart."
 
 **Giving Activities Integration**: Big Hearts Hub will introduce support for "giving" activities like donation drives. This feature empowers volunteers to contribute meaningfully to fundraising efforts, fostering a culture of generosity in the "Big at Heart" community.
 
@@ -114,6 +114,7 @@ Admin:
 ### Technologies Used
 
 - [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
 - [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore)
 - [Firebase Cloud Storage](https://firebase.google.com/docs/storage)
 - [Chart.js](https://www.chartjs.org/)
