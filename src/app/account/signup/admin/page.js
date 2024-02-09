@@ -113,18 +113,27 @@ const AdminSignup = () => {
 
 	const handleGoogleSignUp = async (e) => {
 		e.preventDefault();
-		googleSignIn()
-			.then(async (userCredential) => {
-				setIsJustSignedUp(true);
-				await addAdminToDb(userCredential, name);
-				// here can push to somewhere else to configure admin settings
-				router.push("/activities");
-			})
-			.catch((error) => {
-				const errorMessage = error.message;
-				console.log(`Email login error: ${errorMessage}`);
-				setLoginError(errorMessage);
-			});
+		Swal.fire({
+			title: "Feature still developing...",
+			text: "",
+			icon: "warning",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		});
+		// googleSignIn()
+		// 	.then(async (userCredential) => {
+		// 		setIsJustSignedUp(true);
+		// 		await addAdminToDb(userCredential, name);
+		// 		// here can push to somewhere else to configure admin settings
+		// 		router.push("/activities");
+		// 	})
+		// 	.catch((error) => {
+		// 		const errorMessage = error.message;
+		// 		console.log(`Email login error: ${errorMessage}`);
+		// 		setLoginError(errorMessage);
+		// 	});
 	};
 
 	return isLoading || user ? null : (

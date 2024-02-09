@@ -59,16 +59,25 @@ const Login = () => {
 
 	const handleGoogleLogin = async (e) => {
 		e.preventDefault();
-		googleSignIn()
-			.then(() => {
-				//successfully login
-				router.push("/activities");
-			})
-			.catch((error) => {
-				const errorMessage = error.message;
-				console.log(`Google login error: ${errorMessage}`);
-				setLoginError(errorMessage);
-			});
+		Swal.fire({
+			title: "Feature still developing...",
+			text: "",
+			icon: "warning",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		});
+		// googleSignIn()
+		// 	.then(() => {
+		// 		//successfully login
+		// 		router.push("/activities");
+		// 	})
+		// 	.catch((error) => {
+		// 		const errorMessage = error.message;
+		// 		console.log(`Google login error: ${errorMessage}`);
+		// 		setLoginError(errorMessage);
+		// 	});
 	};
 
 	return isLoading || user ? null : (

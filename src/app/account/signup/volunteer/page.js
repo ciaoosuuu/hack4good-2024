@@ -111,17 +111,26 @@ const VolunteerSignup = () => {
 
 	const handleGoogleSignUp = async (e) => {
 		e.preventDefault();
-		googleSignIn()
-			.then(async(userCredential) => {
-				setIsJustSignedUp(true);
-				await addVolunteerToDb(userCredential, name);
-				// router.push("/profile/volunteer-preferences");
-			})
-			.catch((error) => {
-				const errorMessage = error.message;
-				console.log(`Email login error: ${errorMessage}`);
-				setLoginError(errorMessage);
-			});
+		Swal.fire({
+			title: "Feature still developing...",
+			text: "",
+			icon: "warning",
+			timer: 1000,
+			timerProgressBar: true,
+			showConfirmButton: false,
+			allowOutsideClick: false,
+		});
+		// googleSignIn()
+		// 	.then(async(userCredential) => {
+		// 		setIsJustSignedUp(true);
+		// 		await addVolunteerToDb(userCredential, name);
+		// 		// router.push("/profile/volunteer-preferences");
+		// 	})
+		// 	.catch((error) => {
+		// 		const errorMessage = error.message;
+		// 		console.log(`Email login error: ${errorMessage}`);
+		// 		setLoginError(errorMessage);
+		// 	});
 	};
 
 	return isLoading || user ? null : (
