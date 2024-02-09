@@ -12,9 +12,11 @@ import CauseAttendance from "../../components/reports/CauseAttendance";
 import TypeActivities from "../../components/reports/TypeActivities";
 import TypeAttendance from "../../components/reports/TypeAttendance";
 import PastYearUsers from "../../components/reports/PastYearUsers";
+import LanguagesUsers from "../../components/reports/LanguagesUsers"
 import getTotalUserCount from "../../utils/reports/getTotalUserCount";
 import getTotalActivityCount from "../../utils/reports/getTotalActivityCount";
 import getTotalVolunteerHours from "../../utils/reports/getTotalVolunteerHours";
+
 
 import { Roboto_Slab } from "next/font/google";
 
@@ -156,8 +158,7 @@ const Reports = () => {
 							</Flex>
 						</div>
 						<div style={chartStyleRight}>
-							<RegionAttendance />
-							{/* change this to languages spoke demographic */}
+							<LanguagesUsers />
 						</div>
 						<div style={chartStyleRight}>
 							<RegionAttendance />
