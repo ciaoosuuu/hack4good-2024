@@ -1,4 +1,6 @@
 # Big Hearts Hub
+<img src="readme-images/main-landing.png" width="1000"/>
+
 
 ### Overview
 
