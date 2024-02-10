@@ -92,21 +92,42 @@ Admin:
 
 **Volunteer Enrollment**: Big Hearts Hub simplifies the enrollment process for volunteers associated with "Big at Heart," fostering inclusivity and accessibility to a diverse range of potential contributors.
 
+
 **Activity Management**: Volunteers can seamlessly browse, select, and manage their participation in various activities, while organizers within "Big at Heart" can efficiently plan and coordinate events, optimizing the overall volunteer experience.
+
+<img src="readme-images/activity-management.png" width="800"/>
+
+<img src="readme-images/activity-management-2.png" width="800"/>
 
 **Certificate Requests**: Our platform empowers volunteers affiliated with "Big at Heart" to request certificates effortlessly, acknowledging their contributions and reinforcing a sense of accomplishment.
 
+<img src="readme-images/certificate-requests.png" width="800"/>
+
 **Attendance Tracking**: Big Hearts Hub ensures real-time signups and attendance tracking, providing administrators at "Big at Heart" with a clear overview of volunteer participation, enhancing event management and resource allocation.
+
+<img src="readme-images/attendance-tracking.png" width="800"/>
 
 **Detailed Reports**: The application equips administrators of "Big at Heart" with a powerful reporting tool, enabling them to generate detailed reports on volunteer activities, demographics, and attendance, fostering informed decision-making.
 
+<img src="readme-images/detailed-reports.png" width="800"/>
+
 **Reflections Gallery**: Volunteers can share their heartfelt thoughts, experiences, and reflections with the community through the "Blog" or “Reflections” feature. This addition fosters a sense of community and encourages knowledge-sharing among volunteers, enhancing the overall volunteering journey.
+
+<img src="readme-images/reflections-gallery.png" width="800"/>
 
 **Volunteer Portfolio**: Track and showcase one’s volunteer journey through the "Volunteer Portfolio." Keep a comprehensive record of each volunteer’s activities, posts, reflections, feedback, and hours volunteered. This feature allows volunteers to celebrate their impact and remember their inspiring journey.
 
+<img src="readme-images/volunteer-portfolio.png" width="800"/>
+
 **Gamified Experience**: Our platform recognizes and rewards volunteers with points, badges, or virtual rewards based on their commitment and consistency in volunteering. This gamified approach adds a fun element to the volunteering experience, encouraging sustained engagement.
 
+<img src="readme-images/gamified-experience.png" width="800"/>
+
+<img src="readme-images/gamified-experience-2.png" width="800"/>
+
 **Activities Curation**: Big Hearts Hub intelligently matches volunteers with activities aligned with their interests and skills. By considering user preferences, the platform ensures a personalized volunteering experience, connecting volunteers with opportunities that resonate with their passions.
+
+<img src="readme-images/activities-curation.png" width="800"/>
 
 ### Future Developments
 
