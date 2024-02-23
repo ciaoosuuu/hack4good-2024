@@ -262,6 +262,15 @@ const Volunteer = ({ user, params }) => {
                           Sign Up Now
                         </Button>
                       )
+                    ) : signups.some((id) => id === userId) ? (
+                      <Button
+                        width="100%"
+                        onClick={handleUnsignUp}
+                        colorScheme="red"
+                        variant="outline"
+                      >
+                        Withdraw
+                      </Button>
                     ) : (
                       <Button
                         width="100%"
