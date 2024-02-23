@@ -10,14 +10,20 @@ const getTopActivities = (user, activities) => {
   );
   const topActivities = [];
 
-  if (user && user.preferences && user.preferences.interestAreas) {
+  if (
+    user &&
+    user.preferences &&
+    user.preferences.interestAreas &&
+    user.preferences.skills
+  ) {
+    const userPreferences = [
+      ...user.preferences.interestAreas,
+      ...user.preferences.skills,
+    ];
     upcomingActivities.forEach((activity) => {
-      const activitySimilarity = user.preferences.interestAreas.reduce(
-        (total, interest) => {
-          return total + calculateSimilarity(activity.tags, [interest]);
-        },
-        0
-      );
+      const activitySimilarity = userPreferences.reduce((total, interest) => {
+        return total + calculateSimilarity(activity.tags, [interest]);
+      }, 0);
 
       topActivities.push({ ...activity, similarity: activitySimilarity });
     });
