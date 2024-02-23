@@ -202,7 +202,7 @@ export default function NavBar() {
 						margin: "0 10px",
 					}}
 				/>
-				<h1 className={roboto_slab.className}>hack4good</h1>
+				<h1 className={roboto_slab.className}>Big Hearts Hub</h1>
 			</Flex>
 			<Tabs
 				style={{
