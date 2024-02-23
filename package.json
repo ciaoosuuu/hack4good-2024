@@ -36,6 +36,7 @@
     "react-pdf": "^7.7.0",
     "react-router-dom": "^6.21.3",
     "read-more-react": "^1.0.10",
+    "shortid": "^2.2.16",
     "sweetalert2": "^11.10.4"
   },
   "devDependencies": {

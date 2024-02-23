@@ -20,6 +20,7 @@ import theme from "../../theme.js";
 import { UserAuth } from "../../app/context/AuthContext.js";
 import { logOut } from "../../firebase/functions.js";
 import { Roboto_Slab } from "next/font/google";
+import ReferralModal from "./ReferralModal.js";
 
 const roboto_slab = Roboto_Slab({
 	weight: ["400", "700"],
@@ -35,6 +36,7 @@ export default function NavBar() {
 	const toast = useToast();
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [isAdmin, setIsAdmin] = useState(false);
+	const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (user) setIsAdmin(user.role === "admin");
@@ -181,6 +183,10 @@ export default function NavBar() {
 				boxShadow: "1px 1px 5px #00000010",
 			}}
 		>
+			<ReferralModal
+				isOpen={isReferralModalOpen}
+				onClose={() => setIsReferralModalOpen(false)}
+			/>
 			<Flex align={"center"}>
 				<Image
 					src={require("../../resources/public/big-at-heart-logo.png")}
@@ -251,14 +257,24 @@ export default function NavBar() {
 								<>
 									{" "}
 									{user && !isAdmin && (
-										<MenuItem
-											key={"profile/go"}
-											onClick={() =>
-												navigateTo("profile")
-											}
-										>
-											Profile
-										</MenuItem>
+										<>
+											<MenuItem
+												key={"profile/go"}
+												onClick={() =>
+													navigateTo("profile")
+												}
+											>
+												Profile
+											</MenuItem>
+											<MenuItem
+												key={"referAFriend"}
+												onClick={() =>
+													setIsReferralModalOpen(true)
+												}
+											>
+												Refer a Friend
+											</MenuItem>
+										</>
 									)}
 									{user && isAdmin && (
 										<MenuItem
