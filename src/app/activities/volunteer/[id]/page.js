@@ -34,6 +34,8 @@ const Volunteer = ({ user, params }) => {
   const userId = user.uid;
   const userRole = user.role;
 
+  const currentTimeStamp = new Date();
+
   console.log(user);
   console.log(userRole);
 
@@ -226,29 +228,61 @@ const Volunteer = ({ user, params }) => {
                       })}
                     </Text>
                     <Text fontSize="m">{vacancyRemaining} slots left</Text>
+                    <Text fontSize="m">
+                      Sign up by{" "}
+                      {activity.signup_deadline
+                        .toDate()
+                        .toLocaleString("en-EN", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                    </Text>
                   </Stack>
                 </CardBody>
                 <CardFooter>
                   {userRole === "volunteer" && signups ? (
-                    signups.some((id) => id === userId) ? (
-                      <Button
-                        width="100%"
-                        onClick={handleUnsignUp}
-                        colorScheme='red' variant='outline'
-                      >
-                        Withdraw
-                      </Button>
+                    activity.signup_deadline.toDate() >= currentTimeStamp ? (
+                      signups.some((id) => id === userId) ? (
+                        <Button
+                          width="100%"
+                          onClick={handleUnsignUp}
+                          colorScheme="red"
+                          variant="outline"
+                        >
+                          Withdraw
+                        </Button>
+                      ) : (
+                        <Button
+                          width="100%"
+                          onClick={handleSignUp}
+                          colorScheme="red"
+                          variant="solid"
+                        >
+                          Sign Up Now
+                        </Button>
+                      )
                     ) : (
                       <Button
                         width="100%"
-                        onClick={handleSignUp}
-                        colorScheme='red' variant='solid'
+                        onClick={handleUnsignUp}
+                        colorScheme="red"
+                        variant="outline"
+                        isDisabled={true}
                       >
-                        Sign Up Now
+                        Sign ups have closed
                       </Button>
                     )
                   ) : (
-                    <div />
+                    <Button
+                      width="100%"
+                      onClick={handleUnsignUp}
+                      colorScheme="red"
+                      variant="outline"
+                      isDisabled={true}
+                    >
+                      {activity.participants_signups.length} sign ups
+                    </Button>
                   )}
                 </CardFooter>
               </Card>
