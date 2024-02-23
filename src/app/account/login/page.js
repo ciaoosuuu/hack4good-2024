@@ -53,7 +53,7 @@ const Login = () => {
 			.catch((error) => {
 				const errorMessage = error.message;
 				console.log(`Email login error: ${errorMessage}`);
-				setLoginError(errorMessage);
+				setLoginError("Invalid Login Credentials.");
 			});
 	};
 
