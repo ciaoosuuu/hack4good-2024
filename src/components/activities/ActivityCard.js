@@ -172,9 +172,10 @@ const ActivityCard = ({
 								style={{
 									borderRadius: "100px",
 									padding: "0 20px",
+									fontSize: "14px"
 								}}
 							>
-								Request Certificate
+								Request <br/>Certificate
 							</Button>
 						</Flex>
 					)}
