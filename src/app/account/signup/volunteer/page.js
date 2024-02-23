@@ -9,6 +9,7 @@ import {
 	Input,
 	Flex,
 	Alert,
+	Text
 } from "@chakra-ui/react";
 import { Link } from '@chakra-ui/next-js'
 import NextLink from 'next/link'
@@ -16,6 +17,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FiAlertCircle } from "react-icons/fi";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RiAdminLine } from "react-icons/ri";
+import { FaHeartCircleCheck } from "react-icons/fa6";
 import { UserAuth } from "../../../context/AuthContext";
 import Swal from "sweetalert2"
 import {
@@ -23,7 +25,7 @@ import {
 	googleSignIn,
 } from "../../../../firebase/functions";
 import { db } from "../../../../firebase/config";
-import { Timestamp } from "firebase/firestore";
+import { Timestamp, arrayUnion, increment } from "firebase/firestore";
 import { projectStorage } from "../../../../firebase/config";
 
 const VolunteerSignup = () => {
@@ -34,8 +36,33 @@ const VolunteerSignup = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loginError, setLoginError] = useState(null);
+	const [referralCode, setReferralCode] = useState(null);
+	const [referralCodeError, setReferralCodeError] = useState(null);
 
 	const [defaultImageUrl, setDefaultImageUrl] = useState("");
+
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		const referralCode = params.get("ref");
+		
+		const findReferral = async () => {
+			const referralData = await db.collection("Referrals")
+				.where("referralCode", "==", referralCode)
+				.get()
+
+			if (!referralData.empty) {
+				const referralDoc = referralData.docs[0];
+				const referralCode = referralDoc.data().referralCode;
+				setReferralCode(referralCode);
+				console.log("referralData", referralCode)
+			} else {
+				setReferralCodeError("Invalid Referral Code")
+			}
+		}
+		if (referralCode) {
+			findReferral();
+		}
+	}, []);
 
 	useEffect(() => {
 		const fetchDefaultPic = async () => {
@@ -88,6 +115,38 @@ const VolunteerSignup = () => {
 				image: defaultImageUrl,
 			};
 			await db.collection("Users").doc(userCredential.user.uid).set(data);
+
+			// Award referral
+			if (referralCode) {
+				const referralSnapshot = await db.collection("Referrals")
+                .where("referralCode", "==", referralCode)
+                .get();
+
+				if (!referralSnapshot.empty) {
+					const referralDoc = referralSnapshot.docs[0];
+					const referralDocId = referralDoc.id;
+					const referralDocReferrerId = referralDoc.data().referrerId;
+
+					//update referral doc
+					const referralRef = db.collection("Referrals").doc(referralDocId)
+					await referralRef.update({
+							referredIds: arrayUnion(userCredential.user.uid),
+						})
+						.then(() => console.log("Referral document updated"))
+						.catch((error) => console.error("Error updating referral document:", error));
+				
+
+					//update referrer exp_points
+					const referrerRef = db.collection("Users").doc(referralDocReferrerId);
+					await referrerRef.update({
+						exp_points: increment(15),
+					})
+					.then(() => console.log("Referral EXP awarded"))
+					.catch((error) => console.error("Error updating referral EXP:", error));
+				
+				}
+
+			}
 		} catch (error) {
 			console.log(error);
 			throw error;
@@ -148,6 +207,23 @@ const VolunteerSignup = () => {
 			<Box style={{ maxWidth: "600px", margin: "80px auto" }}>
 				<h1 style={{ textAlign: "center" }}>Volunteer Sign Up Page</h1>
 				<br />
+				{referralCode && !referralCodeError &&
+					<>
+						<Flex justify={"center"}>
+							<FaHeartCircleCheck size={27} style={{color: "green", marginRight: "8px"}}/>
+							<Text as="i" style={{color: "green"}}>Signing up with referral</Text>
+						</Flex>
+						<br />
+					</>
+				}
+				{!referralCode && referralCodeError && 
+					<>
+						<Flex justify={"center"}>
+							<Text as="i" style={{color: "red"}}>{referralCodeError}</Text>
+						</Flex>
+						<br />
+					</>
+				}
 				<form onSubmit={handleEmailSignUp}>
 					<FormControl isRequired style={{ marginBottom: "8px" }}>
 						<FormLabel>Name:</FormLabel>
