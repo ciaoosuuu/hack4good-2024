@@ -27,9 +27,9 @@
 
 .overlay-main {
   position: absolute;
-  left: 8%;
-  top: 30%;
-  width: 35%;
+  left: 10%;
+  top: 27%;
+  width: 40%;
 }
 
 .overlay-main h1 {
@@ -77,37 +77,14 @@
   margin-bottom: 15px;
 }
 
-.overlay-container .notsignedup {
-  height: 50px;
-  width: 100%;
-  background-color: maroon;
-  font-size: medium;
-  color: white;
-  margin-bottom: 15px;
-  border-radius: 10px;
-}
-
-.overlay-container .signedup {
-  height: 50px;
-  width: 100%;
-  border: 1px solid maroon;
-  font-size: medium;
-  color: maroon;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .two-column-container {
   display: flex;
-  margin: 0% 8% 6% 8%;
+  margin: 0% 10% 6% 10%;
 }
 
 .column-left {
   flex: 68%;
-  margin: 6% 10% 0% 0%;
+  margin: 6% 12% 0% 0%;
   /* padding: 6% 8% 0px 8%; */
 }
 
