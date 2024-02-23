@@ -183,10 +183,13 @@ export default function NavBar() {
 				boxShadow: "1px 1px 5px #00000010",
 			}}
 		>
-			<ReferralModal
-				isOpen={isReferralModalOpen}
-				onClose={() => setIsReferralModalOpen(false)}
-			/>
+			{user && 
+				<ReferralModal
+					user={user}
+					isOpen={isReferralModalOpen}
+					onClose={() => setIsReferralModalOpen(false)}
+				/>
+			}
 			<Flex align={"center"}>
 				<Image
 					src={require("../../resources/public/big-at-heart-logo.png")}

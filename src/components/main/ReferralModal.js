@@ -132,4 +132,4 @@ const ReferralModal = ({ user, isOpen, onClose }) => {
 	);
 };
 
-export default withAuth(ReferralModal);
+export default ReferralModal;
