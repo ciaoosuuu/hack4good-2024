@@ -188,25 +188,6 @@ const CreateActivity = ({ user }) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// if (formData.datetime_start >= formData.datetime_end) {
-		// 	setFormErrors((formErrors) => {
-		// 		return {
-		// 			...formErrors,
-		// 			datetime_end: true,
-		// 		};
-		// 	});
-		// 	return;
-		// }
-		// if (formData.signup_deadline < new Date().toISOString().split("T")[0]) {
-		// 	setFormErrors((formErrors) => {
-		// 		return {
-		// 			...formErrors,
-		// 			signup_deadline: true,
-		// 		};
-		// 	});
-		// 	return;
-		// }
-
 		try {
 			const updatedFormData = {
 				...formData,
@@ -234,7 +215,7 @@ const CreateActivity = ({ user }) => {
 				allowOutsideClick: false,
 			});
 			setTimeout(function () {
-				router.push("/");
+				router.push("/activities");
 			}, 1000);
 		} catch (error) {
 			console.log(error);
