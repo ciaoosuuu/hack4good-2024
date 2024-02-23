@@ -135,7 +135,7 @@ const Login = () => {
 				{loginError && (
 					<Alert status="error">
 						<FiAlertCircle style={{ marginRight: "10px" }} />
-						{loginError}{" "}
+						Invalid login credentials
 					</Alert>
 				)}
 				{!loginError && user && (
